@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Obtener todas las imágenes del producto
 $productImages = ImageHelper::getProductImages($product, 'large');
 ?>
@@ -9,45 +9,40 @@ $productImages = ImageHelper::getProductImages($product, 'large');
         <div class="space-y-4">
             <!-- Imagen principal -->
             <div class="relative">
-                <img 
+                <img
                     id="main-image"
-                    src="<?= $productImages['main'] ?>" 
+                    src="<?= $productImages['main'] ?>"
                     alt="<?= htmlspecialchars($product['name']) ?>"
-                    class="w-full h-96 object-cover rounded-lg border border-gray-200"
-                >
+                    class="w-full h-96 object-cover rounded-lg border border-gray-200">
             </div>
 
             <!-- Galería de miniaturas -->
             <?php if (!empty($productImages['gallery'])): ?>
-            <div class="flex space-x-2 overflow-x-auto">
-                <!-- Thumbnail de imagen principal -->
-                <button 
-                    type="button"
-                    onclick="changeMainImage('<?= $productImages['main'] ?>')"
-                    class="flex-shrink-0 w-20 h-20 border-2 border-primary-500 rounded-lg overflow-hidden"
-                >
-                    <img 
-                        src="<?= ImageHelper::getProductImageUrl($product['product_image'] ?? $product['image_url'] ?? null, 'thumbnail') ?>" 
-                        alt="Vista principal"
-                        class="w-full h-full object-cover"
-                    >
-                </button>
+                <div class="flex space-x-2 overflow-x-auto">
+                    <!-- Thumbnail de imagen principal -->
+                    <button
+                        type="button"
+                        onclick="changeMainImage('<?= $productImages['main'] ?>')"
+                        class="flex-shrink-0 w-20 h-20 border-2 border-primary-500 rounded-lg overflow-hidden">
+                        <img
+                            src="<?= ImageHelper::getProductImageUrl($product['product_image'] ?? $product['image_url'] ?? null, 'thumbnail') ?>"
+                            alt="Vista principal"
+                            class="w-full h-full object-cover">
+                    </button>
 
-                <!-- Thumbnails de galería -->
-                <?php foreach ($productImages['gallery'] as $index => $galleryImage): ?>
-                <button 
-                    type="button"
-                    onclick="changeMainImage('<?= $galleryImage ?>')"
-                    class="flex-shrink-0 w-20 h-20 border-2 border-gray-200 hover:border-primary-500 rounded-lg overflow-hidden transition-colors"
-                >
-                    <img 
-                        src="<?= str_replace('large', 'thumbnail', $galleryImage) ?>" 
-                        alt="Vista <?= $index + 2 ?>"
-                        class="w-full h-full object-cover"
-                    >
-                </button>
-                <?php endforeach; ?>
-            </div>
+                    <!-- Thumbnails de galería -->
+                    <?php foreach ($productImages['gallery'] as $index => $galleryImage): ?>
+                        <button
+                            type="button"
+                            onclick="changeMainImage('<?= $galleryImage ?>')"
+                            class="flex-shrink-0 w-20 h-20 border-2 border-gray-200 hover:border-primary-500 rounded-lg overflow-hidden transition-colors">
+                            <img
+                                src="<?= str_replace('large', 'thumbnail', $galleryImage) ?>"
+                                alt="Vista <?= $index + 2 ?>"
+                                class="w-full h-full object-cover">
+                        </button>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
         </div>
 
@@ -97,7 +92,7 @@ $productImages = ImageHelper::getProductImages($product, 'large');
                     <?php if (!empty($product['promo_start']) && !empty($product['promo_end'])): ?>
                         <p class="text-sm text-red-600">
                             <i class="fas fa-clock mr-1"></i>
-                            Oferta válida del <?= date('d/m/Y', strtotime($product['promo_start'])) ?> 
+                            Oferta válida del <?= date('d/m/Y', strtotime($product['promo_start'])) ?>
                             al <?= date('d/m/Y', strtotime($product['promo_end'])) ?>
                         </p>
                     <?php endif; ?>
@@ -137,27 +132,6 @@ $productImages = ImageHelper::getProductImages($product, 'large');
                         <span class="text-sm text-gray-900"><?= htmlspecialchars($product['unit']) ?></span>
                     </div>
                 <?php endif; ?>
-                
-                <?php if (!empty($product['weight'])): ?>
-                    <div>
-                        <span class="text-sm font-medium text-gray-500">Peso:</span>
-                        <span class="text-sm text-gray-900"><?= number_format($product['weight'], 2) ?> kg</span>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if (!empty($product['volume'])): ?>
-                    <div>
-                        <span class="text-sm font-medium text-gray-500">Volumen:</span>
-                        <span class="text-sm text-gray-900"><?= number_format($product['volume'], 2) ?> m³</span>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if (!empty($product['barcode'])): ?>
-                    <div>
-                        <span class="text-sm font-medium text-gray-500">Código de barras:</span>
-                        <span class="text-sm text-gray-900"><?= htmlspecialchars($product['barcode']) ?></span>
-                    </div>
-                <?php endif; ?>
             </div>
 
             <!-- Controles de cantidad y compra -->
@@ -165,47 +139,42 @@ $productImages = ImageHelper::getProductImages($product, 'large');
                 <div class="flex items-center space-x-4">
                     <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
                     <div class="flex items-center border border-gray-300 rounded-md">
-                        <button 
-                            type="button" 
-                            onclick="changeQuantity(-1)"
-                            class="px-3 py-2 text-gray-600 hover:text-gray-800"
-                        >
-                            <i class="fas fa-minus"></i>
+                        <button
+                            type="button"
+                            class="qty-minus px-3 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
+                            title="Disminuir cantidad">
+                            <i class="fas fa-minus pointer-events-none"></i>
                         </button>
-                        <input 
-                            type="number" 
-                            id="quantity" 
-                            name="quantity" 
-                            value="1" 
-                            min="1" 
-                            class="w-16 px-3 py-2 text-center border-0 focus:outline-none"
-                        >
-                        <button 
-                            type="button" 
-                            onclick="changeQuantity(1)"
-                            class="px-3 py-2 text-gray-600 hover:text-gray-800"
-                        >
-                            <i class="fas fa-plus"></i>
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            class="w-16 px-3 py-2 text-center border-0 focus:outline-none">
+                        <button
+                            type="button"
+                            class="qty-plus px-3 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
+                            title="Aumentar cantidad">
+                            <i class="fas fa-plus pointer-events-none"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Botones de acción -->
                 <div class="space-y-3">
-                    <button 
+                    <button
                         type="button"
-                        onclick="addToCart('<?= $product['id'] ?>')"
-                        class="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
-                    >
+                        onclick="addToCart('<?= $product['id'] ?>', document.getElementById('quantity').value)"
+                        class="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Agregar al Carrito</span>
                     </button>
-                    
-                    <button 
+
+                    <button
                         type="button"
                         onclick="buyNow('<?= $product['id'] ?>')"
-                        class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
-                    >
+                        class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
                         <i class="fas fa-bolt"></i>
                         <span>Comprar Ahora</span>
                     </button>
