@@ -27,46 +27,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <?php if (isset($featuredProducts) && $featuredProducts): ?>
                 <?php foreach ($featuredProducts as $product): ?>
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 overflow-hidden">
-                        <a href="<?= Router::url('/producto/' . $product['id']) ?>">
-                            <div class="relative">
-                                <img 
-                                    src="<?= ImageHelper::getProductImageUrl(null, 'medium') ?>" 
-                                    alt="<?= htmlspecialchars($product['name']) ?>"
-                                    class="w-full h-48 object-cover"
-                                >
-                                <?php if ($product['sale_price']): ?>
-                                    <span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">
-                                        Oferta
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-gray-800 mb-2 hover:text-primary-600 transition duration-300">
-                                    <?= htmlspecialchars($product['name']) ?>
-                                </h3>
-                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">
-                                    <?= htmlspecialchars($product['description'] ?: substr($product['description'], 0, 100) . '...') ?>
-                                </p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex flex-col">
-                                        <?php if ($product['sale_price']): ?>
-                                            <span class="text-lg font-bold text-red-600">$<?= number_format($product['sale_price'], 2) ?></span>
-                                            <span class="text-sm text-gray-500 line-through">$<?= number_format($product['price'], 2) ?></span>
-                                        <?php else: ?>
-                                            <span class="text-lg font-bold text-gray-800">$<?= number_format($product['price'], 2) ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <button 
-                                        onclick="addToCart(<?= $product['id'] ?>)" 
-                                        class="bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700 transition duration-300"
-                                    >
-                                        <i class="fas fa-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                    <?php include '../app/Views/components/ProductCard.php'; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="col-span-full text-center py-12">
