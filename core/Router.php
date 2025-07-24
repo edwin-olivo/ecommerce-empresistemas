@@ -54,7 +54,12 @@ class Router {
         
         // Ruta no encontrada
         http_response_code(404);
+        ob_start();
         include '../app/Views/errors/404.php';
+        $content = ob_get_clean();
+        
+        // Incluir layout principal
+        include '../app/Views/layout/main.php';
     }
     
     /**
