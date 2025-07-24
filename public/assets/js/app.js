@@ -34,6 +34,16 @@ class EcommerceApp {
             filterForm.addEventListener('change', this.handleFilterChange);
         }
 
+        // Cambio de vista grid/list
+        const gridView = document.getElementById('grid-view');
+        const listView = document.getElementById('list-view');
+        const productsGrid = document.getElementById('products-grid');
+
+        if (gridView && listView && productsGrid) {
+            gridView.addEventListener('click', this.handleGridViewClick.bind(this, productsGrid, gridView, listView, 'grid'));
+            listView.addEventListener('click', this.handleGridViewClick.bind(this, productsGrid, gridView, listView, 'list'));
+        }
+
         // Quantity selectors
         document.addEventListener('click', (e) => {
             if (e.target.matches('.qty-minus')) {
@@ -136,6 +146,18 @@ class EcommerceApp {
             setTimeout(() => {
                 form.submit();
             }, 100);
+        }
+    }
+
+    handleGridViewClick(productsGrid, gridView, listView, viewType) {
+        if (viewType === 'list') {
+            productsGrid.className = 'space-y-4';
+            listView.classList.add('bg-gray-100');
+            gridView.classList.remove('bg-gray-100');
+        } else if (viewType === 'grid') {
+            productsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
+            gridView.classList.add('bg-gray-100');
+            listView.classList.remove('bg-gray-100');
         }
     }
 
