@@ -106,9 +106,9 @@
                         </button>
                         <div class="absolute top-full left-0 bg-white text-gray-800 shadow-lg rounded-md py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
                             <?php if (isset($categories) && $categories): ?>
-                                <?php foreach ($categories as $category): ?>
-                                    <a href="<?= Router::url('/categoria/' . $category['name']) ?>" class="block px-4 py-2 hover:bg-gray-100">
-                                        <?= htmlspecialchars($category['name']) ?>
+                                <?php foreach ($categories as $key => $label): ?>
+                                    <a href="<?= Router::url('/categoria/' . $key) ?>" class="block px-4 py-2 hover:bg-gray-100">
+                                        <?= htmlspecialchars($label) ?>
                                     </a>
                                 <?php endforeach; ?>
                             <?php endif; ?>

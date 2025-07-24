@@ -13,15 +13,10 @@ class HomeController extends Controller {
             // Obtener productos destacados
             $productService = new ProductService();
             $featuredProducts = $productService->getFeaturedProducts(8);
-
-            // Obtener categorías
-            $categoryService = new CategoryService();
-            $categories = $categoryService->getAllCategories();
             
             $data = [
                 'title' => 'Inicio - ' . APP_NAME,
                 'featuredProducts' => $featuredProducts,
-                'categories' => $categories,
                 'pageClass' => 'home-page'
             ];
             
