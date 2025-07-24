@@ -17,7 +17,7 @@ class ProductController extends Controller {
             $limit = 12;
             $category = $_GET['category'] ?? null;
             $search = $_GET['search'] ?? null;
-            $sortBy = $_GET['sort'] ?? 'name';
+            $sortBy = $_GET['sortBy'] ?? 'name';
             
             // Obtener productos con filtros
             $products = $productService->getProducts([

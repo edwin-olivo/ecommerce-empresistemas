@@ -23,6 +23,7 @@ class ProductService
         $category = $filters['category'] ?? null;
         $search = $filters['search'] ?? null;
         $sortBy = $filters['sortBy'] ?? 'name';
+        // $sortBy = strtolower($sortBy);
 
         $offset = ($page - 1) * $limit;
 
@@ -67,13 +68,16 @@ class ProductService
         }
 
         // Ordenamiento
-        $allowedSorts = ['name', 'price', 'date_entered'];
-        if (in_array($sortBy, $allowedSorts)) {
-            if ($sortBy === 'date_entered') {
-                $sql .= " ORDER BY p.date_entered DESC";
-            } else {
-                $sql .= " ORDER BY p.{$sortBy} ASC";
-            }
+        $allowedSorts = [
+            'name' => 'p.name',
+            'name_desc' => 'p.name DESC',
+            'price' => 'p.price',
+            'price_desc' => 'p.price DESC',
+            'date_entered' => 'p.date_entered',
+            'date_entered_desc' => 'p.date_entered DESC'
+        ];
+        if (array_key_exists($sortBy, $allowedSorts)) {
+            $sql .= " ORDER BY " . $allowedSorts[$sortBy];
         } else {
             $sql .= " ORDER BY p.name ASC";
         }
