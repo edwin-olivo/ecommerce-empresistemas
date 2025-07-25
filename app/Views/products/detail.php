@@ -1,9 +1,17 @@
 <?php
 // Obtener todas las imágenes del producto
 $productImages = ImageHelper::getProductImages($product, 'large');
+
+$breadcrumbs = [
+    ['label' => 'Productos', 'url' => Router::url('/productos')],
+    ['label' => htmlspecialchars($product['name']), 'url' => '']
+];
 ?>
 
 <div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumbs -->
+    <?php include '../app/Views/components/Breadcrumb.php'; ?>
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Galería de imágenes -->
         <div class="space-y-4">
