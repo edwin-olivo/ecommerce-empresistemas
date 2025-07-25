@@ -1,6 +1,6 @@
 <?php
 $breadcrumbs = [
-    ['label' => 'Productos', 'url' => Router::url('/products')]
+    ['label' => 'Productos', 'url' => Router::url('/productos')]
 ];
 ?>
 

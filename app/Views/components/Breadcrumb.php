@@ -17,7 +17,7 @@
                 <div class="flex items-center">
                     <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
                     <a href="<?= $crumb['url'] ?>" class="text-sm font-medium text-gray-700 hover:text-primary-600">
-                        <?= htmlspecialchars($crumb['label']) ?>
+                        <?= $crumb['label'] ?>
                     </a>
                 </div>
             </li>
