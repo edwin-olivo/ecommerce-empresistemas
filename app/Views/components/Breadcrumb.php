@@ -16,7 +16,7 @@
             <li class="inline-flex items-center">
                 <div class="flex items-center">
                     <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
-                    <a href="<?= $crumb['url'] ?>" class="text-sm font-medium text-gray-700 hover:text-primary-600">
+                    <a href="<?= $crumb['url'] ?>" <?= $crumb['url'] === '' ? 'onclick="return false;"' : '' ?> class="text-sm font-medium text-gray-700 hover:text-primary-600">
                         <?= $crumb['label'] ?>
                     </a>
                 </div>
