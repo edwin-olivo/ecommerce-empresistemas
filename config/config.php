@@ -12,13 +12,13 @@ define('DB_CHARSET', 'utf8mb4');
 
 // Configuración de la aplicación
 define('APP_NAME', 'Ecommerce MVC');
-define('APP_URL', 'http://ecommerce.local');
+define('APP_URL', 'http://localhost');
 define('APP_DEBUG', true);
 
 // Configuración de WENZ HOU API
-define('WENZ_HOU_IMAGE_BASE_URL', 'https://wenzhou.erponweb.com.mx/customcode/redim.php');
-define('WENZ_HOU_IMAGE_PATH', 'imagenes/');
-define('WENZ_HOU_DIRECT_IMAGE_URL', 'https://wenzhou.erponweb.com.mx/imagenes/');
+define('IMAGE_BASE_URL', 'https://wenzhou.erponweb.com.mx/customcode/redim.php');
+define('IMAGE_PATH', 'imagenes/');
+define('DIRECT_IMAGE_URL', 'https://wenzhou.erponweb.com.mx/imagenes/');
 
 // Configuración de Stripe
 define('STRIPE_PUBLIC_KEY', 'pk_test_your_stripe_public_key');

@@ -29,9 +29,9 @@ class ImageHelper
     private static function init()
     {
         if (self::$baseImageUrl === null) {
-            self::$baseImageUrl = defined('WENZ_HOU_IMAGE_BASE_URL') ? WENZ_HOU_IMAGE_BASE_URL : 'https://wenzhou.erponweb.com.mx/customcode/redim.php';
-            self::$defaultImagePath = defined('WENZ_HOU_IMAGE_PATH') ? WENZ_HOU_IMAGE_PATH : 'imagenes/';
-            self::$directImageUrl = defined('WENZ_HOU_DIRECT_IMAGE_URL') ? WENZ_HOU_DIRECT_IMAGE_URL : 'https://wenzhou.erponweb.com.mx/imagenes/';
+            self::$baseImageUrl = defined('IMAGE_BASE_URL') ? IMAGE_BASE_URL : 'https://wenzhou.erponweb.com.mx/customcode/redim.php';
+            self::$defaultImagePath = defined('IMAGE_PATH') ? IMAGE_PATH : 'imagenes/';
+            self::$directImageUrl = defined('DIRECT_IMAGE_URL') ? DIRECT_IMAGE_URL : 'https://wenzhou.erponweb.com.mx/imagenes/';
         }
     }
 
