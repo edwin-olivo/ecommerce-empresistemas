@@ -23,7 +23,7 @@
         <!-- Botón de vista rápida -->
         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center">
             <a
-                href="<?= Router::url('/producto/' . $product['id']) ?>"
+                href="<?= Router::url('/productos/' . $product['id']) ?>"
                 class="bg-white text-primary-600 px-4 py-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary-50">
                 Ver Producto
             </a>
@@ -48,7 +48,7 @@
 
         <!-- Nombre del producto -->
         <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2">
-            <a href="<?= Router::url('/producto/' . $product['id']) ?>" class="hover:text-primary-600">
+            <a href="<?= Router::url('/productos/' . $product['id']) ?>" class="hover:text-primary-600">
                 <?= htmlspecialchars($product['name']) ?>
             </a>
         </h3>
