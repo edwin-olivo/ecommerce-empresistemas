@@ -104,7 +104,7 @@
                         <button class="hover:text-primary-200 flex items-center">
                             Categorías <i class="fas fa-chevron-down ml-1"></i>
                         </button>
-                        <div class="absolute top-full left-0 bg-white text-gray-800 shadow-lg rounded-md py-2 w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+                        <div class="absolute top-full left-0 bg-white text-gray-800 shadow-lg rounded-md py-2 w-48 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 z-50">
                             <?php if (isset($categories) && $categories): ?>
                                 <?php foreach ($categories as $key => $label): ?>
                                     <a href="<?= Router::url('/categoria/' . $key) ?>" class="block px-4 py-2 hover:bg-gray-100">
