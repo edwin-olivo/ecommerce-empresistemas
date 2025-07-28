@@ -101,7 +101,13 @@ abstract class Controller
      */
     protected function isAjax()
     {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+        // Detecta peticiones AJAX tradicionales y fetch (application/json)
+        $isXmlHttpRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+        $isFetchJson = isset($_SERVER['CONTENT_TYPE']) &&
+            strpos(strtolower($_SERVER['CONTENT_TYPE']), 'application/json') !== false;
+
+        return $isXmlHttpRequest || $isFetchJson;
     }
 }
