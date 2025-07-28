@@ -27,13 +27,15 @@ Este es un proyecto de ecommerce desarrollado con **PHP 8** siguiendo el patrón
 ```
 ecommerce-mvc/
 ├── app/
-│   ├── Controllers/     # Controladores MVC (extienden Controller base)
+│   ├── Controllers/    # Controladores MVC (extienden Controller base)
 │   ├── Models/         # Modelos de datos (si se necesitan)
 │   ├── Services/       # Lógica de negocio (ProductService, WenzHouService, etc.)
 │   └── Views/          # Vistas PHP con HTML/Tailwind
 ├── core/
 │   ├── App.php         # Aplicación principal y enrutamiento
 │   ├── Controller.php  # Controlador base con funciones comunes
+│   ├── ImageHelper.php # Singleton para manejo de imágenes
+│   ├── ListHelper.php  # Singleton para manejo de listas
 │   ├── Database.php    # Singleton para conexión PDO
 │   └── Router.php      # Sistema de rutas personalizado
 ├── config/
@@ -75,7 +77,7 @@ ecommerce-mvc/
 ### Carrito de Compras
 - Persistencia con `localStorage` (requerimiento del proyecto)
 - También considerar `IndexedDB` como alternativa
-- AJAX para agregar/quitar sin recargas
+- FETCH para agregar/quitar sin recargas
 - Contador en tiempo real en header
 
 ### Integración WENZ HOU
