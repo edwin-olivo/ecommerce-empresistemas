@@ -28,6 +28,7 @@ class App {
         
         // Rutas del carrito
         $this->router->add('/carrito', 'CartController', 'index');
+        $this->router->add('/carrito/datos', 'CartController', 'get', 'POST');
         $this->router->add('/carrito/agregar', 'CartController', 'add');
         $this->router->add('/carrito/remover', 'CartController', 'remove');
         $this->router->add('/carrito/actualizar', 'CartController', 'update');
