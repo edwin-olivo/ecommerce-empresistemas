@@ -17,7 +17,7 @@ class CartPage {
         });
     }
 
-    loadCartData() {
+    async loadCartData() {
         // Obtener datos del carrito desde localStorage
         const cartItems = app.cart.items;
 
@@ -26,33 +26,37 @@ class CartPage {
             return;
         }
 
-        // Hacer petición AJAX para obtener datos completos de los productos
-        fetch(this.cartDataUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                cartData: cartItems
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    this.cartData = data.items;
-                    this.renderCart(data);
-                } else {
-                    throw new Error(data.error || 'Error al cargar el carrito');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                app.showToast('Error al cargar el carrito', 'error');
-                this.showEmptyCart();
-            })
-            .finally(() => {
-                document.getElementById('cart-loading').classList.add('hidden');
+        // Hacer petición al servidor para obtener datos actualizados del carrito
+        try {
+            const response = await fetch(this.cartDataUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cartData: cartItems
+                })
             });
+
+            if (!response.ok) {
+                throw new Error('Error al cargar los datos del carrito');
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                this.cartData = data.items;
+                this.renderCart(data);
+            } else {
+                throw new Error(data.error || 'Error al cargar el carrito');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            app.showToast('Error al cargar el carrito', 'error');
+            this.showEmptyCart();
+        } finally {
+            document.getElementById('cart-loading').classList.add('hidden');
+        }
     }
 
     renderCart(data) {
