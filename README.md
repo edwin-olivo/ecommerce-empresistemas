@@ -48,11 +48,7 @@ Un ecommerce moderno desarrollado con PHP 8, siguiendo el patrón MVC y principi
    ```
 
 3. Configura las API keys:
-   ```php
-   // WENZ HOU API
-   define('WENZ_HOU_API_URL', 'https://api.wenzou.com');
-   define('WENZ_HOU_API_KEY', 'tu_api_key_aqui');
-   
+   ```php   
    // Stripe (modo de prueba)
    define('STRIPE_PUBLIC_KEY', 'pk_test_tu_clave_publica');
    define('STRIPE_SECRET_KEY', 'sk_test_tu_clave_secreta');
@@ -86,7 +82,7 @@ Para una mejor experiencia de desarrollo, configura un virtual host:
 ```
 ecommerce-mvc/
 ├── app/
-│   ├── Controllers/        # Controladores MVC
+│   ├── Controllers/       # Controladores MVC
 │   ├── Models/            # Modelos de datos
 │   ├── Services/          # Servicios de negocio
 │   └── Views/             # Vistas HTML/PHP
@@ -97,8 +93,6 @@ ecommerce-mvc/
 │   ├── Controller.php    # Controlador base
 │   ├── Database.php      # Conexión a BD
 │   └── Router.php        # Sistema de rutas
-├── database/
-│   └── schema.sql        # Script de base de datos
 └── public/               # Punto de entrada web
     ├── index.php         # Archivo principal
     └── assets/           # CSS, JS, imágenes
@@ -108,12 +102,7 @@ ecommerce-mvc/
 
 - `/` - Página principal
 - `/productos` - Lista de productos
-- `/producto/{id}` - Detalle de producto
-- `/categoria/{id}` - Productos por categoría
 - `/carrito` - Carrito de compras
-- `/checkout` - Proceso de compra
-- `/login` - Iniciar sesión
-- `/register` - Registro de usuario
 
 ## 🔧 Desarrollo
 
@@ -214,5 +203,3 @@ Este es un proyecto de práctica para el equipo de desarrollo. Seguir estas paut
 6. Implementar cache para mejor performance
 
 ---
-
-**Desarrollado con ❤️ para el equipo de práctica**
