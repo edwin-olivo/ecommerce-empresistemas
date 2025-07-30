@@ -2,7 +2,7 @@
     <!-- Imagen del producto -->
     <div class="relative h-48 bg-gray-100">
         <img
-            src="<?= ImageHelper::getProductImageUrl(null, 'medium') ?>"
+            src="<?= ImageHelper::getImageWithFallback(null, 'medium') ?>"
             alt="<?= htmlspecialchars($product['name']) ?>"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy">
@@ -36,7 +36,7 @@
         <div class="flex justify-between items-start mb-2">
             <?php if (!empty($product['category'])): ?>
                 <span class="text-xs text-gray-500 uppercase tracking-wide">
-                    <?= htmlspecialchars($product['category']) ?>
+                    <?= htmlspecialchars($categories[$product['category']]) ?>
                 </span>
             <?php endif; ?>
             <?php if (!empty($product['brand'])): ?>

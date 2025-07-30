@@ -23,7 +23,6 @@ class ProductService
         $category = $filters['category'] ?? null;
         $search = $filters['search'] ?? null;
         $sortBy = $filters['sortBy'] ?? 'name';
-        // $sortBy = strtolower($sortBy);
 
         $offset = ($page - 1) * $limit;
 
@@ -69,8 +68,8 @@ class ProductService
 
         // Ordenamiento
         $allowedSorts = [
-            'name' => 'p.name',
-            'name_desc' => 'p.name DESC',
+            'name' => 'name',
+            'name_desc' => 'name DESC',
             'price' => 'p.price',
             'price_desc' => 'p.price DESC',
             'date_entered' => 'p.date_entered',

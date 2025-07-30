@@ -1,7 +1,5 @@
 <?php
 // Obtener todas las imágenes del producto
-$productImages = ImageHelper::getProductImages($product, 'large');
-
 $breadcrumbs = [
     ['label' => 'Productos', 'url' => Router::url('/productos')],
     ['label' => htmlspecialchars($product['name']), 'url' => '']
@@ -19,39 +17,10 @@ $breadcrumbs = [
             <div class="relative">
                 <img
                     id="main-image"
-                    src="<?= $productImages['main'] ?>"
+                    src="<?= ImageHelper::getImageWithFallback($product['image_url'] ?? null, 'original') ?>"
                     alt="<?= htmlspecialchars($product['name']) ?>"
                     class="w-full h-96 object-cover rounded-lg border border-gray-200">
             </div>
-
-            <!-- Galería de miniaturas -->
-            <?php if (!empty($productImages['gallery'])): ?>
-                <div class="flex space-x-2 overflow-x-auto">
-                    <!-- Thumbnail de imagen principal -->
-                    <button
-                        type="button"
-                        onclick="changeMainImage('<?= $productImages['main'] ?>')"
-                        class="flex-shrink-0 w-20 h-20 border-2 border-primary-500 rounded-lg overflow-hidden">
-                        <img
-                            src="<?= ImageHelper::getProductImageUrl($product['product_image'] ?? $product['image_url'] ?? null, 'thumbnail') ?>"
-                            alt="Vista principal"
-                            class="w-full h-full object-cover">
-                    </button>
-
-                    <!-- Thumbnails de galería -->
-                    <?php foreach ($productImages['gallery'] as $index => $galleryImage): ?>
-                        <button
-                            type="button"
-                            onclick="changeMainImage('<?= $galleryImage ?>')"
-                            class="flex-shrink-0 w-20 h-20 border-2 border-gray-200 hover:border-primary-500 rounded-lg overflow-hidden transition-colors">
-                            <img
-                                src="<?= str_replace('large', 'thumbnail', $galleryImage) ?>"
-                                alt="Vista <?= $index + 2 ?>"
-                                class="w-full h-full object-cover">
-                        </button>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
         </div>
 
         <!-- Información del producto -->

@@ -38,7 +38,7 @@ class ProductController extends Controller {
                     'sort' => $sortBy
                 ]
             ];
-            
+
             $this->view('products/index', $data);
             
         } catch (Exception $e) {
