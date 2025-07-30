@@ -8,10 +8,13 @@
 abstract class Controller
 {
     protected $db;
+    protected $categories;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
+        // Obtener categorías
+        $this->categories = ListHelper::getCategories();
     }
 
     /**
@@ -19,8 +22,7 @@ abstract class Controller
      */
     protected function view($view, $data = [])
     {
-        // Obtener categorías
-        $categories = ListHelper::getCategories();
+        $categories = $this->categories;
 
         // Extraer variables para la vista
         extract($data);
