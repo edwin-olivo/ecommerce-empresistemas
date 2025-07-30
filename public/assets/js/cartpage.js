@@ -135,6 +135,8 @@ class CartPage {
         document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
             if (confirm('¿Estás seguro de que quieres vaciar todo el carrito? Esta acción no se puede deshacer.')) {
                 app.cart.clear();
+                this.showEmptyCart();
+                app.showToast('Carrito vaciado', 'success');
             }
         });
     }
