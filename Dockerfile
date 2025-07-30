@@ -29,12 +29,11 @@ RUN echo '<Directory /var/www/html/public>' >> /etc/apache2/apache2.conf && \
 # Crear directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar archivos del proyecto
-COPY . .
+# Copiar archivos del proyecto (preservando permisos originales)
+COPY --chown=www-data:www-data . .
 
 # Copiar y configurar el script de entrada
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
 
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www/html && \

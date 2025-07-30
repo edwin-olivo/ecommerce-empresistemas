@@ -1,11 +1,13 @@
 # Archivos y directorios a ignorar en el contexto de Docker
 .git
 .gitignore
+.gitattributes
 README.md
 LICENSE
 Dockerfile
 docker-compose.yml
 .dockerignore
+fix-git-issues.sh
 
 # Archivos de desarrollo
 *.log
