@@ -36,7 +36,7 @@
         <div class="flex justify-between items-start mb-2">
             <?php if (!empty($product['category'])): ?>
                 <span class="text-xs text-gray-500 uppercase tracking-wide">
-                    <?= htmlspecialchars($categories[$product['category']]) ?>
+                    <?= htmlspecialchars($product['category']) ?>
                 </span>
             <?php endif; ?>
             <?php if (!empty($product['brand'])): ?>

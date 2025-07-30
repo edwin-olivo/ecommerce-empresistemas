@@ -27,7 +27,12 @@ class ProductController extends Controller {
                 'search' => $search,
                 'sortBy' => $sortBy
             ]);
-            
+
+            // Procesar productos
+            foreach ($products['data'] as &$product) {
+                $product['category'] = $this->categories[$product['category']];
+            }
+
             $data = [
                 'title' => 'Productos - ' . APP_NAME,
                 'products' => $products['data'],
