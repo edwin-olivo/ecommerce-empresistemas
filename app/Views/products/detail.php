@@ -19,7 +19,7 @@ $breadcrumbs = [
                     id="main-image"
                     src="<?= ImageHelper::getImageWithFallback($product['image_url'] ?? null, 'original') ?>"
                     alt="<?= htmlspecialchars($product['name']) ?>"
-                    class="w-full h-96 object-cover rounded-lg border border-gray-200">
+                    class="w-full h-96 object-contain rounded-lg border border-gray-200">
             </div>
         </div>
 
