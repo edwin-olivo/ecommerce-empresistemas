@@ -21,7 +21,7 @@
         </div>
 
         <!-- Botón de vista rápida -->
-        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center">
+        <div class="absolute inset-0 hover:bg-black/20 transition-all ease-in-out flex items-center justify-center">
             <a
                 href="<?= Router::url('/productos/' . $product['id']) ?>"
                 class="bg-white text-primary-600 px-4 py-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary-50">
