@@ -143,7 +143,7 @@ $breadcrumbs = [
                     <button
                         type="button"
                         onclick="addToCart('<?= $product['id'] ?>', document.getElementById('quantity').value)"
-                        class="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2">
+                        class="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 hover:cursor-pointer transition-colors flex items-center justify-center space-x-2">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Agregar al Carrito</span>
                     </button>
@@ -151,7 +151,7 @@ $breadcrumbs = [
                     <button
                         type="button"
                         onclick="buyNow('<?= $product['id'] ?>')"
-                        class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
+                        class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 hover:cursor-pointer transition-colors flex items-center justify-center space-x-2">
                         <i class="fas fa-bolt"></i>
                         <span>Comprar Ahora</span>
                     </button>
