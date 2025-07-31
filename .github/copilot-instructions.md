@@ -18,7 +18,7 @@ Este es un proyecto de ecommerce desarrollado con **PHP 8** siguiendo el patrón
 
 - ❌ **NO usar Bootstrap ni jQuery** (especificado en requerimientos)
 - ✅ **Solo JavaScript vanilla** para UX/UI
-- ✅ **Tailwind CSS** para estilos (via CDN)
+- ✅ **Tailwind CSS** para estilos (via CLI, usando bun o pnpm)
 - ✅ **Patrón MVC estricto** con sistema de rutas personalizado
 - ✅ **Principios SOLID** en toda la arquitectura
 
@@ -81,7 +81,6 @@ ecommerce-mvc/
 - Contador en tiempo real en header
 
 ### Integración WENZ HOU
-- Servicio `WenzHouService` para comunicación API
 - Sincronización de productos y categorías
 - Manejo de errores de conectividad
 - Cache cuando sea apropiado
