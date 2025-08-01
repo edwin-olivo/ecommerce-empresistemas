@@ -111,7 +111,7 @@ $breadcrumbs = [
             <!-- Controles de cantidad -->
             <div class="flex items-center space-x-3">
                 <div class="flex items-center border border-gray-300 rounded-md">
-                    <button type="button" class="qty-decrease px-3 py-2 text-gray-500 hover:text-gray-700">
+                    <button type="button" class="qty-decrease px-3 py-2 text-gray-500 hover:text-gray-700 cursor-pointer">
                         <i class="fas fa-minus text-xs"></i>
                     </button>
                     <input type="number" 
@@ -119,7 +119,7 @@ $breadcrumbs = [
                            min="1" 
                            max="99"
                            value="1">
-                    <button type="button" class="qty-increase px-3 py-2 text-gray-500 hover:text-gray-700">
+                    <button type="button" class="qty-increase px-3 py-2 text-gray-500 hover:text-gray-700 cursor-pointer">
                         <i class="fas fa-plus text-xs"></i>
                     </button>
                 </div>

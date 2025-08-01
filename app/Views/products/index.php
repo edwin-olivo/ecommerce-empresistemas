@@ -182,7 +182,7 @@ $breadcrumbs = [
                             ?>
                             <a
                                 href="<?= $pageUrl ?>"
-                                class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-200 <?= $i == $currentPage ? 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 transition-colors' : '' ?>">
+                                class="px-3 py-2 border rounded-md <?= $i == $currentPage ? 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 transition-colors' : '' ?>">
                                 <?= $i ?>
                             </a>
                         <?php endfor; ?>
