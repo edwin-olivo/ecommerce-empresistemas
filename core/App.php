@@ -25,6 +25,9 @@ class App {
         // Rutas de productos
         $this->router->add('/productos', 'ProductController', 'index');
         $this->router->add('/productos/{id}', 'ProductController', 'show');
+
+        // Rutas de categorías (llevaran a la lista de productos)
+        $this->router->add('/categorias', 'ProductController', 'index');
         
         // Rutas del carrito
         $this->router->add('/carrito', 'CartController', 'index');
