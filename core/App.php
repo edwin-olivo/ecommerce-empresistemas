@@ -32,6 +32,9 @@ class App {
         $this->router->add('/carrito/agregar', 'CartController', 'add');
         $this->router->add('/carrito/remover', 'CartController', 'remove');
         $this->router->add('/carrito/actualizar', 'CartController', 'update');
+
+        // Rutas de contacto
+        $this->router->add('/contacto', 'ContactController', 'index');
     }
     
     /**
