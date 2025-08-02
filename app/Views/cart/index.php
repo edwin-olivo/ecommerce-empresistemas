@@ -115,7 +115,7 @@ $breadcrumbs = [
                         <i class="fas fa-minus text-xs"></i>
                     </button>
                     <input type="number" 
-                           class="item-quantity w-16 text-center border-0 focus:ring-0" 
+                           class="item-quantity w-12 text-center border-0 focus:ring-0" 
                            min="1" 
                            max="99"
                            value="1">
@@ -125,13 +125,13 @@ $breadcrumbs = [
                 </div>
 
                 <!-- Total del item -->
-                <div class="text-right min-w-0">
+                <div class="text-right w-20">
                     <p class="item-total text-lg font-semibold text-gray-900"></p>
                 </div>
 
                 <!-- Botón eliminar -->
                 <button type="button" 
-                        class="remove-item text-red-500 hover:text-red-700 p-2 rounded-md hover:bg-red-50">
+                        class="remove-item text-red-500 hover:text-red-700 p-2 rounded-md hover:bg-red-100 cursor-pointer">
                     <i class="fas fa-trash text-sm"></i>
                 </button>
             </div>
