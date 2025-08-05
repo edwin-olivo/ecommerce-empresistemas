@@ -4,11 +4,11 @@
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-5xl font-bold mb-6">Bienvenido a <?= APP_NAME ?></h1>
             <p class="text-xl mb-8 text-primary-100">Descubre los mejores productos con la mejor calidad y precios increíbles</p>
-            <div class="space-x-4">
-                <a href="<?= Router::url('/productos') ?>" class="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+            <div class="flex justify-center space-x-4 sm:flex-row sm:items-center space-y-4 sm:space-y-0 flex-col">
+                <a href="<?= Router::url('/productos') ?>" class="w-full sm:w-auto bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
                     Ver Productos
                 </a>
-                <a href="<?= Router::url('/ofertas') ?>" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition duration-300">
+                <a href="<?= Router::url('/ofertas') ?>" class="w-full sm:w-auto border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition duration-300">
                     Ofertas Especiales
                 </a>
             </div>
