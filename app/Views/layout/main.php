@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- CSS personalizado -->
-    <link rel="stylesheet" href="<?= Router::url('/assets/css/output.css') ?>">
+    <link rel="stylesheet" href="<?= Router::url('/assets/css/styles.css') ?>">
 </head>
 
 <body class="bg-gray-50 <?= $pageClass ?? '' ?> overflow-x-hidden">

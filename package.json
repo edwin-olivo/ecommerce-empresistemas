@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "dev": "tailwindcss -i resources/css/input.css -o public/assets/css/output.css --watch",
-    "build": "tailwindcss -i resources/css/input.css -o public/assets/css/output.css"
+    "dev": "tailwindcss -i resources/css/input.css -o public/assets/css/styles.css --watch",
+    "build": "tailwindcss -i resources/css/input.css -o public/assets/css/styles.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.11",
