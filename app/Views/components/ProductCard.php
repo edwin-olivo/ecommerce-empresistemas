@@ -2,7 +2,7 @@
     <!-- Imagen del producto -->
     <div class="relative h-48 bg-gray-100">
         <img
-            src="<?= ImageHelper::getImageWithFallback(null, 'medium') ?>"
+            src="<?= ImageHelper::getImageWithFallback($product['image_url'] ?? null, 'medium') ?>"
             alt="<?= htmlspecialchars($product['name']) ?>"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy">
