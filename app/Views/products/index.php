@@ -115,13 +115,13 @@ $breadcrumbs = [
                 <div class="flex items-center space-x-2 mt-4 sm:mt-0">
                     <button
                         id="grid-view"
-                        class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 active"
+                        class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer active"
                         data-view="grid">
                         <i class="fas fa-th-large"></i>
                     </button>
                     <button
                         id="list-view"
-                        class="p-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                        class="p-2 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
                         data-view="list">
                         <i class="fas fa-list"></i>
                     </button>
@@ -169,7 +169,7 @@ $breadcrumbs = [
                             $currentParams['page'] = $currentPage - 1;
                             $prevUrl = $baseUrl . '?' . http_build_query($currentParams);
                             ?>
-                            <a href="<?= $prevUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                            <a href="<?= $prevUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-200">
                                 <i class="fas fa-chevron-left"></i>
                             </a>
                         <?php endif; ?>
@@ -182,7 +182,7 @@ $breadcrumbs = [
                             ?>
                             <a
                                 href="<?= $pageUrl ?>"
-                                class="px-3 py-2 border rounded-md <?= $i == $currentPage ? 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 transition-colors' : '' ?>">
+                                class="px-3 py-2 border rounded-md <?= $i == $currentPage ? 'bg-primary-600 text-white border-primary-600 hover:bg-primary-700 transition-colors' : 'border-gray-300 hover:bg-gray-200' ?>">
                                 <?= $i ?>
                             </a>
                         <?php endfor; ?>
@@ -193,7 +193,7 @@ $breadcrumbs = [
                             $currentParams['page'] = $currentPage + 1;
                             $nextUrl = $baseUrl . '?' . http_build_query($currentParams);
                             ?>
-                            <a href="<?= $nextUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                            <a href="<?= $nextUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-200">
                                 <i class="fas fa-chevron-right"></i>
                             </a>
                         <?php endif; ?>
