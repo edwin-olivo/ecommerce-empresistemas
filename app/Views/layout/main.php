@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<?= Router::url('/assets/css/output.css') ?>">
 </head>
 
-<body class="bg-gray-50 <?= $pageClass ?? '' ?>">
+<body class="bg-gray-50 <?= $pageClass ?? '' ?> overflow-x-hidden">
 
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-gray-200">
@@ -24,9 +24,9 @@
         <div class="bg-gray-900 text-white text-sm">
             <div class="container mx-auto px-4 py-2">
                 <div class="flex justify-between items-center">
-                    <div>
+                    <div class="flex flex-col items-start md:flex-row md:items-center md:space-x-4">
                         <span>📧 contacto@ecommerce.com</span>
-                        <span class="ml-4">📞 +52 55 1234 5678</span>
+                        <span>📞 +52 55 1234 5678</span>
                     </div>
                     <div>
                         <a href="<?= Router::url('/login') ?>" class="hover:text-primary-300">Iniciar Sesión</a>
