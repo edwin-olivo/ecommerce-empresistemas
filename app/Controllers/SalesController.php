@@ -45,7 +45,7 @@ class SalesController extends Controller {
                 ]
             ];
 
-            $this->view('sales/index', $data);
+            $this->view('products/index', $data);
             
         } catch (Exception $e) {
             error_log("Error en ProductController::index: " . $e->getMessage());
