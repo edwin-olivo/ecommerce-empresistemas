@@ -149,7 +149,10 @@ class CartPage {
 
         if (newQuantity <= maxQuantity) {
             quantityInput.value = newQuantity;
-            this.updateQuantity(itemElement, newQuantity);
+            clearTimeout(this._qtyTimeout);
+            this._qtyTimeout = setTimeout(() => {
+                this.updateQuantity(itemElement, newQuantity);
+            }, 250); // Espera 250ms antes de actualizar
         } else {
             app.showToast('No hay suficiente stock disponible', 'warning');
         }
