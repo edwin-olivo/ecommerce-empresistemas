@@ -24,4 +24,9 @@ class ListHelper
     {
         return self::getList('categoria_0');
     }
+
+    public static function getBrands()
+    {
+        return self::getList('marca_list');
+    }
 }
