@@ -73,18 +73,18 @@ $breadcrumbs = [
 
                 <button 
                     id="checkout-btn"
-                    class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 transition-colors font-medium mb-3">
+                    class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 transition-colors font-medium mb-3 cursor-pointer">
                     Proceder al Pago
                 </button>
 
                 <button 
                     id="clear-cart-btn"
-                    class="w-full bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors mb-3 text-sm">
+                    class="w-full bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors mb-3 text-sm cursor-pointer">
                     Vaciar Carrito
                 </button>
 
                 <a href="<?= Router::url('/productos') ?>" 
-                   class="block w-full text-center bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 transition-colors">
+                   class="block w-full text-center bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 transition-colors cursor-pointer">
                     Continuar Comprando
                 </a>
             </div>
