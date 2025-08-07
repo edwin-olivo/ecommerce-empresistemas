@@ -140,7 +140,7 @@ class CartPage {
         // Botón de limpiar carrito
         document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
             if (confirm('¿Estás seguro de que quieres vaciar todo el carrito? Esta acción no se puede deshacer.')) {
-                app.cart.clear();
+                clearCart();
                 this.showEmptyCart();
                 app.showToast('Carrito vaciado', 'success');
             }
@@ -176,7 +176,7 @@ class CartPage {
         }
 
         // Actualizar en el carrito JavaScript
-        app.cart.updateQuantity(productId, newQuantity);
+        updateCartQuantity(productId, newQuantity);
 
         // Recargar vista del carrito
         setTimeout(() => {
@@ -189,7 +189,7 @@ class CartPage {
 
         // Confirmar eliminación
         if (confirm('¿Estás seguro de que quieres eliminar este producto del carrito?')) {
-            app.cart.removeItem(productId);
+            removeFromCart(productId);
 
             // Recargar vista del carrito
             setTimeout(() => {

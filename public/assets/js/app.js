@@ -23,6 +23,12 @@ function updateCartQuantity(productId, quantity) {
     }
 }
 
+function clearCart() {
+    if (typeof app !== 'undefined' && app.cart) {
+        app.cart.clear();
+    }
+}
+
 // Inicializa la aplicación cuando el DOM esté listo
 let app;
 document.addEventListener('DOMContentLoaded', () => {
