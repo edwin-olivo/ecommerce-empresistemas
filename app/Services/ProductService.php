@@ -23,6 +23,7 @@ class ProductService
         $category = $filters['category'] ?? null;
         $search = $filters['search'] ?? null;
         $sortBy = $filters['sortBy'] ?? 'name';
+        $onlyOnSale = $filters['onlyOnSale'] ?? false;
 
         $offset = ($page - 1) * $limit;
 
@@ -66,15 +67,25 @@ class ProductService
             $params[] = "%{$search}%";
         }
 
+        if ($onlyOnSale) {
+            $sql .= " AND (pc.pa1_c > 0)";
+        }
+
         // Ordenamiento
         $allowedSorts = [
-            'name' => 'name',
+            'name' => 'name ASC',
             'name_desc' => 'name DESC',
-            'price' => 'p.price',
+            'price' => 'p.price ASC',
             'price_desc' => 'p.price DESC',
-            'date_entered' => 'p.date_entered',
+            'date_entered' => 'p.date_entered ASC',
             'date_entered_desc' => 'p.date_entered DESC'
         ];
+
+        if ($onlyOnSale) {
+            $allowedSorts['price'] = 'pc.pa1_c ASC';
+            $allowedSorts['price_desc'] = 'pc.pa1_c DESC';
+        }
+
         if (array_key_exists($sortBy, $allowedSorts)) {
             $sql .= " ORDER BY " . $allowedSorts[$sortBy];
         } else {
@@ -93,6 +104,10 @@ class ProductService
 
         if ($search) {
             $countSql .= " AND (p.name LIKE ? OR p.description LIKE ? OR p.part_number LIKE ?)";
+        }
+
+        if ($onlyOnSale) {
+            $countSql .= " AND (pc.pa1_c > 0)";
         }
 
         $totalRecords = $this->db->selectOne($countSql, $params)['total'];
