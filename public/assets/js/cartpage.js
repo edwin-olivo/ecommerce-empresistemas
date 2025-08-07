@@ -120,8 +120,14 @@ class CartPage {
 
         // Cambio directo en input de cantidad
         document.addEventListener('change', (e) => {
-            if (e.target.classList.contains('item-quantity')) {
-                this.updateQuantity(e.target.closest('.cart-item'), parseInt(e.target.value));
+            const itemElement = e.target;
+            if (itemElement.classList.contains('item-quantity')) {
+                const maxQuantity = parseInt(itemElement.getAttribute('max'));
+                if (isNaN(maxQuantity) || parseInt(itemElement.value) > maxQuantity) {
+                    app.showToast('Cantidad no válida', 'warning');
+                    itemElement.value = maxQuantity || 1; // Restablecer al máximo permitido
+                }
+                this.updateQuantity(itemElement.closest('.cart-item'), parseInt(itemElement.value));
             }
         });
 
@@ -152,13 +158,16 @@ class CartPage {
             clearTimeout(this._qtyTimeout);
             this._qtyTimeout = setTimeout(() => {
                 this.updateQuantity(itemElement, newQuantity);
-            }, 250); // Espera 250ms antes de actualizar
+            }, 500); // Espera 500ms antes de actualizar
         } else {
             app.showToast('No hay suficiente stock disponible', 'warning');
         }
     }
 
     updateQuantity(itemElement, newQuantity) {
+        // Mostrar loading
+        this.showLoadingCart();
+
         const productId = itemElement.getAttribute('data-product-id');
 
         if (newQuantity <= 0) {
@@ -195,5 +204,12 @@ class CartPage {
         document.getElementById('cart-summary').classList.add('hidden');
         document.getElementById('cart-empty').classList.remove('hidden');
         document.getElementById('cart-item-count').textContent = '';
+    }
+
+    showLoadingCart() {
+        document.getElementById('cart-loading').classList.remove('hidden');
+        document.getElementById('cart-items').classList.add('hidden');
+        document.getElementById('cart-summary').classList.add('hidden');
+        document.getElementById('cart-empty').classList.add('hidden');
     }
 }
