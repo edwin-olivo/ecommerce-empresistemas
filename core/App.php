@@ -41,6 +41,20 @@ class App {
 
         // Rutas de contacto
         $this->router->add('/contacto', 'ContactController', 'index');
+
+        // Rutas de autenticación
+        $this->router->add('/login', 'AuthController', 'login');
+        $this->router->add('/login', 'AuthController', 'processLogin', 'POST');
+        $this->router->add('/logout', 'AuthController', 'logout');
+        $this->router->add('/registro', 'AuthController', 'register');
+        $this->router->add('/registro', 'AuthController', 'processRegister', 'POST');
+        
+        // Rutas de perfil de usuario
+        $this->router->add('/perfil', 'UserController', 'profile');
+        $this->router->add('/perfil', 'UserController', 'updateProfile', 'POST');
+        $this->router->add('/perfil/direccion', 'UserController', 'updateAddress', 'POST');
+        $this->router->add('/perfil/password', 'UserController', 'updatePassword', 'POST');
+        $this->router->add('/perfil/preferencias', 'UserController', 'updatePreferences', 'POST');
     }
     
     /**

@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * Controlador de usuario
+ * Maneja el perfil y datos del usuario
+ */
+
+class UserController extends Controller
+{
+
+    /**
+     * Muestra el perfil del usuario
+     */
+    public function profile()
+    {
+        // Datos de ejemplo (en producción vendrían de la base de datos)
+        $user = [
+            'id' => 1,
+            'name' => 'Usuario Ejemplo',
+            'email' => 'usuario@ejemplo.com',
+            'phone' => '+52 123 456 789',
+            'address' => 'Calle Ejemplo 123',
+            'city' => 'Tepic',
+            'postal_code' => '63100',
+            'country' => 'México',
+            'created_at' => '2025-08-07 12:00:00',
+        ];
+
+        $this->view('user/profile', [
+            'title' => 'Mi Perfil',
+            'user' => $user,
+            'errors' => $_SESSION['errors'] ?? [],
+            'old' => $_SESSION['old'] ?? []
+        ]);
+
+        // Limpiar errores de sesión
+        unset($_SESSION['errors'], $_SESSION['old']);
+    }
+
+    /**
+     * Actualiza el perfil del usuario
+     */
+    public function updateProfile()
+    {
+        // TODO: Implementar lógica de actualización de perfil
+        $this->json(['success' => true, 'message' => 'Perfil actualizado']);
+    }
+
+    /**
+     * Actualiza la dirección del usuario
+     */
+    public function updateAddress()
+    {
+        // TODO: Implementar lógica de actualización de dirección
+        $this->json(['success' => true, 'message' => 'Dirección actualizada']);
+    }
+
+    /**
+     * Actualiza la contraseña del usuario
+     */
+    public function updatePassword()
+    {
+        // TODO: Implementar lógica de cambio de contraseña
+        $this->json(['success' => true, 'message' => 'Contraseña actualizada']);
+    }
+
+    /**
+     * Actualiza las preferencias del usuario
+     */
+    public function updatePreferences()
+    {
+        // TODO: Implementar lógica de actualización de preferencias
+        $this->json(['success' => true, 'message' => 'Preferencias actualizadas']);
+    }
+
+    /**
+     * Muestra el historial de pedidos
+     */
+    public function orders()
+    {
+        // TODO: Implementar lógica de pedidos
+        $this->view('user/orders', [
+            'title' => 'Mis Pedidos',
+            'orders' => []
+        ]);
+    }
+}

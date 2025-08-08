@@ -31,7 +31,7 @@
                     <div>
                         <a href="<?= Router::url('/login') ?>" class="hover:text-primary-300">Iniciar Sesión</a>
                         <span class="mx-2">|</span>
-                        <a href="<?= Router::url('/register') ?>" class="hover:text-primary-300">Registrarse</a>
+                        <a href="<?= Router::url('/registro') ?>" class="hover:text-primary-300">Registrarse</a>
                     </div>
                 </div>
             </div>
@@ -62,8 +62,35 @@
                     </form>
                 </div>
 
-                <!-- Cart -->
+                <!-- Cart & User Menu -->
                 <div class="flex items-center space-x-4">
+                    <!-- User menu (only show when logged in) -->
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <div class="relative group">
+                            <button class="flex items-center text-gray-700 hover:text-primary-600">
+                                <i class="fas fa-user text-xl mr-1"></i>
+                                <i class="fas fa-chevron-down text-sm"></i>
+                            </button>
+                            <div class="absolute right-0 top-full bg-white text-gray-800 shadow-lg rounded-md py-2 w-48 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 z-50">
+                                <a href="<?= Router::url('/perfil') ?>" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>Mi Perfil
+                                </a>
+                                <a href="<?= Router::url('/perfil#orders') ?>" class="block px-4 py-2 hover:bg-gray-100">
+                                    <i class="fas fa-box mr-2"></i>Mis Pedidos
+                                </a>
+                                <div class="border-t border-gray-200 my-1"></div>
+                                <a href="<?= Router::url('/logout') ?>" class="block px-4 py-2 hover:bg-gray-100 text-red-600">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                                </a>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <a href="<?= Router::url('/login') ?>" class="text-gray-700 hover:text-primary-600">
+                            <i class="fas fa-user text-xl"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <!-- Cart -->
                     <a href="<?= Router::url('/carrito') ?>" class="relative text-gray-700 hover:text-primary-600">
                         <i class="fas fa-shopping-cart text-2xl"></i>
                         <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
