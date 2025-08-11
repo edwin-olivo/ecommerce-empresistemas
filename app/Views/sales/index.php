@@ -17,7 +17,7 @@ $breadcrumbs = [
                 <form id="filters-form" method="GET" action="<?= Router::url('/ofertas') ?>">
                     <!-- Buscador -->
                     <div class="mb-6">
-                        <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+                        <label for="search" class="form-label mb-2">Buscar</label>
                         <input
                             type="text"
                             id="search"
@@ -29,7 +29,7 @@ $breadcrumbs = [
 
                     <!-- Categorías -->
                     <div class="mb-6">
-                        <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
+                        <label for="category" class="form-label mb-2">Categoría</label>
                         <select
                             id="category"
                             name="category"
@@ -48,7 +48,7 @@ $breadcrumbs = [
 
                     <!-- Marcas -->
                     <div class="mb-6">
-                        <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Marca</label>
+                        <label for="brand" class="form-label mb-2">Marca</label>
                         <select
                             id="brand"
                             name="brand"
@@ -67,7 +67,7 @@ $breadcrumbs = [
 
                     <!-- Ordenamiento -->
                     <div class="mb-6">
-                        <label for="sortBy" class="block text-sm font-medium text-gray-700 mb-2">Ordenar por</label>
+                        <label for="sortBy" class="form-label mb-2">Ordenar por</label>
                         <select
                             id="sortBy"
                             name="sortBy"

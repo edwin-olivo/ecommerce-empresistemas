@@ -115,7 +115,7 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700">
+                                    <label for="name" class="form-label">
                                         Nombre completo
                                     </label>
                                     <div class="mt-1">
@@ -129,7 +129,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700">
+                                    <label for="email" class="form-label">
                                         Correo electrónico
                                     </label>
                                     <div class="mt-1">
@@ -144,7 +144,7 @@
                             </div>
 
                             <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700">
+                                <label for="phone" class="form-label">
                                     Teléfono
                                 </label>
                                 <div class="mt-1">
@@ -178,7 +178,7 @@
                         <form action="<?= Router::url('/perfil/direccion') ?>" method="POST" class="space-y-6">
 
                             <div>
-                                <label for="address" class="block text-sm font-medium text-gray-700">
+                                <label for="address" class="form-label">
                                     Dirección
                                 </label>
                                 <div class="mt-1">
@@ -194,7 +194,7 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
-                                    <label for="city" class="block text-sm font-medium text-gray-700">
+                                    <label for="city" class="form-label">
                                         Ciudad
                                     </label>
                                     <div class="mt-1">
@@ -208,7 +208,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="postal_code" class="block text-sm font-medium text-gray-700">
+                                    <label for="postal_code" class="form-label">
                                         Código Postal
                                     </label>
                                     <div class="mt-1">
@@ -222,7 +222,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="country" class="block text-sm font-medium text-gray-700">
+                                    <label for="country" class="form-label">
                                         País
                                     </label>
                                     <div class="mt-1">
@@ -260,7 +260,7 @@
                         <form action="<?= Router::url('/perfil/password') ?>" method="POST" class="space-y-6">
 
                             <div>
-                                <label for="current_password" class="block text-sm font-medium text-gray-700">
+                                <label for="current_password" class="form-label">
                                     Contraseña actual
                                 </label>
                                 <div class="mt-1">
@@ -274,7 +274,7 @@
                             </div>
 
                             <div>
-                                <label for="new_password" class="block text-sm font-medium text-gray-700">
+                                <label for="new_password" class="form-label">
                                     Nueva contraseña
                                 </label>
                                 <div class="mt-1">
@@ -291,7 +291,7 @@
                             </div>
 
                             <div>
-                                <label for="new_password_confirmation" class="block text-sm font-medium text-gray-700">
+                                <label for="new_password_confirmation" class="form-label">
                                     Confirmar nueva contraseña
                                 </label>
                                 <div class="mt-1">

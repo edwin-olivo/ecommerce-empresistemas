@@ -44,7 +44,7 @@
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">
+                    <label for="email" class="form-label">
                         Correo electrónico
                     </label>
                     <div class="mt-1">
@@ -62,7 +62,7 @@
 
                 <!-- Password -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">
+                    <label for="password" class="form-label">
                         Contraseña
                     </label>
                     <div class="mt-1 relative">

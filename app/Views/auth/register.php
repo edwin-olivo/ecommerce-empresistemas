@@ -44,7 +44,7 @@
 
                 <!-- Nombre completo -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">
+                    <label for="name" class="form-label">
                         Nombre completo *
                     </label>
                     <div class="mt-1">
@@ -55,14 +55,14 @@
                             autocomplete="name"
                             required
                             value="<?= htmlspecialchars($old['name'] ?? '') ?>"
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                            class="form-input"
                             placeholder="Tu nombre completo">
                     </div>
                 </div>
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">
+                    <label for="email" class="form-label">
                         Correo electrónico *
                     </label>
                     <div class="mt-1">
@@ -73,14 +73,14 @@
                             autocomplete="email"
                             required
                             value="<?= htmlspecialchars($old['email'] ?? '') ?>"
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                            class="form-input"
                             placeholder="tu@ejemplo.com">
                     </div>
                 </div>
 
                 <!-- Teléfono -->
                 <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700">
+                    <label for="phone" class="form-label">
                         Teléfono
                     </label>
                     <div class="mt-1">
@@ -90,14 +90,14 @@
                             type="tel"
                             autocomplete="tel"
                             value="<?= htmlspecialchars($old['phone'] ?? '') ?>"
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                            class="form-input"
                             placeholder="+34 123 456 789">
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">
+                    <label for="password" class="form-label">
                         Contraseña *
                     </label>
                     <div class="mt-1 relative">
@@ -107,7 +107,7 @@
                             type="password"
                             autocomplete="new-password"
                             required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                            class="form-input"
                             placeholder="**********">
                     </div>
                     <div class="mt-1 text-xs text-gray-500">
@@ -117,7 +117,7 @@
 
                 <!-- Confirm Password -->
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
+                    <label for="password_confirmation" class="form-label">
                         Confirmar contraseña *
                     </label>
                     <div class="mt-1 relative">
@@ -127,7 +127,7 @@
                             type="password"
                             autocomplete="new-password"
                             required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                            class="form-input"
                             placeholder="**********">
                     </div>
                 </div>
