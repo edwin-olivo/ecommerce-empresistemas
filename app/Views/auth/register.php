@@ -111,7 +111,7 @@
                             placeholder="**********">
                     </div>
                     <div class="mt-1 text-xs text-gray-500">
-                        Mínimo 8 caracteres, al menos una mayúscula y un número
+                        Mínimo 8 caracteres, al menos una mayúscula y un número, opcionalmente un carácter especial (@$!%*?&).
                     </div>
                 </div>
 

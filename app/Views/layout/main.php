@@ -201,6 +201,7 @@
     <script src="<?= Router::url('/assets/js/ecommerce-app.js') ?>"></script>
     <script src="<?= Router::url('/assets/js/cart.js') ?>"></script>
     <script src="<?= Router::url('/assets/js/cartpage.js') ?>"></script>
+    <script src="<?= Router::url('/assets/js/loginpage.js') ?>"></script>
     <script src="<?= Router::url('/assets/js/app.js') ?>"></script>
 
     <!-- Toast notifications -->
