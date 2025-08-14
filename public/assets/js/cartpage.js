@@ -136,9 +136,39 @@ class CartPage {
         });
 
         // Botón de checkout
-        document.getElementById('checkout-btn')?.addEventListener('click', () => {
-            // Aquí implementarías la lógica de checkout
-            app.showToast('Función de checkout no implementada aún', 'info');
+        document.getElementById('checkout-btn')?.addEventListener('click', async () => {
+            const cartItems = app.cart.items;
+
+            if(cartItems.length === 0) {
+                app.showToast('El carrito está vacío', 'warning');
+                return;
+            }
+
+            const response = await fetch(this.cartDataUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cartData: cartItems
+                })
+            });
+
+            const data = await response.json();
+
+            // Creamos un formulario que se enviara a /pago/confirmar
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `${baseUrl}pago/confirmar`;
+
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'cartData';
+            hiddenField.value = JSON.stringify(data.items);
+            form.appendChild(hiddenField);
+
+            document.body.appendChild(form);
+            form.submit();
         });
 
         // Botón de limpiar carrito
