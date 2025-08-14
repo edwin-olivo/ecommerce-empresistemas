@@ -4,6 +4,10 @@ class CartPage {
         this.cartDataUrl = cartDataUrl;
         this.placeholderImage = placeHolderImage || 'https://via.placeholder.com/150'; // Imagen por defecto si no hay imagen del producto
         this.cartData = [];
+        this.debouncedUpdateQuantity = utils.debounce(
+            (itemElement, newQuantity) => this.updateQuantity(itemElement, newQuantity),
+            500
+        );
         this.init();
     }
 
@@ -155,10 +159,7 @@ class CartPage {
 
         if (newQuantity <= maxQuantity) {
             quantityInput.value = newQuantity;
-            clearTimeout(this._qtyTimeout);
-            this._qtyTimeout = setTimeout(() => {
-                this.updateQuantity(itemElement, newQuantity);
-            }, 500); // Espera 500ms antes de actualizar
+            this.debouncedUpdateQuantity(itemElement, newQuantity);
         } else {
             app.showToast('No hay suficiente stock disponible', 'warning');
         }
