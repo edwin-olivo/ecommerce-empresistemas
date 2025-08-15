@@ -8,7 +8,7 @@ $customer = $data['customer'];
             <i class="fa-solid fa-circle-check text-6xl text-green-500 mb-8"></i>
             <h1 class="text-4xl font-bold text-gray-900 mb-4">Compra Exitosa</h1>
             <h2 class="text-xl font-semibold text-gray-700 mb-4">
-                <?= $customer['name'] ?>, tu pago ha sido procesado correctamente.
+                <span class="font-bold"><?= $customer['name'] ?></span>, tu pago ha sido procesado correctamente.
             </h2>
             <p class="text-gray-600 mb-8">
                 Gracias por tu compra. Recibirás un correo de confirmación en breve.</strong>
