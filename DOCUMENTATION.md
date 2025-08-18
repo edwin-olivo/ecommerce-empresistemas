@@ -160,12 +160,49 @@ Sistema de rutas personalizado que soporta:
 
 ```php
 // core/App.php - initializeRoutes()
+// Rutas principales
 $this->router->add('/', 'HomeController', 'index');
+$this->router->add('/home', 'HomeController', 'index');
+
+// Rutas de productos
 $this->router->add('/productos', 'ProductController', 'index');
 $this->router->add('/productos/{id}', 'ProductController', 'show');
+
+// Rutas de categorías
+$this->router->add('/categorias', 'ProductController', 'index');
+
+// Rutas del carrito
 $this->router->add('/carrito', 'CartController', 'index');
+$this->router->add('/carrito/datos', 'CartController', 'get', 'POST');
 $this->router->add('/carrito/agregar', 'CartController', 'add');
 $this->router->add('/carrito/remover', 'CartController', 'remove');
+$this->router->add('/carrito/actualizar', 'CartController', 'update');
+
+// Rutas de pago (Stripe)
+$this->router->add('/pago/confirmar', 'PaymentController', 'confirm', 'POST');
+$this->router->add('/pago/exito', 'PaymentController', 'success');
+$this->router->add('/pago/cancelar', 'PaymentController', 'cancel');
+
+// Rutas de ofertas especiales
+$this->router->add('/ofertas', 'SalesController', 'index');
+
+// Rutas de contacto
+$this->router->add('/contacto', 'ContactController', 'index');
+
+// Rutas de autenticación
+$this->router->add('/login', 'AuthController', 'login');
+$this->router->add('/login', 'AuthController', 'processLogin', 'POST');
+$this->router->add('/logout', 'AuthController', 'logout');
+$this->router->add('/registro', 'AuthController', 'register');
+$this->router->add('/registro', 'AuthController', 'processRegister', 'POST');
+
+// Rutas de perfil de usuario
+$this->router->add('/perfil', 'UserController', 'profile');
+$this->router->add('/perfil', 'UserController', 'updateProfile', 'POST');
+$this->router->add('/perfil/direccion', 'UserController', 'updateAddress', 'POST');
+$this->router->add('/perfil/password', 'UserController', 'updatePassword', 'POST');
+$this->router->add('/perfil/preferencias', 'UserController', 'updatePreferences', 'POST');
+$this->router->add('/perfil/ordenes', 'UserController', 'orders');
 ```
 
 ### Generación de URLs
@@ -236,6 +273,56 @@ public function get()       // Obtener datos del carrito (API)
 - Página principal
 - Productos destacados
 - Estadísticas generales
+
+### PaymentController
+
+**Responsabilidades:**
+- Integración con Stripe
+- Procesamiento de pagos
+- Redirección post-pago
+- Manejo de éxito y cancelación
+
+**Métodos principales:**
+```php
+public function confirm()    // Crear sesión de Stripe Checkout
+public function success()    // Manejar pago exitoso
+public function cancel()     // Manejar cancelación de pago
+```
+
+### AuthController
+
+**Responsabilidades:**
+- Sistema de autenticación
+- Login y logout de usuarios
+- Registro de nuevos usuarios
+- Validación de credenciales
+
+**Métodos principales:**
+```php
+public function login()          // Vista de login
+public function processLogin()   // Procesar login (POST)
+public function register()       // Vista de registro
+public function processRegister() // Procesar registro (POST)
+public function logout()         // Cerrar sesión
+```
+
+### UserController
+
+**Responsabilidades:**
+- Gestión del perfil de usuario
+- Actualización de datos personales
+- Historial de pedidos
+- Preferencias de usuario
+
+**Métodos principales:**
+```php
+public function profile()          // Vista del perfil
+public function updateProfile()    // Actualizar datos (POST)
+public function updateAddress()    // Actualizar dirección (POST)
+public function updatePassword()   // Cambiar contraseña (POST)
+public function updatePreferences() // Actualizar preferencias (POST)
+public function orders()           // Historial de pedidos
+```
 
 ## 🔧 Servicios
 
@@ -352,11 +439,15 @@ $sql .= " AND (p.name LIKE ? OR p.description LIKE ?)";
 ### JavaScript Modular
 
 #### public/assets/js/app.js
-- **Funciones globales**: `addToCart()`, `removeFromCart()`, `updateCartQuantity()`
-- **Inicialización**: Bootstrap de la aplicación cuando DOM está listo
+- **Funciones globales**: `addToCart()`, `removeFromCart()`, `updateCartQuantity()`, `clearCart()`
+- **Inicialización**: Bootstrap de aplicación cuando DOM está listo
 - **Gestión de formularios**: Loading states automáticos en envíos
-- **Integración**: Conecta con `EcommerceApp` y `CartPage`
+- **Integración**: Conecta con `EcommerceApp`, `CartPage`, `LoginPage`
 - **Eventos globales**: Manejo de interacciones cross-component
+- **Post-pago**: Auto-limpieza de carrito en página de éxito
+- **Validación**: Funciones para email y password en registro
+- **Utilidades**: `formatPrice()`, `debounce()`, `fetchAPI()`
+- **Perfil**: Manejo de pestañas y toggle de contraseñas
 
 #### public/assets/js/ecommerce-app.js
 - **Clase principal**: `EcommerceApp` - Orquestador de toda la aplicación
@@ -383,6 +474,9 @@ $sql .= " AND (p.name LIKE ? OR p.description LIKE ?)";
 - **Carrito vacío**: Manejo de estado cuando no hay productos
 - **Eventos**: Listeners para actualizaciones del carrito
 - **Resumen**: Cálculo y display de subtotales y totales
+- **Checkout Stripe**: Integración completa con flujo de pago
+- **Validación**: Control de stock y cantidades máximas
+- **UX**: Confirmaciones para eliminación y vaciado de carrito
 
 
 ### Tailwind CSS
@@ -474,29 +568,132 @@ define('STRIPE_PUBLIC_KEY', 'pk_test_...');
 define('STRIPE_SECRET_KEY', 'sk_test_...');
 ```
 
-### Flujo de Pago
+### Flujo de Pago Implementado
 
-1. **Frontend**: Crear formulario con Stripe Elements
-2. **Token**: Generar token de tarjeta
-3. **Backend**: Procesar pago con API de Stripe
-4. **Webhook**: Confirmar pago exitoso
-5. **Redirect**: Página de confirmación
+1. **Cliente → Carrito**: Usuario agrega productos al carrito
+2. **Checkout**: Click en botón "Proceder al Pago" 
+3. **Backend**: PaymentController crea sesión de Stripe Checkout
+4. **Redirección**: Usuario es redirigido a Stripe Checkout
+5. **Pago**: Usuario completa el pago en la plataforma de Stripe
+6. **Callback**: Stripe redirige de vuelta a la aplicación
+7. **Confirmación**: Página de éxito o cancelación
 
-### Implementación (Futuro)
+### Implementación Actual
 
-```javascript
-// Stripe Elements
-const stripe = Stripe('pk_test_...');
-const elements = stripe.elements();
-
-// Procesar pago
-const result = await stripe.confirmCardPayment(clientSecret, {
-    payment_method: {
-        card: cardElement,
-        billing_details: { name: 'Cliente' }
+#### PaymentController::confirm()
+```php
+public function confirm() {
+    // Recibe datos del carrito via POST
+    $cartData = $_POST['cartData'] ?? null;
+    
+    // Convierte productos a formato de Stripe
+    $lineItems = [];
+    foreach ($cartDataDecoded as $item) {
+        $lineItems[] = [
+            "quantity" => $item['quantity'],
+            "price_data" => [
+                "currency" => "mxn",
+                "unit_amount" => $item['price'] * 100, // Stripe usa centavos
+                "product_data" => [
+                    "name" => $item['name']
+                ]
+            ]
+        ];
     }
+    
+    // Crea sesión de Stripe Checkout
+    $checkout_session = \Stripe\Checkout\Session::create([
+        "mode" => "payment",
+        "success_url" => Router::url('/pago/exito') . "?session_id={CHECKOUT_SESSION_ID}",
+        "cancel_url" => Router::url('/pago/cancelar'),
+        "locale" => "auto",
+        "line_items" => $lineItems,
+    ]);
+    
+    // Redirige a Stripe
+    header("Location: " . $checkout_session->url);
+}
+```
+
+#### PaymentController::success()
+```php
+public function success() {
+    // Recupera información de la sesión
+    $sessionId = $_GET['session_id'] ?? null;
+    $session = \Stripe\Checkout\Session::retrieve($sessionId);
+    $customer = $session->customer_details;
+    
+    // Muestra página de confirmación
+    $this->view('payment/success', ['customer' => $customer]);
+}
+```
+
+#### Integración JavaScript (cartpage.js)
+```javascript
+// Botón de checkout en la página del carrito
+document.getElementById('checkout-btn')?.addEventListener('click', async () => {
+    const cartItems = app.cart.items;
+    
+    // Obtener datos actualizados del servidor
+    const response = await fetch(this.cartDataUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartData: cartItems })
+    });
+    
+    const data = await response.json();
+    
+    // Crear formulario para envío a /pago/confirmar
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `${baseUrl}pago/confirmar`;
+    
+    const hiddenField = document.createElement('input');
+    hiddenField.type = 'hidden';
+    hiddenField.name = 'cartData';
+    hiddenField.value = JSON.stringify(data.items);
+    form.appendChild(hiddenField);
+    
+    document.body.appendChild(form);
+    form.submit();
 });
 ```
+
+#### Limpieza Automática del Carrito
+```javascript
+// app.js - Limpiar carrito después de pago exitoso
+if (pathName.includes('/pago/exito')) {
+    clearCart();
+    console.log('Carrito limpiado después de pago exitoso');
+}
+```
+
+### Páginas de Resultado
+
+#### Pago Exitoso (/pago/exito)
+- Muestra confirmación con nombre del cliente
+- Botón para ver órdenes en el perfil
+- Botón para volver al inicio
+- **Auto-limpia el carrito** al cargar la página
+
+#### Pago Cancelado (/pago/cancelar)
+- Informa sobre la cancelación
+- Botón para volver al carrito
+- Botón para volver al inicio
+- **Mantiene el carrito** intacto
+
+### Seguridad
+
+- **Claves de prueba**: Usando claves de test de Stripe
+- **Server-side**: Validación en el backend antes de crear sesión
+- **No exposición**: Claves privadas nunca expuestas al frontend
+- **Validación**: Verificación de sesión en success callback
+
+### Moneda y Formato
+
+- **Moneda**: Pesos mexicanos (MXN)
+- **Formato**: Centavos (precio * 100 para Stripe)
+- **Locale**: Auto-detección de idioma en Stripe Checkout
 
 ## 🛠️ Helpers y Utilidades
 
@@ -709,6 +906,22 @@ services:
 }
 ```
 
+#### POST /carrito/actualizar
+```json
+// Request
+{
+    "product_id": "123",
+    "quantity": 5
+}
+
+// Response
+{
+    "success": true,
+    "message": "Cantidad actualizada",
+    "cart": { /* datos del carrito */ }
+}
+```
+
 #### GET /carrito/datos
 ```json
 // Response
@@ -719,13 +932,34 @@ services:
             "name": "Producto",
             "price": 100.00,
             "quantity": 2,
-            "subtotal": 200.00
+            "stock": 50,
+            "subtotal": 200.00,
+            "image_url": "imagen.jpg"
         }
     ],
     "total": 200.00,
     "itemCount": 2
 }
 ```
+
+### Endpoints de Pago (Stripe)
+
+#### POST /pago/confirmar
+```json
+// Request (Form Data)
+{
+    "cartData": "[{\"id\":\"123\",\"quantity\":2,\"price\":100.00,\"name\":\"Producto\"}]"
+}
+
+// Response
+// Redirección 303 a Stripe Checkout
+```
+
+#### GET /pago/exito?session_id={CHECKOUT_SESSION_ID}
+**Respuesta**: Página de confirmación con datos del cliente de Stripe
+
+#### GET /pago/cancelar
+**Respuesta**: Página de cancelación con opciones de navegación
 
 ### Endpoints de Productos
 
@@ -739,6 +973,93 @@ services:
 
 #### GET /productos/{id}
 **Respuesta**: Detalle completo del producto
+
+### Endpoints de Autenticación
+
+#### GET /login
+**Respuesta**: Vista del formulario de login
+
+#### POST /login
+```json
+// Request
+{
+    "email": "usuario@ejemplo.com",
+    "password": "contraseña"
+}
+
+// Response
+{
+    "success": true,
+    "message": "Login exitoso",
+    "user": { /* datos del usuario */ }
+}
+```
+
+#### GET /registro
+**Respuesta**: Vista del formulario de registro
+
+#### POST /registro
+```json
+// Request
+{
+    "name": "Usuario Nuevo",
+    "email": "usuario@ejemplo.com",
+    "password": "contraseña",
+    "password_confirmation": "contraseña"
+}
+
+// Response
+{
+    "success": true,
+    "message": "Registro exitoso",
+    "user": { /* datos del usuario */ }
+}
+```
+
+### Endpoints de Usuario
+
+#### GET /perfil
+**Respuesta**: Vista del perfil de usuario con datos personales
+
+#### POST /perfil
+```json
+// Request
+{
+    "name": "Nombre Actualizado",
+    "email": "nuevo@email.com",
+    "phone": "+52 123 456 789"
+}
+
+// Response
+{
+    "success": true,
+    "message": "Perfil actualizado"
+}
+```
+
+#### POST /perfil/direccion
+```json
+// Request
+{
+    "address": "Nueva Dirección 456",
+    "city": "Tepic",
+    "postal_code": "63100",
+    "country": "México"
+}
+```
+
+#### POST /perfil/password
+```json
+// Request
+{
+    "current_password": "contraseña_actual",
+    "new_password": "nueva_contraseña",
+    "password_confirmation": "nueva_contraseña"
+}
+```
+
+#### GET /perfil/ordenes
+**Respuesta**: Vista del historial de pedidos del usuario
 
 ## 📝 Convenciones de Código
 
@@ -829,6 +1150,23 @@ Mantener registro de cambios en formato semántico:
 
 ---
 
-**Última actualización**: 31 de Julio, 2025
-**Versión del documento**: 1.0.0
+**Última actualización**: 18 de Agosto, 2025
+**Versión del documento**: 2.0.0
 **Mantenido por**: Equipo de Desarrollo
+
+## 🆕 Changelog v2.0.0
+
+### Nuevas Funcionalidades
+- ✅ **Integración completa de Stripe**: Checkout, éxito, cancelación
+- ✅ **Sistema de autenticación**: Login, registro, logout
+- ✅ **Perfil de usuario**: Gestión completa de datos personales
+- ✅ **Rutas expandidas**: 17 nuevas rutas implementadas
+- ✅ **Auto-limpieza de carrito**: Post-pago automático
+- ✅ **Validaciones JavaScript**: Email y contraseñas
+- ✅ **UX mejorada**: Loading states, confirmaciones, toast messages
+
+### Mejoras Técnicas
+- 🔧 **Arquitectura**: Nuevos controladores (Payment, Auth, User)
+- 🔧 **JavaScript modular**: Separación de responsabilidades
+- 🔧 **API consistente**: Endpoints estandarizados
+- 🔧 **Seguridad**: Sanitización y validación expandida
