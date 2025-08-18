@@ -24,6 +24,7 @@ class CartPage {
     async loadCartData() {
         // Obtener datos del carrito desde localStorage
         const cartItems = app.cart.items;
+        const cartDataElement = document.getElementById('cartData') || null;
 
         if (cartItems.length === 0) {
             this.showEmptyCart();
@@ -50,6 +51,7 @@ class CartPage {
             if (data.success) {
                 this.cartData = data.items;
                 this.renderCart(data);
+                if(cartDataElement) cartDataElement.value = JSON.stringify(this.cartData);
             } else {
                 throw new Error(data.error || 'Error al cargar el carrito');
             }
@@ -133,42 +135,6 @@ class CartPage {
                 }
                 this.updateQuantity(itemElement.closest('.cart-item'), parseInt(itemElement.value));
             }
-        });
-
-        // Botón de checkout
-        document.getElementById('checkout-btn')?.addEventListener('click', async () => {
-            const cartItems = app.cart.items;
-
-            if(cartItems.length === 0) {
-                app.showToast('El carrito está vacío', 'warning');
-                return;
-            }
-
-            const response = await fetch(this.cartDataUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cartData: cartItems
-                })
-            });
-
-            const data = await response.json();
-
-            // Creamos un formulario que se enviara a /pago/confirmar
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `${baseUrl}pago/confirmar`;
-
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = 'cartData';
-            hiddenField.value = JSON.stringify(data.items);
-            form.appendChild(hiddenField);
-
-            document.body.appendChild(form);
-            form.submit();
         });
 
         // Botón de limpiar carrito
