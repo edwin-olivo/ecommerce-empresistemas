@@ -40,6 +40,7 @@ class App {
         $this->router->add('/pago/confirmar', 'PaymentController', 'confirm', 'POST');
         $this->router->add('/pago/exito', 'PaymentController', 'success');
         $this->router->add('/pago/cancelar', 'PaymentController', 'cancel');
+        $this->router->add('/pago/webhook', 'PaymentController', 'webhook', 'POST');
 
         // Rutas de ofertas especiales
         $this->router->add('/ofertas', 'SalesController', 'index');
