@@ -24,9 +24,28 @@
                 <option value="">Todas las categorías</option>
                 <?php if (isset($categories) && is_array($categories)): ?>
                     <?php foreach ($categories as $key => $cat): ?>
-                        <option value="<?= htmlspecialchars($key) ?>"
+                        <option value="<?= $key ?>"
                             <?= ($key === ($_GET['category'] ?? '')) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($cat) ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </div>
+
+        <!-- Sub Categorías -->
+         <div class="mb-6">
+            <label for="subcategory" class="form-label mb-2">Subcategoría</label>
+            <select
+                id="subcategory"
+                name="subcategory"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <option value="">Todas las subcategorías</option>
+                <?php if (isset($subcategories) && is_array($subcategories)): ?>
+                    <?php foreach ($subcategories as $key => $subcat): ?>
+                        <option value="<?= $key ?>"
+                            <?= ($key === ($_GET['subcategory'] ?? '')) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($subcat) ?>
                         </option>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -43,7 +62,7 @@
                 <option value="">Todas las marcas</option>
                 <?php if (isset($brands) && is_array($brands)): ?>
                     <?php foreach ($brands as $key => $brand): ?>
-                        <option value="<?= htmlspecialchars($key) ?>"
+                        <option value="<?= $key ?>"
                             <?= ($key === ($_GET['brand'] ?? '')) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($brand) ?>
                         </option>

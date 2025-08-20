@@ -16,6 +16,8 @@ class ProductController extends Controller {
             $page = $_GET['page'] ?? 1;
             $limit = 12;
             $category = $_GET['category'] ?? null;
+            $subcategory = $_GET['subcategory'] ?? null;
+            $brand = $_GET['brand'] ?? null;
             $search = $_GET['search'] ?? null;
             $sortBy = $_GET['sortBy'] ?? 'name';
             
@@ -24,6 +26,8 @@ class ProductController extends Controller {
                 'page' => $page,
                 'limit' => $limit,
                 'category' => $category,
+                'subcategory' => $subcategory,
+                'brand' => $brand,
                 'search' => $search,
                 'sortBy' => $sortBy
             ]);
@@ -39,6 +43,7 @@ class ProductController extends Controller {
                 'pagination' => $products['pagination'],
                 'currentFilters' => [
                     'category' => $category,
+                    'subcategory' => $subcategory,
                     'search' => $search,
                     'sort' => $sortBy
                 ]

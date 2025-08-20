@@ -29,4 +29,9 @@ class ListHelper
     {
         return self::getList('marca_list');
     }
+
+    public static function getSubcategories()
+    {
+        return self::getList('clase_list');
+    }
 }

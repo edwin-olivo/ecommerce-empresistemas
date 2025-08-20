@@ -21,7 +21,9 @@ class ProductService
         $page = $filters['page'] ?? 1;
         $limit = $filters['limit'] ?? 12;
         $category = $filters['category'] ?? null;
+        $subcategory = $filters['subcategory'] ?? null;
         $search = $filters['search'] ?? null;
+        $brand = $filters['brand'] ?? null;
         $sortBy = $filters['sortBy'] ?? 'name';
         $onlyOnSale = $filters['onlyOnSale'] ?? false;
 
@@ -58,6 +60,16 @@ class ProductService
         if ($category) {
             $sql .= " AND p.category = ?";
             $params[] = $category;
+        }
+
+        if ($subcategory) {
+            $sql .= " AND pc.clase_c = ?";
+            $params[] = $subcategory;
+        }
+
+        if ($brand) {
+            $sql .= " AND pc.marca_c = ?";
+            $params[] = $brand;
         }
 
         if ($search) {
@@ -100,6 +112,14 @@ class ProductService
 
         if ($category) {
             $countSql .= " AND p.category = ?";
+        }
+
+        if ($subcategory) {
+            $countSql .= " AND pc.clase_c = ?";
+        }
+
+        if ($brand) {
+            $countSql .= " AND pc.marca_c = ?";
         }
 
         if ($search) {

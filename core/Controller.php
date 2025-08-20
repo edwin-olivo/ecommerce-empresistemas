@@ -10,6 +10,7 @@ abstract class Controller
     protected $db;
     protected $categories;
     protected $brands;
+    protected $subcategories;
 
     public function __construct()
     {
@@ -17,6 +18,7 @@ abstract class Controller
         // Obtener categorías
         $this->categories = ListHelper::getCategories();
         $this->brands = ListHelper::getBrands();
+        $this->subcategories = ListHelper::getSubcategories();
     }
 
     /**
@@ -26,6 +28,7 @@ abstract class Controller
     {
         $categories = $this->categories;
         $brands = $this->brands;
+        $subcategories = $this->subcategories;
 
         // Extraer variables para la vista
         extract($data);
