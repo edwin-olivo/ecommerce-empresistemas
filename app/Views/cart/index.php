@@ -35,8 +35,8 @@ $breadcrumbs = [
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Tu carrito está vacío</h3>
                     <p class="text-gray-500 mb-6">¡Agrega algunos productos para comenzar!</p>
-                    <a href="<?= Router::url('/productos') ?>" 
-                       class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 transition-colors">
+                    <a href="<?= Router::url('/productos') ?>"
+                        class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 transition-colors">
                         <i class="fas fa-shopping-bag mr-2"></i>
                         Ir a Productos
                     </a>
@@ -53,7 +53,7 @@ $breadcrumbs = [
         <div class="lg:w-1/3">
             <div id="cart-summary" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-4 hidden">
                 <h2 class="text-lg font-semibold text-gray-900 mb-4">Resumen del Pedido</h2>
-                
+
                 <div class="space-y-3 mb-4">
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-600">Subtotal:</span>
@@ -71,20 +71,25 @@ $breadcrumbs = [
                     </div>
                 </div>
 
-                <button 
-                    id="checkout-btn"
-                    class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 transition-colors font-medium mb-3 cursor-pointer">
-                    Proceder al Pago
-                </button>
 
-                <button 
+                <form action="<?= Router::url('/pago/confirmar') ?>" method="post">
+                    <input type="hidden" name="cartData" id="cartData">
+                    <button
+                        type="submit"
+                        id="checkout-btn"
+                        class="w-full bg-primary-600 text-white py-3 px-4 rounded-md hover:bg-primary-700 transition-colors font-medium mb-3 cursor-pointer disabled:bg-primary-200 border disabled:border-primary-300 disabled:text-gray-400 disabled:cursor-not-allowed">
+                        Proceder al Pago
+                    </button>
+                </form>
+
+                <button
                     id="clear-cart-btn"
                     class="w-full bg-red-100 text-red-700 py-2 px-4 rounded-md hover:bg-red-200 transition-colors mb-3 text-sm cursor-pointer">
                     Vaciar Carrito
                 </button>
 
-                <a href="<?= Router::url('/productos') ?>" 
-                   class="block w-full text-center bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 transition-colors cursor-pointer">
+                <a href="<?= Router::url('/productos') ?>"
+                    class="block w-full text-center bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 transition-colors cursor-pointer">
                     Continuar Comprando
                 </a>
             </div>
@@ -114,11 +119,11 @@ $breadcrumbs = [
                     <button type="button" class="qty-decrease px-3 py-2 text-gray-500 hover:text-gray-700 cursor-pointer">
                         <i class="fas fa-minus text-xs"></i>
                     </button>
-                    <input type="number" 
-                           class="item-quantity w-12 text-center border-0 focus:ring-0" 
-                           min="1" 
-                           max="99"
-                           value="1">
+                    <input type="number"
+                        class="item-quantity w-12 text-center border-0 focus:ring-0"
+                        min="1"
+                        max="99"
+                        value="1">
                     <button type="button" class="qty-increase px-3 py-2 text-gray-500 hover:text-gray-700 cursor-pointer">
                         <i class="fas fa-plus text-xs"></i>
                     </button>
@@ -130,8 +135,8 @@ $breadcrumbs = [
                 </div>
 
                 <!-- Botón eliminar -->
-                <button type="button" 
-                        class="remove-item text-red-500 hover:text-red-700 p-2 rounded-md hover:bg-red-100 cursor-pointer">
+                <button type="button"
+                    class="remove-item text-red-500 hover:text-red-700 p-2 rounded-md hover:bg-red-100 cursor-pointer">
                     <i class="fas fa-trash text-sm"></i>
                 </button>
             </div>

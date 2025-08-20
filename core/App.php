@@ -36,6 +36,12 @@ class App {
         $this->router->add('/carrito/remover', 'CartController', 'remove');
         $this->router->add('/carrito/actualizar', 'CartController', 'update');
 
+        // Rutas de pago
+        $this->router->add('/pago/confirmar', 'PaymentController', 'confirm', 'POST');
+        $this->router->add('/pago/exito', 'PaymentController', 'success');
+        $this->router->add('/pago/cancelar', 'PaymentController', 'cancel');
+        $this->router->add('/pago/webhook', 'PaymentController', 'webhook', 'POST');
+
         // Rutas de ofertas especiales
         $this->router->add('/ofertas', 'SalesController', 'index');
 
@@ -55,6 +61,7 @@ class App {
         $this->router->add('/perfil/direccion', 'UserController', 'updateAddress', 'POST');
         $this->router->add('/perfil/password', 'UserController', 'updatePassword', 'POST');
         $this->router->add('/perfil/preferencias', 'UserController', 'updatePreferences', 'POST');
+        $this->router->add('/perfil/ordenes', 'UserController', 'orders');
     }
     
     /**

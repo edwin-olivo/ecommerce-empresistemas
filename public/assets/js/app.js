@@ -33,21 +33,27 @@ function clearCart() {
 let app;
 document.addEventListener('DOMContentLoaded', () => {
     app = new EcommerceApp();
+    const pathName = window.location.pathname;
 
     // Solo si estás en la página del carrito
-    if (window.location.pathname.includes('carrito')) {
+    if (pathName.includes('carrito')) {
         console.log('Inicializando página del carrito');
         const cartPage = new CartPage(cartDataUrl, placeHolderImage);
     }
 
-    if (window.location.pathname.includes('login')) {
+    if (pathName.includes('login')) {
         console.log('Inicializando página de login');
         const loginPage = new LoginPage('login');
     }
 
-    if (window.location.pathname.includes('registro')) {
+    if (pathName.includes('registro')) {
         console.log('Inicializando página de registro');
         const registerPage = new LoginPage('register');
+    }
+
+    if (pathName.includes('/pago/exito')) {
+        clearCart();
+        console.log('Carrito limpiado después de pago exitoso');
     }
 });
 

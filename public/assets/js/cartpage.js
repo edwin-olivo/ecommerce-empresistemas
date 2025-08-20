@@ -24,6 +24,7 @@ class CartPage {
     async loadCartData() {
         // Obtener datos del carrito desde localStorage
         const cartItems = app.cart.items;
+        const cartDataElement = document.getElementById('cartData') || null;
 
         if (cartItems.length === 0) {
             this.showEmptyCart();
@@ -50,6 +51,7 @@ class CartPage {
             if (data.success) {
                 this.cartData = data.items;
                 this.renderCart(data);
+                if(cartDataElement) cartDataElement.value = JSON.stringify(this.cartData);
             } else {
                 throw new Error(data.error || 'Error al cargar el carrito');
             }
@@ -133,12 +135,6 @@ class CartPage {
                 }
                 this.updateQuantity(itemElement.closest('.cart-item'), parseInt(itemElement.value));
             }
-        });
-
-        // Botón de checkout
-        document.getElementById('checkout-btn')?.addEventListener('click', () => {
-            // Aquí implementarías la lógica de checkout
-            app.showToast('Función de checkout no implementada aún', 'info');
         });
 
         // Botón de limpiar carrito

@@ -30,6 +30,9 @@ define('SESSION_LIFETIME', 7200); // 2 horas
 // Zona horaria
 date_default_timezone_set('America/Mexico_City');
 
+// Inicializar Composer
+require_once __DIR__ . '/../vendor/autoload.php';
+
 // Autoloader personalizado
 spl_autoload_register(function ($class) {
     $directories = [
