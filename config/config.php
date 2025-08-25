@@ -3,35 +3,38 @@
  * Configuración general de la aplicación
  */
 
-// Configuración de la base de datos
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'db_name');
-define('DB_USER', 'db_user');
-define('DB_PASS', 'db_password');
-define('DB_CHARSET', 'utf8mb4');
-
-// Configuración de la aplicación
-define('APP_NAME', 'Ecommerce MVC');
-define('APP_URL', 'http://localhost');
-define('APP_DEBUG', true);
-
-// Configuración de WENZ HOU API
-define('IMAGE_BASE_URL', 'https://wenzhou.erponweb.com.mx/customcode/redim.php');
-define('IMAGE_PATH', 'imagenes/');
-define('DIRECT_IMAGE_URL', 'https://wenzhou.erponweb.com.mx/imagenes/');
-
-// Configuración de Stripe
-define('STRIPE_PUBLIC_KEY', 'pk_test_your_stripe_public_key');
-define('STRIPE_SECRET_KEY', 'sk_test_your_stripe_secret_key');
-
-// Configuración de sesiones
-define('SESSION_LIFETIME', 7200); // 2 horas
-
-// Zona horaria
-date_default_timezone_set('America/Mexico_City');
-
 // Inicializar Composer
 require_once __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+// Configuración de la base de datos
+define('DB_HOST', $_ENV['DB_HOST']);
+define('DB_NAME', $_ENV['DB_NAME']);
+define('DB_USER', $_ENV['DB_USER']);
+define('DB_PASS', $_ENV['DB_PASS']);
+define('DB_CHARSET', $_ENV['DB_CHARSET']);
+
+// Configuración de la aplicación
+define('APP_NAME', $_ENV['APP_NAME']);
+define('APP_URL', $_ENV['APP_URL']);
+define('APP_DEBUG', $_ENV['APP_DEBUG']);
+
+// Configuración de WENZ HOU API
+define('IMAGE_BASE_URL', $_ENV['IMAGE_BASE_URL']);
+define('IMAGE_PATH', $_ENV['IMAGE_PATH']);
+define('DIRECT_IMAGE_URL', $_ENV['DIRECT_IMAGE_URL']);
+
+// Configuración de Stripe
+define('STRIPE_PUBLIC_KEY', $_ENV['STRIPE_PUBLIC_KEY']);
+define('STRIPE_SECRET_KEY', $_ENV['STRIPE_SECRET_KEY']);
+
+// Configuración de sesiones
+define('SESSION_LIFETIME', $_ENV['SESSION_LIFETIME']);
+
+// Zona horaria
+date_default_timezone_set($_ENV['TIMEZONE']);
 
 // Autoloader personalizado
 spl_autoload_register(function ($class) {
