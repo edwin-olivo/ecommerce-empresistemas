@@ -28,8 +28,30 @@ class AuthController extends Controller
      */
     public function processLogin()
     {
-        // TODO: Implementar lógica de autenticación
-        $this->json(['success' => true, 'message' => 'Login procesado']);
+        $email = $this->sanitize($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        $userService = new UserService();
+        $user = $userService->findByEmail($email);
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            // Guardar errores en sesión para mostrar en la vista
+            $_SESSION['errors'] = ['Credenciales inválidas'];
+            $_SESSION['old'] = ['email' => $email];
+            header('Location: /login');
+            exit;
+        }
+
+        // Guardar usuario en sesión
+        $_SESSION['user'] = [
+            'id' => $user['id'],
+            'email' => $user['email'],
+            'name' => $user['name'] ?? '',
+            'expiration' => $this->getExpirationTime()
+        ];
+
+        header('Location: /perfil');
+        exit;
     }
 
     /**
@@ -62,7 +84,13 @@ class AuthController extends Controller
     public function logout()
     {
         // TODO: Implementar lógica de logout
+        session_destroy();
         header('Location: /');
         exit;
+    }
+
+    function getExpirationTime(){
+        $sessionLifetime = SESSION_LIFETIME ?? 1800; // 30 minutos por defecto
+        return time() + $sessionLifetime;
     }
 }
