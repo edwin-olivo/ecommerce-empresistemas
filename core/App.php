@@ -8,8 +8,16 @@
 class App
 {
     private $router;
-    
-    public function __construct() {
+    private $protectedRoutes = [
+        '/perfil',
+        '/perfil/direccion',
+        '/perfil/password',
+        '/perfil/preferencias',
+        '/perfil/ordenes',
+    ];
+
+    public function __construct()
+    {
         session_start();
         $this->router = new Router();
         $this->initializeRoutes();
@@ -68,27 +76,13 @@ class App
     }
 
     /**
-     * Rutas que requieren autenticación JWT
-     */
-    private function getProtectedRoutes(): array
-    {
-        return [
-            '/perfil',
-            '/perfil/direccion',
-            '/perfil/password',
-            '/perfil/preferencias',
-            '/perfil/ordenes',
-        ];
-    }
-
-    /**
      * Ejecuta la aplicación
      */
     private function run()
     {
         try {
             $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            $protectedRoutes = $this->getProtectedRoutes();
+            $protectedRoutes = $this->protectedRoutes;
 
             if (in_array($currentPath, $protectedRoutes)) {
                 require_once __DIR__ . '/../app/Middlewares/AuthMiddleware.php';
