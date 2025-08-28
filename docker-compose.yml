@@ -10,8 +10,6 @@ services:
       - ./docker/apache/vhost.conf:/etc/apache2/sites-available/000-default.conf
     environment:
       - APP_ENV=docker
-      - APP_DEBUG=true
-      - APP_URL=http://localhost:8080
     restart: unless-stopped
     networks:
       - ecommerce-network
