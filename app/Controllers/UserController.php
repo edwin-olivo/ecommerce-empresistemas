@@ -13,22 +13,14 @@ class UserController extends Controller
      */
     public function profile()
     {
+        $userId = $_SESSION['user']['id'] ?? null;
+        
         // Datos de ejemplo (en producción vendrían de la base de datos)
-        $user = [
-            'id' => 1,
-            'name' => 'Usuario Ejemplo',
-            'email' => 'usuario@ejemplo.com',
-            'phone' => '+52 123 456 789',
-            'address' => 'Calle Ejemplo 123',
-            'city' => 'Tepic',
-            'postal_code' => '63100',
-            'country' => 'México',
-            'created_at' => '2025-08-07 12:00:00',
-        ];
+        $userService = new UserService();
 
         $this->view('user/profile', [
             'title' => 'Mi Perfil',
-            'user' => $user,
+            'user' => $userService->getUser($userId),
             'errors' => $_SESSION['errors'] ?? [],
             'old' => $_SESSION['old'] ?? []
         ]);

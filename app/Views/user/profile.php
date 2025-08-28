@@ -4,7 +4,7 @@
         <!-- Encabezado -->
         <div class="bg-white shadow rounded-lg mb-8">
             <div class="px-6 py-4 sm:p-6">
-                <div class="flex items-center justify-between">
+                <div class="flex space-y-4 flex-col items-start justify-between md:flex-row md:items-center md:space-y-0">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <div class="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
@@ -323,19 +323,35 @@
                         <h3 class="text-lg font-medium text-gray-900 mb-6">Historial de Pedidos</h3>
 
                         <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <h3 class="mt-2 text-sm font-medium text-gray-900">No hay pedidos</h3>
-                            <p class="mt-1 text-sm text-gray-500">Aún no has realizado ningún pedido.</p>
-                            <div class="mt-6">
-                                <a href="<?= Router::url('/productos') ?>" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                                    <svg class="mr-2 -ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                    </svg>
-                                    Explorar Productos
-                                </a>
-                            </div>
+                            <?php if (!empty($user['orders']) && count($user['orders']) > 0): ?>
+                                <ul role="list" class="divide-y divide-gray-200">
+                                    <?php foreach ($user['orders'] as $order): ?>
+                                        <li class="py-3 flex justify-between">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-900">Pedido #<?= $order['id'] ?></p>
+                                                <p class="text-sm text-gray-500"><?= $order['created_at'] ?></p>
+                                            </div>
+                                            <div class="ml-4 flex-shrink-0">
+                                                <a href="<?= Router::url('/perfil/pedidos/' . $order['id']) ?>" class="text-sm font-medium text-blue-600 hover:text-blue-500">Ver</a>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">No hay pedidos</h3>
+                                <p class="mt-1 text-sm text-gray-500">Aún no has realizado ningún pedido.</p>
+                                <div class="mt-6">
+                                    <a href="<?= Router::url('/productos') ?>" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                        <svg class="mr-2 -ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                        Explorar Productos
+                                    </a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
