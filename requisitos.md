@@ -7,7 +7,6 @@ Crear una **plataforma ecommerce** sencilla pero completa donde clientes puedan 
 ## 2. Objetivos
 
 * MVP funcional listo para pruebas manuales: catálogo, carrito, checkout (simulado + pasarela), panel administrador.
-* API RESTful para frontend y/o integraciones.
 * Seguridad básica (autenticación, autorización, validaciones).
 
 ## 3. Alcance
@@ -16,7 +15,6 @@ Incluye:
 
 * Frontend para cliente (vistas): home, catálogo, producto (detalles dle producto), carrito, checkout (intregración Stripe), cuenta (pedidos, direcciones, datos personales).
 * Backend/Admin (panel): pedidos, usuarios.
-* API REST para todas las operaciones principales.
 * Integración con al menos 1 pasarela de pago (Stripe, modo prueba).
 * Soporte para múltiples direcciones por usuario.
 * Notificaciones por email (pedido confirmado, cambio de estado).

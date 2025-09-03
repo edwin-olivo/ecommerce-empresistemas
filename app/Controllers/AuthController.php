@@ -74,8 +74,43 @@ class AuthController extends Controller
      */
     public function processRegister()
     {
-        // TODO: Implementar lógica de registro
-        $this->json(['success' => true, 'message' => 'Registro procesado']);
+        $name = $this->sanitize($_POST['name'] ?? '');
+        $email = $this->sanitize($_POST['email'] ?? '');
+        $phone = $this->sanitize($_POST['phone'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $passwordConfirmation = $_POST['password_confirmation'] ?? '';
+
+        if ($password !== $passwordConfirmation) {
+            $_SESSION['errors'] = ['Las contraseñas no coinciden'];
+            $_SESSION['old'] = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone
+            ];
+            header('Location: /register');
+            exit;
+        }
+
+        $userService = new UserService();
+        $existingUser = $userService->findByEmail($email);
+
+        if ($existingUser) {
+            $_SESSION['errors'] = ['El correo electrónico ya está en uso'];
+            $_SESSION['old'] = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone
+            ];
+            header('Location: /register');
+            exit;
+        }
+
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $userService->createUser($name, $email, $phone, $hashedPassword);
+
+        $_SESSION['success'] = 'Registro exitoso. Puedes iniciar sesión.';
+        header('Location: /login');
+        exit;
     }
 
     /**
