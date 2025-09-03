@@ -14,13 +14,30 @@ class UserController extends Controller
     public function profile()
     {
         $userId = $_SESSION['user']['id'] ?? null;
-        
+
+        // var_dump($_SESSION['user']);
+
         // Datos de ejemplo (en producción vendrían de la base de datos)
         $userService = new UserService();
+        $user = $userService->getUser($userId);
+
+        // var_dump($user);
+
+        $addressService = new AddressService();
+        $addresses = $addressService->getAdressesByUser($userId);
+
+        $countries = [
+            'Argentina' => 'Argentina',
+            'Brasil' => 'Brasil',
+            'Chile' => 'Chile',
+            'Mexico' => 'México'
+        ];
 
         $this->view('user/profile', [
             'title' => 'Mi Perfil',
-            'user' => $userService->getUser($userId),
+            'user' => $user,
+            'addresses' => $addresses,
+            'countries' => $countries,
             'errors' => $_SESSION['errors'] ?? [],
             'old' => $_SESSION['old'] ?? []
         ]);
