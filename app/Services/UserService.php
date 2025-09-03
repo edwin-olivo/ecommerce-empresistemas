@@ -23,8 +23,7 @@ class UserService
     {
         try {
             $user = $this->db->selectOne(
-                "SELECT id, email, name, phone, address, city, postal_code, country, created_at 
-                 FROM users WHERE id = ?",
+                "SELECT id, email, name, phone, created_at FROM users WHERE id = ?",
                 [$id]
             );
 
@@ -34,8 +33,7 @@ class UserService
 
             // Obtener órdenes del usuario
             $orders = $this->db->select(
-                "SELECT id, session_id, payment_id, payment_status, amount, created_at 
-                 FROM orders WHERE user_id = ? ORDER BY created_at DESC",
+                "SELECT id, session_id, payment_id, payment_status, amount, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC",
                 [$id]
             );
 
@@ -98,7 +96,7 @@ class UserService
             // Construir la consulta dinámicamente con los campos a actualizar
             foreach ($data as $field => $value) {
                 // Ignorar campos que no se deben actualizar directamente
-                if (in_array($field, ['id', 'created_at', 'updated_at', 'password'])) {
+                if (in_array($field, ['id', 'created_at', 'updated_at', 'password', 'deleted'])) {
                     continue;
                 }
                 $fields[] = "$field = ?";
@@ -186,9 +184,8 @@ class UserService
         try {
             $this->db->beginTransaction();
             
-            // Las órdenes se eliminarán automáticamente por la restricción ON DELETE CASCADE
-            $affected = $this->db->delete("DELETE FROM users WHERE id = ?", [$id]);
-            
+            $affected = $this->db->update("UPDATE users SET updated_at = NOW(), deleted = 1 WHERE id = ?", [$id]);
+
             $this->db->commit();
             return $affected > 0;
         } catch (Exception $e) {
@@ -208,8 +205,7 @@ class UserService
     {
         try {
             return $this->db->selectOne(
-                "SELECT id, email, name, password, phone, address, city, postal_code, country, created_at 
-                 FROM users WHERE email = ?",
+                "SELECT id, email, name, password, phone, created_at FROM users WHERE email = ?",
                 [$email]
             );
         } catch (Exception $e) {
