@@ -21,35 +21,58 @@ Incluye:
 * Soporte para múltiples direcciones por usuario.
 * Notificaciones por email (pedido confirmado, cambio de estado).
 
-## API REST — Endpoints (JSON)
+## Rutas de la Aplicación
 
-### Catalogo
+### Home y Navegación
 
-* `GET /productos` — lista (filtros: category, search, sortBy; paginación: page, limit)
-* `GET /productos/{id}` — detalle producto
-* `GET /categorias` — lista categorías (filtros: category, search, sortBy; paginación: page, limit)
-* `GET /ofertas` — lista ofertas (filtros: category, search, sortBy; paginación: page, limit)
+* `GET /` - Página principal del ecommerce
+* `GET /home` - Página principal (alternativa)
 
-### Carrito
+### Catálogo de Productos
 
-* `GET /carrito` - detalle carrito
-* `POST /carrito/datos` - detalle carrito
-* `GET /carrito/agregar` - agregar item
-* `GET /carrito/remover` - remover item
-* `GET /carrito/actualizar` - modificar cantidad item
+* `GET /productos` - Lista de productos con filtros (category, subcategory, brand, search, sortBy) y paginación (page, limit)
+* `GET /productos/{id}` - Detalle de un producto específico
 
-### Sesión
+### Categorías
 
-* `GET /login` - formulario
-* `POST /login` - login (email, password)
-* `GET /logout` - modificar cantidad item
-* `GET /registro` - formulario
-* `POST /registro` - registro (email, password)
+* `GET /categorias` - Lista de categorías (redirige a productos con filtro de categoría)
 
-### Usuarios
+### Ofertas Especiales
 
-* `GET /perfil` - info usuario y direcciones
-* `POST /perfil` - modificar info usuario
-* `GET /perfil/direccion` - modificar info dirección
-* `GET /perfil/password` - modificar info contraseña
-* `GET /perfil/preferencias` - modificar preferencias
+* `GET /ofertas` - Lista de ofertas y productos en descuento con filtros y paginación
+
+### Carrito de Compras
+
+* `GET /carrito` - Vista del carrito de compras
+* `POST /carrito/datos` - Obtener datos del carrito (AJAX)
+* `GET /carrito/agregar` - Agregar producto al carrito (AJAX)
+* `GET /carrito/remover` - Remover producto del carrito (AJAX)
+* `GET /carrito/actualizar` - Actualizar cantidad de producto en carrito (AJAX)
+
+### Procesamiento de Pagos
+
+* `POST /pago/confirmar` - Confirmar y procesar pago con Stripe
+* `GET /pago/exito` - Página de confirmación de pago exitoso
+* `GET /pago/cancelar` - Página cuando se cancela el pago
+* `POST /pago/webhook` - Webhook para notificaciones de Stripe
+
+### Autenticación y Sesión
+
+* `GET /login` - Formulario de inicio de sesión
+* `POST /login` - Procesar login (email, password)
+* `GET /logout` - Cerrar sesión
+* `GET /registro` - Formulario de registro de usuario
+* `POST /registro` - Procesar registro de nuevo usuario
+
+### Perfil de Usuario (Rutas Protegidas)
+
+* `GET /perfil` - Información del usuario y direcciones
+* `POST /perfil` - Actualizar información personal del usuario
+* `POST /perfil/direccion` - Actualizar/agregar dirección del usuario
+* `POST /perfil/password` - Cambiar contraseña del usuario
+* `POST /perfil/preferencias` - Actualizar preferencias del usuario
+* `GET /perfil/ordenes` - Historial de órdenes del usuario
+
+### Contacto
+
+* `GET /contacto` - Página de información de contacto
