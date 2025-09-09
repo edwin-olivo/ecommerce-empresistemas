@@ -1,5 +1,7 @@
 <?php
 
+use Latte\Engine;
+
 /**
  * Controlador base
  * Proporciona funcionalidades comunes a todos los controladores
@@ -12,9 +14,17 @@ abstract class Controller
     protected $brands;
     protected $subcategories;
 
+    protected Engine $latte;
+
     public function __construct()
     {
+        // Inicializar motor de plantillas
+        $this->latte = new Engine();
+        $this->latte->setTempDirectory('../temp/latte');
+
+        // Inicializar conexión a la base de datos
         $this->db = Database::getInstance();
+        
         // Obtener categorías
         $this->categories = ListHelper::getCategories();
         $this->brands = ListHelper::getBrands();
@@ -37,9 +47,61 @@ abstract class Controller
         ob_start();
         include "../app/Views/{$view}.php";
         $content = ob_get_clean();
-
-        // Incluir layout principal
-        include '../app/Views/layout/main.php';
+        
+        // Si es una petición AJAX, devolver solo el contenido
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            echo $content;
+            return;
+        }
+        
+        // Incluir el layout principal
+        require_once "../app/Views/layout/main.php";
+    }
+    
+    /**
+     * Renderiza una plantilla Latte
+     */
+    protected function viewLatte($template, $params = [])
+    {
+        // Agregar categorías, marcas y subcategorías a los parámetros
+        $params['categories'] = $this->categories;
+        $params['brands'] = $this->brands;
+        $params['subcategories'] = $this->subcategories;
+        
+        // Agregar constantes PHP que se usan comúnmente en las plantillas
+        $params['APP_NAME'] = APP_NAME;
+        
+        // Registrar helpers para Latte
+        $this->latte->addFilter('json', function ($value) {
+            return json_encode($value, JSON_HEX_APOS | JSON_HEX_QUOT);
+        });
+        
+        // Agregar función Router::url() para usar en plantillas Latte
+        $this->latte->addFunction('url', function ($path) {
+            return Router::url($path);
+        });
+        
+        // Si es una petición AJAX, renderizar solo el template
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            $this->latte->render("../app/Views/{$template}.latte", $params);
+            return;
+        }
+        
+        // Para vistas completas, crear un layout o usar el existente en PHP por ahora
+        if (file_exists("../app/Views/layout/main.latte")) {
+            $params['content'] = $this->latte->renderToString("../app/Views/{$template}.latte", $params);
+            $this->latte->render("../app/Views/layout/main.latte", $params);
+        } else {
+            // Renderizar en un buffer para poder incluirlo en el layout PHP
+            ob_start();
+            $this->latte->render("../app/Views/{$template}.latte", $params);
+            $content = ob_get_clean();
+            
+            // Incluir layout principal PHP
+            require_once "../app/Views/layout/main.php";
+        }
     }
 
     /**
