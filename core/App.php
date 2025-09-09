@@ -1,34 +1,45 @@
 <?php
+
 /**
  * Clase principal de la aplicación
  * Maneja el enrutamiento y la inicialización del sistema
  */
 
-class App {
+class App
+{
     private $router;
-    
-    public function __construct() {
+    private $protectedRoutes = [
+        '/perfil',
+        '/perfil/direccion',
+        '/perfil/password',
+        '/perfil/preferencias',
+        '/perfil/ordenes',
+    ];
+
+    public function __construct()
+    {
         session_start();
         $this->router = new Router();
         $this->initializeRoutes();
         $this->run();
     }
-    
+
     /**
      * Inicializa las rutas de la aplicación
      */
-    private function initializeRoutes() {
+    private function initializeRoutes()
+    {
         // Rutas principales
         $this->router->add('/', 'HomeController', 'index');
         $this->router->add('/home', 'HomeController', 'index');
-        
+
         // Rutas de productos
         $this->router->add('/productos', 'ProductController', 'index');
         $this->router->add('/productos/{id}', 'ProductController', 'show');
 
         // Rutas de categorías (llevaran a la lista de productos)
         $this->router->add('/categorias', 'ProductController', 'index');
-        
+
         // Rutas del carrito
         $this->router->add('/carrito', 'CartController', 'index');
         $this->router->add('/carrito/datos', 'CartController', 'get', 'POST');
@@ -54,7 +65,7 @@ class App {
         $this->router->add('/logout', 'AuthController', 'logout');
         $this->router->add('/registro', 'AuthController', 'register');
         $this->router->add('/registro', 'AuthController', 'processRegister', 'POST');
-        
+
         // Rutas de perfil de usuario
         $this->router->add('/perfil', 'UserController', 'profile');
         $this->router->add('/perfil', 'UserController', 'updateProfile', 'POST');
@@ -63,12 +74,22 @@ class App {
         $this->router->add('/perfil/preferencias', 'UserController', 'updatePreferences', 'POST');
         $this->router->add('/perfil/ordenes', 'UserController', 'orders');
     }
-    
+
     /**
      * Ejecuta la aplicación
      */
-    private function run() {
+    private function run()
+    {
         try {
+            $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+            $protectedRoutes = $this->protectedRoutes;
+
+            if (in_array($currentPath, $protectedRoutes)) {
+                require_once __DIR__ . '/../app/Middlewares/AuthMiddleware.php';
+                $auth = new AuthMiddleware();
+                $auth->requireAuth();
+            }
+
             $this->router->dispatch();
         } catch (Exception $e) {
             if (APP_DEBUG) {
