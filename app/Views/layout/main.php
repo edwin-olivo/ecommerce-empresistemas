@@ -29,9 +29,15 @@
                         <span>📞 +52 55 1234 5678</span>
                     </div>
                     <div>
-                        <a href="<?= Router::url('/login') ?>" class="hover:text-primary-300">Iniciar Sesión</a>
-                        <span class="mx-2">|</span>
-                        <a href="<?= Router::url('/registro') ?>" class="hover:text-primary-300">Registrarse</a>
+                        <?php if (isset($_SESSION['user']['id'])): ?>
+                            <a href="<?= Router::url('/perfil') ?>" class="hover:text-primary-300">Mi Perfil</a>
+                            <span class="mx-2">|</span>
+                            <a href="<?= Router::url('/logout') ?>" class="hover:text-primary-300">Cerrar Sesión</a>
+                        <?php else: ?>
+                            <a href="<?= Router::url('/login') ?>" class="hover:text-primary-300">Iniciar Sesión</a>
+                            <span class="mx-2">|</span>
+                            <a href="<?= Router::url('/registro') ?>" class="hover:text-primary-300">Registrarse</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -65,7 +71,7 @@
                 <!-- Cart & User Menu -->
                 <div class="flex items-center space-x-4">
                     <!-- User menu (only show when logged in) -->
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['user']['id'])): ?>
                         <div class="relative group">
                             <button class="flex items-center text-gray-700 hover:text-primary-600">
                                 <i class="fas fa-user text-xl mr-1"></i>

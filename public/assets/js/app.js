@@ -127,13 +127,17 @@ document.querySelectorAll('.profile-tab').forEach(tab => {
 
         // Remove active class from all tabs
         document.querySelectorAll('.profile-tab').forEach(t => {
-            t.classList.remove('active', 'bg-blue-50', 'text-blue-700');
+            t.classList.remove('active', 'bg-primary-50', 'text-primary-700');
             t.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
+            t.querySelector('svg').classList.remove('text-primary-500', 'group-hover:text-primary-500');
+            t.querySelector('svg').classList.add('text-gray-400', 'group-hover:text-gray-500');
         });
 
         // Add active class to clicked tab
-        this.classList.add('active', 'bg-blue-50', 'text-blue-700');
+        this.classList.add('active', 'bg-primary-50', 'text-primary-700');
         this.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
+        this.querySelector('svg').classList.add('text-primary-500', 'group-hover:text-primary-500');
+        this.querySelector('svg').classList.remove('text-gray-400', 'group-hover:text-gray-500');
 
         // Hide all content sections
         document.querySelectorAll('.profile-content').forEach(content => {

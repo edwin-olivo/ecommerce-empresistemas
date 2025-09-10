@@ -4,11 +4,11 @@
         <!-- Encabezado -->
         <div class="bg-white shadow rounded-lg mb-8">
             <div class="px-6 py-4 sm:p-6">
-                <div class="flex items-center justify-between">
+                <div class="flex space-y-4 flex-col items-start justify-between md:flex-row md:items-center md:space-y-0">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
-                                <svg class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="h-16 w-16 rounded-full bg-primary-100 flex items-center justify-center">
+                                <svg class="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
@@ -44,8 +44,8 @@
                     <div class="p-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Mi Cuenta</h3>
                         <nav class="space-y-1">
-                            <a href="#personal-info" class="profile-tab active bg-blue-50 text-blue-700 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                                <svg class="text-blue-500 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <a href="#personal-info" class="profile-tab active bg-primary-50 text-primary-700 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+                                <svg class="text-primary-500 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                                 Información Personal
@@ -161,7 +161,7 @@
                                 <div class="flex justify-end">
                                     <button
                                         type="submit"
-                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer">
                                         Guardar Cambios
                                     </button>
                                 </div>
@@ -172,11 +172,12 @@
 
                 <!-- Dirección -->
                 <div id="address-info" class="profile-content bg-white shadow rounded-lg hidden">
-                    <div class="p-6">
+                    <div class="p-6 space-y-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-6">Dirección de Envío</h3>
 
-                        <form action="<?= Router::url('/perfil/direccion') ?>" method="POST" class="space-y-6">
+                        <!-- <form action="<?= Router::url('/perfil/direccion') ?>" method="POST" class="space-y-6"> -->
 
+                        <?php foreach ($addresses as $address): ?>
                             <div>
                                 <label for="address" class="form-label">
                                     Dirección
@@ -186,7 +187,7 @@
                                         type="text"
                                         name="address"
                                         id="address"
-                                        value="<?= htmlspecialchars($user['address']) ?>"
+                                        value="<?= htmlspecialchars($address['address_line_1']) ?>"
                                         class="form-input"
                                         placeholder="Calle, número, piso, puerta...">
                                 </div>
@@ -202,7 +203,7 @@
                                             type="text"
                                             name="city"
                                             id="city"
-                                            value="<?= htmlspecialchars($user['city']) ?>"
+                                            value="<?= htmlspecialchars($address['city']) ?>"
                                             class="form-input">
                                     </div>
                                 </div>
@@ -216,7 +217,7 @@
                                             type="text"
                                             name="postal_code"
                                             id="postal_code"
-                                            value="<?= htmlspecialchars($user['postal_code']) ?>"
+                                            value="<?= htmlspecialchars($address['postal_code']) ?>"
                                             class="form-input">
                                     </div>
                                 </div>
@@ -230,25 +231,26 @@
                                             name="country"
                                             id="country"
                                             class="form-input">
-                                            <option value="Argentina" <?= $user['country'] === 'Argentina' ? 'selected' : '' ?>>Argentina</option>
-                                            <option value="Brasil" <?= $user['country'] === 'Brasil' ? 'selected' : '' ?>>Brasil</option>
-                                            <option value="Chile" <?= $user['country'] === 'Chile' ? 'selected' : '' ?>>Chile</option>
-                                            <option value="Mexico" <?= $user['country'] === 'Mexico' ? 'selected' : '' ?>>México</option>
+                                            <option value="">Selecciona un país</option>
+                                            <?php foreach ($countries as $key => $value): ?>
+                                                <option value="<?= $key ?>" <?= $address['country'] === $key ? 'selected' : '' ?>><?= $value ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                 </div>
                             </div>
+                        <?php endforeach; ?>
 
-                            <div class="pt-5">
+                        <!-- <div class="pt-5">
                                 <div class="flex justify-end">
                                     <button
                                         type="submit"
-                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer">
                                         Guardar Dirección
                                     </button>
                                 </div>
-                            </div>
-                        </form>
+                            </div> -->
+                        <!-- </form> -->
                     </div>
                 </div>
 
@@ -308,7 +310,7 @@
                                 <div class="flex justify-end">
                                     <button
                                         type="submit"
-                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer">
                                         Cambiar Contraseña
                                     </button>
                                 </div>
@@ -323,19 +325,35 @@
                         <h3 class="text-lg font-medium text-gray-900 mb-6">Historial de Pedidos</h3>
 
                         <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <h3 class="mt-2 text-sm font-medium text-gray-900">No hay pedidos</h3>
-                            <p class="mt-1 text-sm text-gray-500">Aún no has realizado ningún pedido.</p>
-                            <div class="mt-6">
-                                <a href="<?= Router::url('/productos') ?>" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                                    <svg class="mr-2 -ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                    </svg>
-                                    Explorar Productos
-                                </a>
-                            </div>
+                            <?php if (!empty($user['orders']) && count($user['orders']) > 0): ?>
+                                <ul role="list" class="divide-y divide-gray-200">
+                                    <?php foreach ($user['orders'] as $order): ?>
+                                        <li class="py-3 flex justify-between">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-900">Pedido #<?= $order['id'] ?></p>
+                                                <p class="text-sm text-gray-500"><?= $order['created_at'] ?></p>
+                                            </div>
+                                            <div class="ml-4 flex-shrink-0">
+                                                <a href="<?= Router::url('/perfil/pedidos/' . $order['id']) ?>" class="text-sm font-medium text-primary-600 hover:text-primary-500">Ver</a>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">No hay pedidos</h3>
+                                <p class="mt-1 text-sm text-gray-500">Aún no has realizado ningún pedido.</p>
+                                <div class="mt-6">
+                                    <a href="<?= Router::url('/productos') ?>" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                                        <svg class="mr-2 -ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                        Explorar Productos
+                                    </a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -355,7 +373,7 @@
                                             name="email_notifications"
                                             type="checkbox"
                                             checked
-                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="email_notifications" class="font-medium text-gray-700">
@@ -371,7 +389,7 @@
                                             id="sms_notifications"
                                             name="sms_notifications"
                                             type="checkbox"
-                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="sms_notifications" class="font-medium text-gray-700">
@@ -388,7 +406,7 @@
                                             name="newsletter"
                                             type="checkbox"
                                             checked
-                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
                                     </div>
                                     <div class="ml-3 text-sm">
                                         <label for="newsletter" class="font-medium text-gray-700">
@@ -403,7 +421,7 @@
                                 <div class="flex justify-end">
                                     <button
                                         type="submit"
-                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 cursor-pointer">
                                         Guardar Preferencias
                                     </button>
                                 </div>

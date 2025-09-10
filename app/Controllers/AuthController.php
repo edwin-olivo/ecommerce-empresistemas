@@ -28,8 +28,30 @@ class AuthController extends Controller
      */
     public function processLogin()
     {
-        // TODO: Implementar lógica de autenticación
-        $this->json(['success' => true, 'message' => 'Login procesado']);
+        $email = $this->sanitize($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        $userService = new UserService();
+        $user = $userService->findByEmail($email);
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            // Guardar errores en sesión para mostrar en la vista
+            $_SESSION['errors'] = ['Credenciales inválidas'];
+            $_SESSION['old'] = ['email' => $email];
+            header('Location: /login');
+            exit;
+        }
+
+        // Guardar usuario en sesión
+        $_SESSION['user'] = [
+            'id' => $user['id'],
+            'email' => $user['email'],
+            'name' => $user['name'] ?? '',
+            'expiration' => $this->getExpirationTime()
+        ];
+
+        header('Location: /perfil');
+        exit;
     }
 
     /**
@@ -52,8 +74,43 @@ class AuthController extends Controller
      */
     public function processRegister()
     {
-        // TODO: Implementar lógica de registro
-        $this->json(['success' => true, 'message' => 'Registro procesado']);
+        $name = $this->sanitize($_POST['name'] ?? '');
+        $email = $this->sanitize($_POST['email'] ?? '');
+        $phone = $this->sanitize($_POST['phone'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $passwordConfirmation = $_POST['password_confirmation'] ?? '';
+
+        if ($password !== $passwordConfirmation) {
+            $_SESSION['errors'] = ['Las contraseñas no coinciden'];
+            $_SESSION['old'] = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone
+            ];
+            header('Location: /register');
+            exit;
+        }
+
+        $userService = new UserService();
+        $existingUser = $userService->findByEmail($email);
+
+        if ($existingUser) {
+            $_SESSION['errors'] = ['El correo electrónico ya está en uso'];
+            $_SESSION['old'] = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone
+            ];
+            header('Location: /register');
+            exit;
+        }
+
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $userService->createUser($name, $email, $phone, $hashedPassword);
+
+        $_SESSION['success'] = 'Registro exitoso. Puedes iniciar sesión.';
+        header('Location: /login');
+        exit;
     }
 
     /**
@@ -62,7 +119,13 @@ class AuthController extends Controller
     public function logout()
     {
         // TODO: Implementar lógica de logout
+        session_destroy();
         header('Location: /');
         exit;
+    }
+
+    function getExpirationTime(){
+        $sessionLifetime = SESSION_LIFETIME ?? 1800; // 30 minutos por defecto
+        return time() + $sessionLifetime;
     }
 }
