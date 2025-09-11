@@ -43,6 +43,10 @@ class ProductController extends Controller
             // $this->view('products/index', $data);
             $this->viewLatte('products/index', [
                 'title' => 'Productos - ' . APP_NAME,
+                'breadcrumbs' => [
+                    ['label' => 'Inicio', 'url' => '/'],
+                    ['label' => 'Productos', 'url' => '']
+                ],
                 'products' => $products['data'],
                 'pagination' => $products['pagination'],
                 'currentFilters' => [
