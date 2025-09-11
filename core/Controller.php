@@ -20,12 +20,15 @@ abstract class Controller
     {
         // Inicializar motor de plantillas
         $this->latte = new Engine();
-        $this->latte->setTempDirectory('../temp/latte');
+        // Configurar directorio de caché
+        $this->latte->setTempDirectory(__DIR__ . '/../temp/latte');
+        // Configurar directorio de vistas
+        $this->latte->setLoader(new Latte\Loaders\FileLoader(__DIR__ . '/../app/Views'));
 
         // Inicializar conexión a la base de datos
         $this->db = Database::getInstance();
         
-        // Obtener categorías
+        // Obtener categorías, marcas y subcategorías para el menú
         $this->categories = ListHelper::getCategories();
         $this->brands = ListHelper::getBrands();
         $this->subcategories = ListHelper::getSubcategories();
@@ -82,26 +85,7 @@ abstract class Controller
             return Router::url($path);
         });
         
-        // Si es una petición AJAX, renderizar solo el template
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-            $this->latte->render("../app/Views/{$template}.latte", $params);
-            return;
-        }
-        
-        // Para vistas completas, crear un layout o usar el existente en PHP por ahora
-        if (file_exists("../app/Views/layout/main.latte")) {
-            $params['content'] = $this->latte->renderToString("../app/Views/{$template}.latte", $params);
-            $this->latte->render("../app/Views/layout/main.latte", $params);
-        } else {
-            // Renderizar en un buffer para poder incluirlo en el layout PHP
-            ob_start();
-            $this->latte->render("../app/Views/{$template}.latte", $params);
-            $content = ob_get_clean();
-            
-            // Incluir layout principal PHP
-            require_once "../app/Views/layout/main.php";
-        }
+        $this->latte->render("{$template}.latte", $params);
     }
 
     /**
