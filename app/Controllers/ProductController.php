@@ -1,17 +1,20 @@
 <?php
+
 /**
  * Controlador de productos
  */
 
-class ProductController extends Controller {
-    
+class ProductController extends Controller
+{
+
     /**
      * Lista todos los productos
      */
-    public function index() {
+    public function index()
+    {
         try {
             $productService = new ProductService();
-            
+
             // Parámetros de filtrado y paginación
             $page = $_GET['page'] ?? 1;
             $limit = 12;
@@ -20,7 +23,7 @@ class ProductController extends Controller {
             $brand = $_GET['brand'] ?? null;
             $search = $_GET['search'] ?? null;
             $sortBy = $_GET['sortBy'] ?? 'name';
-            
+
             // Obtener productos con filtros
             $products = $productService->getProducts([
                 'page' => $page,
@@ -37,7 +40,8 @@ class ProductController extends Controller {
                 $product['category'] = $this->categories[$product['category']];
             }
 
-            $data = [
+            // $this->view('products/index', $data);
+            $this->viewLatte('products/index', [
                 'title' => 'Productos - ' . APP_NAME,
                 'products' => $products['data'],
                 'pagination' => $products['pagination'],
@@ -47,36 +51,33 @@ class ProductController extends Controller {
                     'search' => $search,
                     'sort' => $sortBy
                 ]
-            ];
-
-            $this->view('products/index', $data);
-            
+            ]);
         } catch (Exception $e) {
             error_log("Error en ProductController::index: " . $e->getMessage());
             $this->view('errors/500', ['error' => $e->getMessage()]);
         }
     }
-    
+
     /**
      * Muestra un producto específico
      */
-    public function show($id) {
+    public function show($id)
+    {
         try {
             $productService = new ProductService();
             $product = $productService->getProductById($id);
-            
+
             if (!$product) {
                 $this->view('errors/404');
                 return;
             }
-            
+
             $data = [
                 'title' => $product['name'] . ' - ' . APP_NAME,
                 'product' => $product,
             ];
-            
+
             $this->view('products/detail', $data);
-            
         } catch (Exception $e) {
             error_log("Error en ProductController::show: " . $e->getMessage());
             $this->view('errors/500', ['error' => $e->getMessage()]);
