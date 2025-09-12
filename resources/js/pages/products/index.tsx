@@ -24,7 +24,7 @@ interface ProductsProps {
     initialProducts: Product[];
 }
 
-export default function Products({initialProducts}: ProductsProps) {
+export default function Products({ initialProducts }: ProductsProps) {
     const [colorOptions, setColorOptions] = useState<Color[]>([]);
     const [categoriesOptions, setCategoriesOptions] = useState<string[]>([]);
 
@@ -54,7 +54,7 @@ export default function Products({initialProducts}: ProductsProps) {
 
             return true;
         });
-    }, [filters]);
+    }, [initialProducts, filters]);
 
     const handleFiltersChange = (newFilters: FilterState) => {
         setFilters(newFilters);
@@ -75,12 +75,12 @@ export default function Products({initialProducts}: ProductsProps) {
             colorValues[color] = color;
         });
         setColorOptions(Object.entries(colorValues).map(([name, value]) => ({ name, value })));
-    }, []);
+    }, [initialProducts]);
 
     useEffect(() => {
         const uniqueCategories = Array.from(new Set(initialProducts.map((p) => p.category)));
         setCategoriesOptions(uniqueCategories);
-    }, []);
+    }, [initialProducts]);
 
     return (
         <div className="min-h-screen bg-neutral-200 font-mono text-black">
@@ -124,4 +124,4 @@ export default function Products({initialProducts}: ProductsProps) {
             </main>
         </div>
     );
-};
+}

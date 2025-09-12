@@ -56,9 +56,11 @@ export interface Color {
 export interface Product {
     id: number;
     name: string;
+    part_number: string;
     category: string;
     price: number;
     color: string;
-    url: string;
     description?: string;
+    custom?: { [key: string]: any } | null;
+    [key: string]: unknown; // This allows for additional properties...
 }
