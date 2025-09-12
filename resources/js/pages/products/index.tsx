@@ -1,38 +1,34 @@
 import FilterMenu from '@/components/filter-menu';
 import ProductCard from '@/components/products/product-card';
-import type { Color, FilterState, Product } from '@/types';
-import React, { useEffect, useMemo, useState } from 'react';
-
-const BrutalistHeader: React.FC = () => (
-    <header className="sticky top-0 z-10 flex items-center justify-between border-b-4 border-black bg-neutral-200 p-4">
-        <h1 className="text-2xl font-extrabold uppercase">TIENDA</h1>
-        <nav className="flex gap-4 font-bold">
-            <a href="#" className="hover:underline">
-                Novedades
-            </a>
-            <a href="#" className="hover:underline">
-                Hombre
-            </a>
-            <a href="#" className="hover:underline">
-                Mujer
-            </a>
-        </nav>
-    </header>
-);
+import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem, Color, FilterState, Product } from '@/types';
+import { Head } from '@inertiajs/react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface ProductsProps {
     initialProducts: Product[];
 }
 
+const initialFilterState: FilterState = {
+    categories: [],
+    colors: [],
+    classes: [],
+    maxPrice: 200000,
+};
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Products',
+        href: '/products',
+    },
+];
+
 export default function Products({ initialProducts }: ProductsProps) {
     const [colorOptions, setColorOptions] = useState<Color[]>([]);
     const [categoriesOptions, setCategoriesOptions] = useState<string[]>([]);
+    const [classOptions, setClassOptions] = useState<string[]>([]);
 
-    const [filters, setFilters] = useState<FilterState>({
-        categories: [],
-        colors: [],
-        maxPrice: 5000,
-    });
+    const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
     // Filter products based on current filter state
     const filteredProducts = useMemo(() => {
@@ -45,6 +41,14 @@ export default function Products({ initialProducts }: ProductsProps) {
             // Color filter
             if (filters.colors.length > 0 && !filters.colors.includes(product.color)) {
                 return false;
+            }
+
+            // Class filter
+            if (filters.classes && filters.classes.length > 0) {
+                const productClass = product.custom?.clase_c;
+                if (!productClass || !filters.classes.includes(productClass)) {
+                    return false;
+                }
             }
 
             // Price filter
@@ -61,11 +65,7 @@ export default function Products({ initialProducts }: ProductsProps) {
     };
 
     const handleClearFilters = () => {
-        setFilters({
-            categories: [],
-            colors: [],
-            maxPrice: 5000,
-        });
+        setFilters(initialFilterState);
     };
 
     useEffect(() => {
@@ -82,18 +82,27 @@ export default function Products({ initialProducts }: ProductsProps) {
         setCategoriesOptions(uniqueCategories);
     }, [initialProducts]);
 
-    return (
-        <div className="min-h-screen bg-neutral-200 font-mono text-black">
-            <BrutalistHeader />
+    useEffect(() => {
+        const uniqueClasses = Array.from(new Set(initialProducts.map((p) => p.custom?.clase_c)));
+        setClassOptions(uniqueClasses);
+    }, [initialProducts]);
 
-            <main className="mx-auto max-w-7xl p-4 sm:p-8">
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Dashboard" />
+            <main className="h-full overflow-x-auto rounded-xl p-4">
                 <div className="flex flex-col gap-8 md:flex-row">
                     {/* Columna de Filtros */}
                     <FilterMenu
                         filters={filters}
                         onFiltersChange={handleFiltersChange}
                         onClearFilters={handleClearFilters}
-                        defaultOptions={{ categories: categoriesOptions, colors: colorOptions }}
+                        defaultOptions={{
+                            categories: categoriesOptions,
+                            colors: colorOptions,
+                            classes: classOptions,
+                            priceRange: { min: 0, max: 200000 },
+                        }}
                     />
 
                     {/* Columna de Productos */}
@@ -122,6 +131,6 @@ export default function Products({ initialProducts }: ProductsProps) {
                     </section>
                 </div>
             </main>
-        </div>
+        </AppLayout>
     );
 }

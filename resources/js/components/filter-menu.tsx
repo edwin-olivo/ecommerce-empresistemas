@@ -1,5 +1,4 @@
 import CategoryFilter from '@/components/filters/category-filter';
-import ColorFilter from '@/components/filters/color-filter';
 import PriceFilter from '@/components/filters/price-filter';
 import type { Color, FilterState } from '@/types';
 import React from 'react';
@@ -9,6 +8,8 @@ interface FilterMenuProps {
     defaultOptions?: {
         categories: string[];
         colors: Color[];
+        classes?: string[];
+        priceRange?: { min: number; max: number } | undefined;
     };
     colorOptions?: Color[];
     onFiltersChange?: (filters: FilterState) => void;
@@ -16,14 +17,23 @@ interface FilterMenuProps {
 }
 
 const FilterMenu: React.FC<FilterMenuProps> = ({
-    filters = { categories: [], colors: [], maxPrice: 5000 },
+    filters = { categories: [], colors: [], maxPrice: 5000, classes: [] },
     defaultOptions = { categories: ['Abrigos', 'Sudaderas', 'Pantalones', 'Camisetas', 'Accesorios', 'Calzado'], colors: [] },
     onFiltersChange,
     onClearFilters,
 }) => {
+    const minPriceRange = defaultOptions.priceRange?.min ?? 0;
+    const maxPriceRange = defaultOptions.priceRange?.max ?? 5000;
+
     const handleCategoryChange = (categories: string[]) => {
         if (onFiltersChange) {
             onFiltersChange({ ...filters, categories });
+        }
+    };
+
+    const handleClassChange = (classes: string[]) => {
+        if (onFiltersChange) {
+            onFiltersChange({ ...filters, classes });
         }
     };
 
@@ -54,7 +64,14 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                     onCategoryChange={handleCategoryChange}
                     defaultCategories={defaultOptions.categories}
                 />
-                <PriceFilter maxPrice={filters.maxPrice} onPriceChange={handlePriceChange} />
+                {defaultOptions.classes && defaultOptions.classes.length > 0 && (
+                    <CategoryFilter
+                        selectedCategories={filters.classes}
+                        onCategoryChange={handleClassChange}
+                        defaultCategories={defaultOptions.classes}
+                    />
+                )}
+                <PriceFilter maxPrice={filters.maxPrice} priceRange={{ min: minPriceRange, max: maxPriceRange }} onPriceChange={handlePriceChange} />
                 {/* <ColorFilter selectedColors={filters.colors} onColorChange={handleColorChange} defaultColors={defaultOptions.colors} /> */}
             </div>
         </aside>

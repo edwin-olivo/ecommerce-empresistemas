@@ -45,6 +45,7 @@ export interface User {
 export interface FilterState {
     categories: string[];
     colors: string[];
+    classes?: string[];
     maxPrice: number;
 }
 
