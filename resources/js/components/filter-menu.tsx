@@ -1,5 +1,6 @@
 import CategoryFilter from '@/components/filters/category-filter';
 import PriceFilter from '@/components/filters/price-filter';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import type { Color, FilterState } from '@/types';
 import React from 'react';
 
@@ -59,20 +60,50 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                     </button>
                 </div>
 
-                <CategoryFilter
-                    selectedCategories={filters.categories}
-                    onCategoryChange={handleCategoryChange}
-                    defaultCategories={defaultOptions.categories}
-                />
-                {defaultOptions.classes && defaultOptions.classes.length > 0 && (
-                    <CategoryFilter
-                        selectedCategories={filters.classes}
-                        onCategoryChange={handleClassChange}
-                        defaultCategories={defaultOptions.classes}
-                    />
-                )}
-                <PriceFilter maxPrice={filters.maxPrice} priceRange={{ min: minPriceRange, max: maxPriceRange }} onPriceChange={handlePriceChange} />
-                {/* <ColorFilter selectedColors={filters.colors} onColorChange={handleColorChange} defaultColors={defaultOptions.colors} /> */}
+                <Accordion type="multiple" className="w-full" defaultValue={['item-1', 'item-2', 'item-3']}>
+                    <AccordionItem value="item-1">
+                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">
+                            Categoría
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4">
+                            <CategoryFilter
+                                selectedCategories={filters.categories}
+                                onCategoryChange={handleCategoryChange}
+                                defaultCategories={defaultOptions.categories}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-2">
+                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">
+                            Clase
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4">
+                            <CategoryFilter
+                                selectedCategories={filters.classes}
+                                onCategoryChange={handleClassChange}
+                                defaultCategories={defaultOptions.classes}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-3">
+                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">
+                            Precio
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4">
+                            <PriceFilter
+                                maxPrice={filters.maxPrice}
+                                priceRange={{ min: minPriceRange, max: maxPriceRange }}
+                                onPriceChange={handlePriceChange}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
+                    {/* <AccordionItem value="item-4">
+                        <AccordionTrigger className="border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">Color</AccordionTrigger>
+                        <AccordionContent className="pt-4">
+                            <ColorFilter selectedColors={filters.colors} onColorChange={handleColorChange} defaultColors={defaultOptions.colors} />
+                        </AccordionContent>
+                    </AccordionItem> */}
+                </Accordion>
             </div>
         </aside>
     );
