@@ -1,122 +1,127 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import type { Product, FilterState, Color } from '@/types';
-import { products as initialProducts } from '@/data/data';
-import ProductCard from '@/components/ProductCard';
-import FilterMenu from '@/components/FilterMenu';
+import FilterMenu from '@/components/filter-menu';
+import ProductCard from '@/components/products/product-card';
+import type { Color, FilterState, Product } from '@/types';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const BrutalistHeader: React.FC = () => (
-  <header className="border-b-4 border-black p-4 flex justify-between items-center bg-neutral-200 sticky top-0 z-10">
-    <h1 className="text-2xl font-extrabold uppercase">TIENDA</h1>
-    <nav className="flex gap-4 font-bold">
-      <a href="#" className="hover:underline">Novedades</a>
-      <a href="#" className="hover:underline">Hombre</a>
-      <a href="#" className="hover:underline">Mujer</a>
-    </nav>
-  </header>
+    <header className="sticky top-0 z-10 flex items-center justify-between border-b-4 border-black bg-neutral-200 p-4">
+        <h1 className="text-2xl font-extrabold uppercase">TIENDA</h1>
+        <nav className="flex gap-4 font-bold">
+            <a href="#" className="hover:underline">
+                Novedades
+            </a>
+            <a href="#" className="hover:underline">
+                Hombre
+            </a>
+            <a href="#" className="hover:underline">
+                Mujer
+            </a>
+        </nav>
+    </header>
 );
 
-const ProductGridPage: React.FC = () => {
-  const [colorOptions, setColorOptions] = useState<Color[]>([]);
-  const [categoriesOptions, setCategoriesOptions] = useState<string[]>([]);
+interface ProductsProps {
+    initialProducts: Product[];
+}
 
-  const [filters, setFilters] = useState<FilterState>({
-    categories: [],
-    colors: [],
-    maxPrice: 5000
-  });
+export default function Products({initialProducts}: ProductsProps) {
+    const [colorOptions, setColorOptions] = useState<Color[]>([]);
+    const [categoriesOptions, setCategoriesOptions] = useState<string[]>([]);
 
-  // Filter products based on current filter state
-  const filteredProducts = useMemo(() => {
-    return initialProducts.filter((product: Product) => {
-      // Category filter
-      if (filters.categories.length > 0 && !filters.categories.includes(product.category)) {
-        return false;
-      }
-
-      // Color filter
-      if (filters.colors.length > 0 && !filters.colors.includes(product.color)) {
-        return false;
-      }
-
-      // Price filter
-      if (product.price > filters.maxPrice) {
-        return false;
-      }
-
-      return true;
+    const [filters, setFilters] = useState<FilterState>({
+        categories: [],
+        colors: [],
+        maxPrice: 5000,
     });
-  }, [filters]);
 
-  const handleFiltersChange = (newFilters: FilterState) => {
-    setFilters(newFilters);
-  };
+    // Filter products based on current filter state
+    const filteredProducts = useMemo(() => {
+        return initialProducts.filter((product: Product) => {
+            // Category filter
+            if (filters.categories.length > 0 && !filters.categories.includes(product.category)) {
+                return false;
+            }
 
-  const handleClearFilters = () => {
-    setFilters({
-      categories: [],
-      colors: [],
-      maxPrice: 5000
-    });
-  };
+            // Color filter
+            if (filters.colors.length > 0 && !filters.colors.includes(product.color)) {
+                return false;
+            }
 
-  useEffect(() => {
-    const uniqueColors = Array.from(new Set(initialProducts.map(p => p.color)));
-    const colorValues: { [key: string]: string } = {};
-    uniqueColors.forEach(color => {
-      colorValues[color] = color;
-    });
-    setColorOptions(Object.entries(colorValues).map(([name, value]) => ({ name, value })));
-  }, []);
+            // Price filter
+            if (product.price > filters.maxPrice) {
+                return false;
+            }
 
-  useEffect(() => {
-    const uniqueCategories = Array.from(new Set(initialProducts.map(p => p.category)));
-    setCategoriesOptions(uniqueCategories);
-  }, []);
+            return true;
+        });
+    }, [filters]);
 
-  return (
-    <div className="font-mono bg-neutral-200 min-h-screen text-black">
-      <BrutalistHeader />
+    const handleFiltersChange = (newFilters: FilterState) => {
+        setFilters(newFilters);
+    };
 
-      <main className="max-w-7xl mx-auto p-4 sm:p-8">
-        <div className="flex flex-col md:flex-row gap-8">
+    const handleClearFilters = () => {
+        setFilters({
+            categories: [],
+            colors: [],
+            maxPrice: 5000,
+        });
+    };
 
-          {/* Columna de Filtros */}
-          <FilterMenu
-            filters={filters}
-            onFiltersChange={handleFiltersChange}
-            onClearFilters={handleClearFilters}
-            defaultOptions={{ categories: categoriesOptions, colors: colorOptions }}
-          />
+    useEffect(() => {
+        const uniqueColors = Array.from(new Set(initialProducts.map((p) => p.color)));
+        const colorValues: { [key: string]: string } = {};
+        uniqueColors.forEach((color) => {
+            colorValues[color] = color;
+        });
+        setColorOptions(Object.entries(colorValues).map(([name, value]) => ({ name, value })));
+    }, []);
 
-          {/* Columna de Productos */}
-          <section className="flex-1">
-            <div className="mb-4">
-              <p className="text-sm text-neutral-600">
-                Mostrando {filteredProducts.length} de {initialProducts.length} productos
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-xl text-neutral-600">No se encontraron productos con los filtros seleccionados.</p>
-                <button
-                  onClick={handleClearFilters}
-                  className="mt-4 px-6 py-2 border-2 border-black bg-white hover:bg-black hover:text-white transition-colors font-bold"
-                >
-                  Limpiar filtros
-                </button>
-              </div>
-            )}
-          </section>
+    useEffect(() => {
+        const uniqueCategories = Array.from(new Set(initialProducts.map((p) => p.category)));
+        setCategoriesOptions(uniqueCategories);
+    }, []);
 
+    return (
+        <div className="min-h-screen bg-neutral-200 font-mono text-black">
+            <BrutalistHeader />
+
+            <main className="mx-auto max-w-7xl p-4 sm:p-8">
+                <div className="flex flex-col gap-8 md:flex-row">
+                    {/* Columna de Filtros */}
+                    <FilterMenu
+                        filters={filters}
+                        onFiltersChange={handleFiltersChange}
+                        onClearFilters={handleClearFilters}
+                        defaultOptions={{ categories: categoriesOptions, colors: colorOptions }}
+                    />
+
+                    {/* Columna de Productos */}
+                    <section className="flex-1">
+                        <div className="mb-4">
+                            <p className="text-sm text-neutral-600">
+                                Mostrando {filteredProducts.length} de {initialProducts.length} productos
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                            {filteredProducts.map((product) => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
+                        {filteredProducts.length === 0 && (
+                            <div className="py-12 text-center">
+                                <p className="text-xl text-neutral-600">No se encontraron productos con los filtros seleccionados.</p>
+                                <button
+                                    onClick={handleClearFilters}
+                                    className="mt-4 border-2 border-black bg-white px-6 py-2 font-bold transition-colors hover:bg-black hover:text-white"
+                                >
+                                    Limpiar filtros
+                                </button>
+                            </div>
+                        )}
+                    </section>
+                </div>
+            </main>
         </div>
-      </main>
-    </div>
-  );
+    );
 };
-
-export default ProductGridPage;
