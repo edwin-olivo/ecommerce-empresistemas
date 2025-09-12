@@ -70,7 +70,7 @@ class AosProducts extends Model
 	];
 
 	public function custom()
-    {
-        return $this->hasOne(AosProductsCstm::class, 'id_c', 'id');
-    }
+	{
+		return $this->hasOne(AosProductsCstm::class, 'id_c', 'id');
+	}
 }

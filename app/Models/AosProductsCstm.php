@@ -71,6 +71,7 @@ class AosProductsCstm extends Model
 {
 	protected $table = 'aos_products_cstm';
 	protected $primaryKey = 'id_c';
+	protected $appends = ['url_imagen'];
 	public $incrementing = false;
 	public $timestamps = false;
 
@@ -158,7 +159,12 @@ class AosProductsCstm extends Model
 	];
 
 	public function product()
-    {
-        return $this->belongsTo(AosProducts::class, 'id_c', 'id');
-    }
+	{
+		return $this->belongsTo(AosProducts::class, 'id_c', 'id');
+	}
+
+	public function getUrlImagenAttribute()
+	{
+		return $this->nombre_imagen_c ? 'https://wenzhou.erponweb.com.mx/customcode/imagenes/' . $this->nombre_imagen_c : null;
+	}
 }
