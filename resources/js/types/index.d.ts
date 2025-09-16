@@ -63,5 +63,5 @@ export interface Product {
     color: string;
     description?: string;
     custom?: { [key: string]: any } | null;
-    [key: string]: unknown; // This allows for additional properties...
+    [key: string]: any; // This allows for additional properties...
 }
