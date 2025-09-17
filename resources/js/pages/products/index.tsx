@@ -1,19 +1,21 @@
 import FilterMenu from '@/components/filter-menu';
 import ProductCard from '@/components/products/product-card';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Color, FilterState, Product } from '@/types';
+import type { BreadcrumbItem, CheckboxOption, Color, FilterState, Product } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 
 interface ProductsProps {
     initialProducts: Product[];
+    categories: Record<string, string>;
+    classes: Record<string, string>;
 }
 
 const initialFilterState: FilterState = {
     categories: [],
     colors: [],
     classes: [],
-    maxPrice: 200000,
+    priceRange: [0, 1000],
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -23,11 +25,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Products({ initialProducts }: ProductsProps) {
-    const [colorOptions, setColorOptions] = useState<Color[]>([]);
-    const [categoriesOptions, setCategoriesOptions] = useState<string[]>([]);
-    const [classOptions, setClassOptions] = useState<string[]>([]);
-
+export default function Products({ initialProducts, categories, classes }: ProductsProps) {
+    const [colorOptions, setColorOptions] = useState<CheckboxOption>({});
+    const [categoriesOptions, setCategoriesOptions] = useState<CheckboxOption>(categories);
+    const [classOptions, setClassOptions] = useState<CheckboxOption>(classes);
     const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
     // Filter products based on current filter state
@@ -52,8 +53,11 @@ export default function Products({ initialProducts }: ProductsProps) {
             }
 
             // Price filter
-            if (product.price > filters.maxPrice) {
-                return false;
+            if (filters.priceRange) {
+                const [minPrice, maxPrice] = filters.priceRange;
+                if (product.price < minPrice || product.price > maxPrice) {
+                    return false;
+                }
             }
 
             return true;
@@ -68,25 +72,6 @@ export default function Products({ initialProducts }: ProductsProps) {
         setFilters(initialFilterState);
     };
 
-    useEffect(() => {
-        const uniqueColors = Array.from(new Set(initialProducts.map((p) => p.color)));
-        const colorValues: { [key: string]: string } = {};
-        uniqueColors.forEach((color) => {
-            colorValues[color] = color;
-        });
-        setColorOptions(Object.entries(colorValues).map(([name, value]) => ({ name, value })));
-    }, [initialProducts]);
-
-    useEffect(() => {
-        const uniqueCategories = Array.from(new Set(initialProducts.map((p) => p.category)));
-        setCategoriesOptions(uniqueCategories);
-    }, [initialProducts]);
-
-    useEffect(() => {
-        const uniqueClasses = Array.from(new Set(initialProducts.map((p) => p.custom?.clase_c)));
-        setClassOptions(uniqueClasses);
-    }, [initialProducts]);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -98,10 +83,11 @@ export default function Products({ initialProducts }: ProductsProps) {
                         onFiltersChange={handleFiltersChange}
                         onClearFilters={handleClearFilters}
                         defaultOptions={{
+                            ...initialFilterState,
                             categories: categoriesOptions,
-                            colors: colorOptions,
                             classes: classOptions,
-                            priceRange: { min: 0, max: 200000 },
+                            colors: colorOptions,
+                            priceRange: [0, 5000],
                         }}
                     />
 

@@ -1,30 +1,27 @@
 import CategoryFilter from '@/components/filters/category-filter';
 import PriceFilter from '@/components/filters/price-filter';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import type { Color, FilterState } from '@/types';
+import type { CheckboxOption, FilterState } from '@/types';
 import React from 'react';
 
 interface FilterMenuProps {
-    filters?: FilterState;
-    defaultOptions?: {
-        categories: string[];
-        colors: Color[];
-        classes?: string[];
-        priceRange?: { min: number; max: number } | undefined;
+    filters: FilterState;
+    defaultOptions: {
+        categories: CheckboxOption;
+        classes: CheckboxOption;
+        colors: CheckboxOption;
+        priceRange: [number, number];
     };
-    colorOptions?: Color[];
     onFiltersChange?: (filters: FilterState) => void;
     onClearFilters?: () => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({
-    filters = { categories: [], colors: [], maxPrice: 5000, classes: [] },
-    defaultOptions = { categories: ['Abrigos', 'Sudaderas', 'Pantalones', 'Camisetas', 'Accesorios', 'Calzado'], colors: [] },
-    onFiltersChange,
-    onClearFilters,
-}) => {
-    const minPriceRange = defaultOptions.priceRange?.min ?? 0;
-    const maxPriceRange = defaultOptions.priceRange?.max ?? 5000;
+const FilterMenu: React.FC<FilterMenuProps> = ({ filters, defaultOptions, onFiltersChange, onClearFilters }) => {
+    const minPriceRange = defaultOptions.priceRange?.[0] ?? 0;
+    const maxPriceRange = defaultOptions.priceRange?.[1] ?? 5000;
+
+    const minPrice = filters.priceRange ? filters.priceRange[0] : minPriceRange;
+    const maxPrice = filters.priceRange ? filters.priceRange[1] : maxPriceRange;
 
     const handleCategoryChange = (categories: string[]) => {
         if (onFiltersChange) {
@@ -44,15 +41,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         }
     };
 
-    const handlePriceChange = (maxPrice: number) => {
+    const handlePriceChange = (priceRange: [number, number]) => {
         if (onFiltersChange) {
-            onFiltersChange({ ...filters, maxPrice });
+            onFiltersChange({ ...filters, priceRange });
         }
     };
 
     return (
         <aside className="w-full md:w-64 lg:w-72">
-            <div className="border-4 border-black p-6">
+            <div className="rounded-xl border border-neutral-200 p-6">
                 <div className="mb-6 flex items-center justify-between">
                     <h2 className="text-2xl font-bold">Filtros</h2>
                     <button onClick={onClearFilters} className="cursor-pointer text-sm underline hover:text-neutral-600">
@@ -91,7 +88,8 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                         </AccordionTrigger>
                         <AccordionContent className="pt-4">
                             <PriceFilter
-                                maxPrice={filters.maxPrice}
+                                minPrice={minPrice}
+                                maxPrice={maxPrice}
                                 priceRange={{ min: minPriceRange, max: maxPriceRange }}
                                 onPriceChange={handlePriceChange}
                             />

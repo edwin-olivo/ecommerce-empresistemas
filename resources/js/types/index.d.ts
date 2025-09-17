@@ -44,14 +44,18 @@ export interface User {
 
 export interface FilterState {
     categories: string[];
+    classes: string[];
     colors: string[];
-    classes?: string[];
-    maxPrice: number;
+    priceRange: [number, number];
 }
 
 export interface Color {
     name: string;
     value: string;
+}
+
+export interface CheckboxOption {
+    [key: string]: string;
 }
 
 export interface Product {
