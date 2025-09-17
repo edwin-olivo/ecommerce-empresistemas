@@ -27,9 +27,10 @@ function ProductCard({ product }: Props) {
         <Card className="cursor-pointer flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
             <CardHeader className="p-0">
                 <img src={imageSrc} alt={product.part_number} className="h-48 w-full object-cover" />
-                <Badge variant={getStatusBadgeVariant(product.status ?? 'default')} className="absolute m-2">
-                    {product.status ?? ''}
-                </Badge>
+                {product.status &&
+                    <Badge variant={getStatusBadgeVariant(product.status ?? 'default')} className="absolute m-2">
+                        {product.status}
+                    </Badge>}
             </CardHeader>
             <CardContent className="flex-grow p-4">
                 <p className="text-sm text-muted-foreground">{product.category}</p>
