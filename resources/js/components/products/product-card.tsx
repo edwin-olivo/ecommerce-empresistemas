@@ -21,23 +21,23 @@ function ProductCard({ product }: Props) {
         }
     };
 
-    const imageSrc = typeof product.imageUrl === 'string' && product.imageUrl.trim() !== '' ? product.imageUrl : 'https://placehold.co/600x400';
+    const imageSrc = typeof product?.custom?.url_imagen === 'string' && product?.custom?.url_imagen.trim() !== '' ? product?.custom?.url_imagen : 'https://placehold.co/600x400';
 
     return (
-        <Card className="flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+        <Card className="cursor-pointer flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
             <CardHeader className="p-0">
-                <img src={imageSrc} alt={product.name} className="h-48 w-full object-cover" />
+                <img src={imageSrc} alt={product.part_number} className="h-48 w-full object-cover" />
                 <Badge variant={getStatusBadgeVariant(product.status ?? 'default')} className="absolute m-2">
                     {product.status ?? ''}
                 </Badge>
             </CardHeader>
             <CardContent className="flex-grow p-4">
                 <p className="text-sm text-muted-foreground">{product.category}</p>
-                <CardTitle className="mt-1 text-lg font-semibold">{product.name}</CardTitle>
+                <CardTitle className="mt-1 text-lg font-semibold">{product.part_number}</CardTitle>
             </CardContent>
             <CardFooter className="flex items-center justify-between p-4 pt-0">
                 <p className="text-xl font-bold">${product.price.toFixed(2)}</p>
-                <Button>Ver Más</Button>
+                <Button variant="default" className='transition-colors duration-200 hover:bg-blue-700 cursor-pointer'>Ver Más</Button>
             </CardFooter>
         </Card>
     );
