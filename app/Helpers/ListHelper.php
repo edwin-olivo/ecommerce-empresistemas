@@ -11,7 +11,7 @@ class ListHelper
     /**
      * Cache TTL in minutes
      */
-    private const CACHE_TTL = 60;
+    private const CACHE_TTL = 60 * 24; // 24 hours
 
     /**
      * Generates a standardized cache key for a list
@@ -53,7 +53,7 @@ class ListHelper
      * Gets a list from ERP with cache management
      * 
      * @param string $list List name to retrieve
-     * @param string|null $baseUrl Optional base URL (if not using baseUrlAdmin function)
+     * @param string|null $baseUrl Optional base URL (if not using config)
      * @return array List data
      */
     public static function getERPList(string $list, ?string $baseUrl = null): array
@@ -71,11 +71,9 @@ class ListHelper
         }
 
         try {
-            // Build URL - assuming baseUrlAdmin is a global function
-            // If not, you'll need to pass the base URL or configure it
-            $url = $baseUrl 
-                ? "{$baseUrl}/index.php?entryPoint=SugarListExternalAccess&list={$list}"
-                : "https://wenzhou.erponweb.com.mx/index.php?entryPoint=SugarListExternalAccess&list={$list}";
+            // Use config base_url if no baseUrl provided
+            $baseUrl = $baseUrl ?: config('app.base_url', 'https://wenzhou.erponweb.com.mx');
+            $url = "{$baseUrl}/index.php?entryPoint=SugarListExternalAccess&list={$list}";
 
             // Make API request
             $data = self::makeApiRequest($url);
