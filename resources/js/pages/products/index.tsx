@@ -153,9 +153,11 @@ export default function Products() {
                             </div>
                         )}
 
-                        <div className="mt-8 w-full">
-                            <CustomPagination {...products} />
-                        </div>
+                        {products.last_page > 1 && (
+                            <div className="mt-8 w-full">
+                                <CustomPagination {...products} />
+                            </div>
+                        )}
                     </section>
                 </div>
             </main>
