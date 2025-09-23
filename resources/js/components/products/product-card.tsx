@@ -1,6 +1,3 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Product } from '@/types';
 
 interface Props {
@@ -21,26 +18,29 @@ function ProductCard({ product }: Props) {
         }
     };
 
-    const imageSrc = typeof product?.custom?.url_imagen === 'string' && product?.custom?.url_imagen.trim() !== '' ? product?.custom?.url_imagen : 'https://placehold.co/600x400';
+    const imageSrc =
+        typeof product?.custom?.url_imagen === 'string' && product?.custom?.url_imagen.trim() !== ''
+            ? product?.custom?.url_imagen
+            : 'https://placehold.co/600x400';
 
     return (
-        <Card className="cursor-pointer flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
-            <CardHeader className="p-0">
-                <img src={imageSrc} alt={product.part_number} className="h-48 w-full object-cover" />
-                {product.status &&
-                    <Badge variant={getStatusBadgeVariant(product.status ?? 'default')} className="absolute m-2">
-                        {product.status}
-                    </Badge>}
-            </CardHeader>
-            <CardContent className="flex-grow p-4">
-                <p className="text-sm text-muted-foreground">{product.category}</p>
-                <CardTitle className="mt-1 text-lg font-semibold">{product.part_number}</CardTitle>
-            </CardContent>
-            <CardFooter className="flex items-center justify-between p-4 pt-0">
-                <p className="text-xl font-bold">${product.price.toFixed(2)}</p>
-                <Button variant="default" className='transition-colors duration-200 hover:bg-blue-700 cursor-pointer'>Ver Más</Button>
-            </CardFooter>
-        </Card>
+        <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-white p-[15px] transition-all duration-[0.3s] hover:bg-white">
+            <div className="flex h-fit w-full flex-col items-center justify-center gap-[15px]">
+                <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-[0.3s] group-hover:h-[120px]">
+                    <img src={imageSrc} alt={product.name} className="h-full w-full object-cover" />
+                </div>
+                <div className="flex h-fit items-start justify-center">
+                    <p className="text-[0.72em] font-medium text-neutral-600 uppercase">UIVERSE PREMIUM FONT (REGULAR)</p>
+                    <p className="text-[1em] font-bold text-neutral-600 uppercase">$3</p>
+                    {/* <p className="text-[0.7em] font-medium text-neutral-400 uppercase line-through">&nbsp;$6</p> */}
+                    <p></p>
+                </div>
+                <button className="mt-2.5 h-10 w-full cursor-pointer rounded-[40px] border-0 bg-[rgb(24,24,24)] font-medium text-white transition-all duration-[0.3s] group-hover:mt-0 hover:bg-[greenyellow] hover:text-[rgb(35,35,35)]">
+                    Agregar al carrito
+                </button>
+            </div>
+            <p className="absolute top-5 left-5 rounded-[15px] bg-[greenyellow] px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p>
+        </div>
     );
 }
 
