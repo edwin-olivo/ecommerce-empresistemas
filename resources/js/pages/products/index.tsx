@@ -1,6 +1,7 @@
 import CustomPagination, { CustomPaginationProps } from '@/components/custom-pagination';
 import FilterMenu from '@/components/filter-menu';
 import ProductCard from '@/components/products/product-card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { getArrayParam } from '@/lib/utils';
 import type { BreadcrumbItem, CheckboxOption, FilterState } from '@/types';
@@ -19,6 +20,7 @@ const initialFilterState: FilterState = {
     colors: [],
     classes: [],
     priceRange: [0, 5000],
+    orderBy: 'name_asc',
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -30,12 +32,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Products() {
     const { products, categories, classes, colors } = usePage().props as unknown as ProductsProps;
+    
     // No necesitamos estado local para la paginación cuando usamos Inertia
     const productsList = products.data;
-
-    const [colorOptions, setColorOptions] = useState<CheckboxOption>({});
-    const [categoryOptions, setCategoryOptions] = useState<CheckboxOption>(categories);
-    const [classOptions, setClassOptions] = useState<CheckboxOption>(classes);
     const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
     // Obtener los filtros iniciales de la URL al cargar la página
@@ -87,6 +86,11 @@ export default function Products() {
             params.max_price = newFilters.priceRange[1];
         }
 
+        // Añadir ordenamiento si existe
+        if (newFilters.orderBy) {
+            params.orderBy = newFilters.orderBy;
+        }
+
         // Navegar usando Inertia
         router.get('/products', params, {
             preserveState: true,
@@ -132,9 +136,47 @@ export default function Products() {
                     {/* Columna de Productos */}
                     <section className="flex-1">
                         <div className="mb-4">
-                            <p className="text-sm text-neutral-600">
-                                Mostrando {products.to} de {products.total} productos
-                            </p>
+                            <div className="flex items-center justify-between py-4">
+                                <div className="inline-block">
+                                    <p className="text-sm text-neutral-600">
+                                        Mostrando {products.to} de {products.total} productos
+                                    </p>
+                                </div>
+                                <Select onValueChange={(value) => {
+                                    const newFilters = { ...filters, orderBy: value as FilterState['orderBy'] };
+                                    handleFiltersChange(newFilters);
+                                }} value={filters.orderBy}>
+                                    <SelectTrigger className="inline-flex h-8 w-48 items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
+                                        <SelectValue placeholder="Ordenar por" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                        <SelectItem
+                                            value="price_asc"
+                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            Precio: Bajo a Alto
+                                        </SelectItem>
+                                        <SelectItem
+                                            value="price_desc"
+                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            Precio: Alto a Bajo
+                                        </SelectItem>
+                                        <SelectItem
+                                            value="name_asc"
+                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            Nombre: A a Z
+                                        </SelectItem>
+                                        <SelectItem
+                                            value="name_desc"
+                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            Nombre: Z a A
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
                         <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-4">
                             {productsList.map((product) => (

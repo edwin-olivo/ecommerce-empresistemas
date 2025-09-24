@@ -10,8 +10,34 @@ use Inertia\Inertia;
 class ProductController extends Controller
 {
     function index(Request $request) {
+        // Recuperar el ordenamiento de la solicitud
+        $orderBy = $request->input('orderBy', null);
+        
+        switch ($orderBy) {
+            case 'price_asc':
+                $orderColumn = 'price';
+                $orderDirection = 'asc';
+                break;
+            case 'price_desc':
+                $orderColumn = 'price';
+                $orderDirection = 'desc';
+                break;
+            case 'name_asc':
+                $orderColumn = 'part_number';
+                $orderDirection = 'asc';
+                break;
+            case 'name_desc':
+                $orderColumn = 'part_number';
+                $orderDirection = 'desc';
+                break;
+            default:
+                $orderColumn = 'part_number';
+                $orderDirection = 'asc';
+                break;
+        }
+        
         // Iniciar la consulta
-        $query = AosProducts::with('custom')->orderBy('part_number', 'asc');
+        $query = AosProducts::with('custom')->orderBy($orderColumn, $orderDirection);
 
         // Aplicar filtros de categoría
         if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
@@ -36,7 +62,7 @@ class ProductController extends Controller
         }
 
         // Obtener los resultados paginados
-        $products = $query->paginate(15)->withQueryString();
+        $products = $query->paginate(12)->withQueryString();
 
         // echo "<pre>";
         // var_dump($products->toArray());
