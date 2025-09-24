@@ -1,7 +1,8 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from '@/components/ui/pagination';
-import { filterLinks, renderLabel } from '@/lib/utils';
+import { cn, filterLinks, renderLabel } from '@/lib/utils';
 import { PaginationLinkItem, Product } from '@/types';
 import { Link } from '@inertiajs/react';
+import { buttonVariants } from './ui/button';
 
 export interface CustomPaginationProps {
     total: number;
@@ -24,19 +25,45 @@ export default function CustomPagination(props: CustomPaginationProps) {
     return (
         <Pagination>
             <PaginationContent>
+                {props.first_page_url && props.current_page > 1 && (
+                    <PaginationItem>
+                        <Link href={props.first_page_url} preserveScroll preserveState only={['products']} className={cn(
+                            buttonVariants({
+                                variant: "ghost",
+                                size: "sm",
+                            }), "")}>
+                            Primera
+                        </Link>
+                    </PaginationItem>
+                )}
+
                 {filterLinks(props.links)?.map((link, idx) => (
                     <PaginationItem key={idx}>
                         {link.url ? (
-                            <Link href={link.url} preserveScroll preserveState only={['products']}>
-                                <PaginationLink isActive={link.active} size="sm" href={link.url}>
-                                    {renderLabel(link.label)}
-                                </PaginationLink>
+                            <Link href={link.url} preserveScroll preserveState only={['products']} className={cn(
+                                buttonVariants({
+                                    variant: link.active ? "outline" : "ghost",
+                                    size: "sm",
+                                }), "")}>
+                                {renderLabel(link.label)}
                             </Link>
                         ) : (
                             <PaginationEllipsis />
                         )}
                     </PaginationItem>
                 ))}
+
+                {props.last_page_url && props.current_page < props.last_page && (
+                    <PaginationItem>
+                        <Link href={props.last_page_url} preserveScroll preserveState only={['products']} className={cn(
+                            buttonVariants({
+                                variant: "ghost",
+                                size: "sm",
+                            }), "")}>
+                            Última
+                        </Link>
+                    </PaginationItem>
+                )}
             </PaginationContent>
         </Pagination>
     );
