@@ -69,3 +69,9 @@ export interface Product {
     custom?: { [key: string]: any } | null;
     [key: string]: any; // This allows for additional properties...
 }
+
+export interface PaginationLinkItem {
+    url: string | null;
+    label: string;
+    active: boolean;
+}

@@ -1,3 +1,4 @@
+import { PaginationLinkItem } from '@/types';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -15,4 +16,29 @@ export function getArrayParam(paramName: string, urlSearchParams?: URLSearchPara
         }
     });
     return result;
+}
+
+export function filterLinks(links: PaginationLinkItem[]) {
+    const activeIndex = links.findIndex((link) => link.active);
+    const filtered: PaginationLinkItem[] = [];
+
+    links.forEach((link, i) => {
+        // Siempre incluir el primero y el último (anterior/siguiente)
+        if (i === 0 || i === links.length - 1) {
+            filtered.push(link);
+        }
+
+        // Incluir páginas cercanas al activo (por ejemplo, ±2)
+        if (Math.abs(i - activeIndex) <= 2 && i !== 0 && i !== links.length - 1) {
+            filtered.push(link);
+        }
+    });
+
+    return filtered;
+}
+
+export function renderLabel(label: string) {
+    if (label === 'pagination.previous') return 'Anterior';
+    if (label === 'pagination.next') return 'Siguiente';
+    return label;
 }
