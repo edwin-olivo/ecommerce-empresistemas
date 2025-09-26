@@ -35,7 +35,17 @@ class ProductController extends Controller
                 $orderDirection = 'asc';
                 break;
         }
-        
+
+        // Recuperar el tamaño de página de la solicitud
+        $pageSize = $request->input('pageSize', '12');
+        if ($pageSize === 'all') {
+            $pageSize = -1; // Obtener todos los productos
+        } elseif (is_numeric($pageSize) && in_array($pageSize, ['12', '24', '48'])) {
+            $pageSize = (int)$pageSize;
+        } else {
+            $pageSize = 12; // Valor predeterminado
+        }
+
         // Iniciar la consulta
         $query = AosProducts::with('custom')->orderBy($orderColumn, $orderDirection);
 
@@ -62,7 +72,11 @@ class ProductController extends Controller
         }
 
         // Obtener los resultados paginados
-        $products = $query->paginate(12)->withQueryString();
+        if($pageSize > 0) {
+            $products = $query->paginate($pageSize)->withQueryString();
+        } else {
+            $products = $query->get();
+        }
 
         // echo "<pre>";
         // var_dump($products->toArray());

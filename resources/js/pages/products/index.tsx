@@ -15,12 +15,27 @@ interface ProductsProps {
     colors: Record<string, string>;
 }
 
+const orderByOptions: CheckboxOption = {
+    name_asc: 'Nombre: A a Z',
+    name_desc: 'Nombre: Z a A',
+    price_asc: 'Precio: Bajo a Alto',
+    price_desc: 'Precio: Alto a Bajo',
+};
+
+const pageSizeOptions: CheckboxOption = {
+    '12': '12',
+    '24': '24',
+    '48': '48',
+    all: 'Todos',
+};
+
 const initialFilterState: FilterState = {
     categories: [],
     colors: [],
     classes: [],
     priceRange: [0, 5000],
     orderBy: 'name_asc',
+    pageSize: '12',
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -32,9 +47,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Products() {
     const { products, categories, classes, colors } = usePage().props as unknown as ProductsProps;
-    
+
     // No necesitamos estado local para la paginación cuando usamos Inertia
-    const productsList = products.data;
+    const productsList = products.data || products || [];
     const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
     // Obtener los filtros iniciales de la URL al cargar la página
@@ -46,6 +61,8 @@ export default function Products() {
         const classesParam = getArrayParam('classes', params);
         const minPriceParam = params.get('min_price');
         const maxPriceParam = params.get('max_price');
+        const orderByParam = params.get('orderBy');
+        const pageSizeParam = params.get('pageSize');
 
         // Configurar los filtros iniciales basados en los parámetros de URL
         const initialFilters: FilterState = {
@@ -56,6 +73,8 @@ export default function Products() {
                 minPriceParam ? parseInt(minPriceParam) : initialFilterState.priceRange[0],
                 maxPriceParam ? parseInt(maxPriceParam) : initialFilterState.priceRange[1],
             ],
+            orderBy: (orderByParam as FilterState['orderBy']) || initialFilterState.orderBy,
+            pageSize: (pageSizeParam as FilterState['pageSize']) || initialFilterState.pageSize,
         };
 
         setFilters(initialFilters);
@@ -89,6 +108,11 @@ export default function Products() {
         // Añadir ordenamiento si existe
         if (newFilters.orderBy) {
             params.orderBy = newFilters.orderBy;
+        }
+
+        // Añadir tamaño de página si existe
+        if (newFilters.pageSize) {
+            params.pageSize = newFilters.pageSize;
         }
 
         // Navegar usando Inertia
@@ -138,47 +162,64 @@ export default function Products() {
                         <div className="mb-4">
                             <div className="flex items-center justify-between py-4">
                                 <div className="inline-block">
-                                    <p className="text-sm text-neutral-600">
-                                        Mostrando {products.to} de {products.total} productos
-                                    </p>
+                                    {filters.pageSize === 'all' ? (
+                                        <p className="text-sm text-neutral-600">Mostrando todos los productos</p>
+                                    ) : (
+                                        <p className="text-sm text-neutral-600">
+                                            Mostrando {products.from} - {products.to} de {products.total} productos
+                                        </p>
+                                    )}
                                 </div>
-                                <Select onValueChange={(value) => {
-                                    const newFilters = { ...filters, orderBy: value as FilterState['orderBy'] };
-                                    handleFiltersChange(newFilters);
-                                }} value={filters.orderBy}>
-                                    <SelectTrigger className="inline-flex h-8 w-48 items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
-                                        <SelectValue placeholder="Ordenar por" />
-                                    </SelectTrigger>
-                                    <SelectContent className="bg-white">
-                                        <SelectItem
-                                            value="price_asc"
-                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            Precio: Bajo a Alto
-                                        </SelectItem>
-                                        <SelectItem
-                                            value="price_desc"
-                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            Precio: Alto a Bajo
-                                        </SelectItem>
-                                        <SelectItem
-                                            value="name_asc"
-                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            Nombre: A a Z
-                                        </SelectItem>
-                                        <SelectItem
-                                            value="name_desc"
-                                            className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            Nombre: Z a A
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <div className="inline-block">
+                                    <div className="flex gap-2">
+                                        {Object.entries(pageSizeOptions).map(([key, label]) => (
+                                            <button
+                                                key={key}
+                                                type="button"
+                                                className={`rounded border px-3 py-1 text-sm font-medium transition-colors hover:cursor-pointer ${
+                                                    filters.pageSize === key
+                                                        ? 'border-black bg-black text-white'
+                                                        : 'border-neutral-300 bg-white text-black hover:bg-neutral-100'
+                                                } `}
+                                                onClick={() => {
+                                                    const newFilters = { ...filters, pageSize: key as FilterState['pageSize'] };
+                                                    handleFiltersChange(newFilters);
+                                                }}
+                                            >
+                                                {label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="inline-block">
+                                    <Select
+                                        onValueChange={(value) => {
+                                            const newFilters = { ...filters, orderBy: value as FilterState['orderBy'] };
+                                            handleFiltersChange(newFilters);
+                                        }}
+                                        value={filters.orderBy}
+                                        defaultValue={initialFilterState.orderBy}
+                                    >
+                                        <SelectTrigger className="inline-flex h-8 w-48 items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50">
+                                            <SelectValue placeholder="Ordenar por" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white">
+                                            {orderByOptions &&
+                                                Object.keys(orderByOptions).map((key) => (
+                                                    <SelectItem
+                                                        key={key}
+                                                        value={key}
+                                                        className="cursor-pointer p-2 text-sm select-none hover:bg-accent hover:text-accent-foreground"
+                                                    >
+                                                        {orderByOptions[key]}
+                                                    </SelectItem>
+                                                ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {productsList.map((product) => (
                                 <ProductCard key={product.id} product={product} />
                             ))}
