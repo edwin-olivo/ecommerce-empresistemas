@@ -1,4 +1,4 @@
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from '@/components/ui/pagination';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 import { cn, filterLinks, renderLabel } from '@/lib/utils';
 import { PaginationLinkItem, Product } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -27,11 +27,19 @@ export default function CustomPagination(props: CustomPaginationProps) {
             <PaginationContent>
                 {props.first_page_url && props.current_page > 1 && (
                     <PaginationItem>
-                        <Link href={props.first_page_url} preserveScroll preserveState only={['products']} className={cn(
-                            buttonVariants({
-                                variant: "ghost",
-                                size: "sm",
-                            }), "")}>
+                        <Link
+                            href={props.first_page_url}
+                            preserveScroll
+                            preserveState
+                            only={['products']}
+                            className={cn(
+                                buttonVariants({
+                                    variant: 'ghost',
+                                    size: 'sm',
+                                }),
+                                '',
+                            )}
+                        >
                             Primera
                         </Link>
                     </PaginationItem>
@@ -40,11 +48,19 @@ export default function CustomPagination(props: CustomPaginationProps) {
                 {filterLinks(props.links)?.map((link, idx) => (
                     <PaginationItem key={idx}>
                         {link.url ? (
-                            <Link href={link.url} preserveScroll preserveState only={['products']} className={cn(
-                                buttonVariants({
-                                    variant: link.active ? "outline" : "ghost",
-                                    size: "sm",
-                                }), "")}>
+                            <Link
+                                href={link.url}
+                                preserveScroll
+                                preserveState
+                                only={['products']}
+                                className={cn(
+                                    buttonVariants({
+                                        variant: link.active ? 'outline' : 'ghost',
+                                        size: 'sm',
+                                    }),
+                                    '',
+                                )}
+                            >
                                 {renderLabel(link.label)}
                             </Link>
                         ) : (
@@ -55,11 +71,19 @@ export default function CustomPagination(props: CustomPaginationProps) {
 
                 {props.last_page_url && props.current_page < props.last_page && (
                     <PaginationItem>
-                        <Link href={props.last_page_url} preserveScroll preserveState only={['products']} className={cn(
-                            buttonVariants({
-                                variant: "ghost",
-                                size: "sm",
-                            }), "")}>
+                        <Link
+                            href={props.last_page_url}
+                            preserveScroll
+                            preserveState
+                            only={['products']}
+                            className={cn(
+                                buttonVariants({
+                                    variant: 'ghost',
+                                    size: 'sm',
+                                }),
+                                '',
+                            )}
+                        >
                             Última
                         </Link>
                     </PaginationItem>
