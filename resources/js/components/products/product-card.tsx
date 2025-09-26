@@ -27,12 +27,11 @@ function ProductCard({ product }: Props) {
         <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-white p-[15px] transition-all duration-[0.3s] hover:bg-white">
             <div className="flex h-fit w-full flex-col items-center justify-center gap-[15px]">
                 <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-[0.3s] group-hover:h-[120px]">
-                    <img src={imageSrc} alt={product.name} className="h-full w-full object-cover" />
+                    <img src={imageSrc} alt={product.name} className="h-full w-full object-cover" loading="lazy" />
                 </div>
-                <div className="flex h-fit items-start justify-center">
-                    <p className="text-[0.72em] font-medium text-neutral-600 uppercase">UIVERSE PREMIUM FONT (REGULAR)</p>
-                    <p className="text-[1em] font-bold text-neutral-600 uppercase">$3</p>
-                    {/* <p className="text-[0.7em] font-medium text-neutral-400 uppercase line-through">&nbsp;$6</p> */}
+                <div className="flex h-fit w-full flex-col items-start justify-between overflow-hidden">
+                    <p className="truncate text-[0.72em] font-medium text-neutral-600 uppercase">{product.part_number}</p>
+                    <p className="text-[1em] font-bold text-neutral-600 uppercase">$ {product.price}</p>
                     <p></p>
                 </div>
                 <button className="mt-2.5 h-10 w-full cursor-pointer rounded-[40px] border-0 bg-[rgb(24,24,24)] font-medium text-white transition-all duration-[0.3s] group-hover:mt-0 hover:bg-[greenyellow] hover:text-[rgb(35,35,35)]">
