@@ -55,7 +55,7 @@ export default function CustomPagination(props: CustomPaginationProps) {
                                 only={['products']}
                                 className={cn(
                                     buttonVariants({
-                                        variant: link.active ? 'outline' : 'ghost',
+                                        variant: link.active ? 'default' : 'ghost',
                                         size: 'sm',
                                     }),
                                     '',
