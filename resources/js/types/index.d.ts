@@ -48,6 +48,7 @@ export interface FilterState {
     colors: string[];
     priceRange: [number, number];
     orderBy?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
+    pageSize?: '12' | '24' | '48' | 'all';
 }
 
 export interface Color {
