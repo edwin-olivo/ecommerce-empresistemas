@@ -21,12 +21,12 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ defaultCategories = {},
     return (
         <div className="flex flex-col gap-2">
             {Object.entries(defaultCategories).map(([key, label]) => (
-                <label key={`${uid}-${key}`} className="flex cursor-pointer items-center gap-3">
+                <label key={`${uid}-${key}`} className="flex cursor-pointer items-center gap-3 text-sm">
                     <input
                         type="checkbox"
                         checked={selectedCategories.includes(key)}
                         onChange={() => handleCategoryToggle(key)}
-                        className="h-6 w-6 cursor-pointer appearance-none border-2 border-black checked:bg-black dark:border-neutral-500 dark:checked:bg-neutral-500"
+                        className="h-4 w-4 cursor-pointer appearance-none border-2 border-black checked:bg-black dark:border-neutral-500 dark:checked:bg-neutral-500"
                     />
                     {label === '' ? 'N/A' : label}
                 </label>

@@ -1,6 +1,7 @@
 import CustomPagination, { CustomPaginationProps } from '@/components/custom-pagination';
 import FilterMenu from '@/components/filter-menu';
 import ProductCard from '@/components/products/product-card';
+import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { getArrayParam } from '@/lib/utils';
@@ -173,21 +174,17 @@ export default function Products() {
                                 <div className="inline-block">
                                     <div className="flex gap-2">
                                         {Object.entries(pageSizeOptions).map(([key, label]) => (
-                                            <button
+                                            <Button
+                                                variant={filters.pageSize === key ? 'default' : 'outline'}
                                                 key={key}
-                                                type="button"
-                                                className={`rounded border px-3 py-1 text-sm font-medium transition-colors hover:cursor-pointer ${
-                                                    filters.pageSize === key
-                                                        ? 'border-black bg-black text-white'
-                                                        : 'border-neutral-300 bg-white text-black hover:bg-neutral-100'
-                                                } `}
+                                                className="cursor-pointer"
                                                 onClick={() => {
                                                     const newFilters = { ...filters, pageSize: key as FilterState['pageSize'] };
                                                     handleFiltersChange(newFilters);
                                                 }}
                                             >
                                                 {label}
-                                            </button>
+                                            </Button>
                                         ))}
                                     </div>
                                 </div>

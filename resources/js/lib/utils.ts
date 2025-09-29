@@ -38,7 +38,7 @@ export function filterLinks(links: PaginationLinkItem[]) {
 }
 
 export function renderLabel(label: string) {
-    if (label === 'pagination.previous') return 'Anterior';
-    if (label === 'pagination.next') return 'Siguiente';
+    if (label === 'pagination.previous') return '<';
+    if (label === 'pagination.next') return '>';
     return label;
 }
