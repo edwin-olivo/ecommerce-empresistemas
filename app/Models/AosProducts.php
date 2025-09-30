@@ -69,8 +69,22 @@ class AosProducts extends Model
 		'product_image'
 	];
 
+	/**
+	 * Define la relación con el modelo custom si no está definida.
+	 * Asumo que se llama 'custom'. Ajústalo si es necesario.
+	 */
 	public function custom()
 	{
 		return $this->hasOne(AosProductsCstm::class, 'id_c', 'id');
+	}
+
+	/**
+	 * Scope para filtrar por clase a través de la relación.
+	 */
+	public function scopeWhereClassIn($query, $classes)
+	{
+		return $query->whereHas('custom', function ($q) use ($classes) {
+			$q->whereIn('clase_c', (array) $classes);
+		});
 	}
 }

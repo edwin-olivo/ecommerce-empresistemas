@@ -23,10 +23,10 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ minPrice, maxPrice, onPriceCh
         <div className="flex flex-col gap-3">
             <div className="flex justify-between">
                 <label htmlFor="price" className="font-bold">
-                    Min: ${minPrice.toLocaleString()}
+                    Min: ${minPrice}
                 </label>
                 <label htmlFor="price" className="font-bold">
-                    Max: ${maxPrice.toLocaleString()}
+                    Max: ${maxPrice}
                 </label>
             </div>
 
@@ -47,7 +47,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ minPrice, maxPrice, onPriceCh
 
             <div className="flex justify-between text-sm text-neutral-600">
                 <span>${priceRange.min}</span>
-                <span>${priceRange.max.toLocaleString()}</span>
+                <span>${priceRange.max}</span>
             </div>
         </div>
     );

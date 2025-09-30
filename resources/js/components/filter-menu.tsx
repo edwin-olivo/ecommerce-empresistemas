@@ -4,48 +4,23 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import type { CheckboxOption, FilterState } from '@/types';
 import React from 'react';
 
+// Props actualizadas para mayor claridad y desacoplamiento
 interface FilterMenuProps {
-    filters: FilterState;
+    filters: Omit<FilterState, 'orderBy' | 'pageSize'>; // Solo necesita filtros visuales
     defaultOptions: {
         categories: CheckboxOption;
         classes: CheckboxOption;
-        colors: CheckboxOption;
         priceRange: [number, number];
     };
-    onFiltersChange?: (filters: FilterState) => void;
-    onClearFilters?: () => void;
+    onCategoryChange: (categories: string[]) => void;
+    onClassChange: (classes: string[]) => void;
+    onPriceChange: (priceRange: [number, number]) => void;
+    onClearFilters: () => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({ filters, defaultOptions, onFiltersChange, onClearFilters }) => {
+const FilterMenu: React.FC<FilterMenuProps> = ({ filters, defaultOptions, onCategoryChange, onClassChange, onPriceChange, onClearFilters }) => {
     const minPriceRange = defaultOptions.priceRange?.[0] ?? 0;
     const maxPriceRange = defaultOptions.priceRange?.[1] ?? 5000;
-
-    const minPrice = filters.priceRange ? filters.priceRange[0] : minPriceRange;
-    const maxPrice = filters.priceRange ? filters.priceRange[1] : maxPriceRange;
-
-    const handleCategoryChange = (categories: string[]) => {
-        if (onFiltersChange) {
-            onFiltersChange({ ...filters, categories });
-        }
-    };
-
-    const handleClassChange = (classes: string[]) => {
-        if (onFiltersChange) {
-            onFiltersChange({ ...filters, classes });
-        }
-    };
-
-    const handleColorChange = (colors: string[]) => {
-        if (onFiltersChange) {
-            onFiltersChange({ ...filters, colors });
-        }
-    };
-
-    const handlePriceChange = (priceRange: [number, number]) => {
-        if (onFiltersChange) {
-            onFiltersChange({ ...filters, priceRange });
-        }
-    };
 
     return (
         <aside className="w-full md:w-64 lg:w-72">
@@ -57,50 +32,45 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ filters, defaultOptions, onFilt
                     </button>
                 </div>
 
-                <Accordion type="multiple" className="w-full" defaultValue={['item-1', 'item-2', 'item-3']}>
+                <Accordion type="multiple" className="w-full" defaultValue={['item-1', 'item-3']}>
+                    {/* El resto del componente permanece igual, solo cambian las props que se pasan */}
                     <AccordionItem value="item-1">
-                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">
+                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left font-extrabold uppercase">
                             Categoría
                         </AccordionTrigger>
                         <AccordionContent className="pt-4">
                             <CategoryFilter
                                 selectedCategories={filters.categories}
-                                onCategoryChange={handleCategoryChange}
+                                onCategoryChange={onCategoryChange} // Pasa el manejador directamente
                                 defaultCategories={defaultOptions.categories}
                             />
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
-                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">
+                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left font-extrabold uppercase">
                             Clase
                         </AccordionTrigger>
                         <AccordionContent className="pt-4">
                             <CategoryFilter
                                 selectedCategories={filters.classes}
-                                onCategoryChange={handleClassChange}
+                                onCategoryChange={onClassChange} // Pasa el manejador directamente
                                 defaultCategories={defaultOptions.classes}
                             />
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
-                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">
+                        <AccordionTrigger className="cursor-pointer border-b-4 border-black pb-4 text-left font-extrabold uppercase">
                             Precio
                         </AccordionTrigger>
                         <AccordionContent className="pt-4">
                             <PriceFilter
-                                minPrice={minPrice}
-                                maxPrice={maxPrice}
+                                minPrice={filters.priceRange[0]}
+                                maxPrice={filters.priceRange[1]}
                                 priceRange={{ min: minPriceRange, max: maxPriceRange }}
-                                onPriceChange={handlePriceChange}
+                                onPriceChange={onPriceChange} // Pasa el manejador directamente
                             />
                         </AccordionContent>
                     </AccordionItem>
-                    {/* <AccordionItem value="item-4">
-                        <AccordionTrigger className="border-b-4 border-black pb-4 text-left text-xl font-extrabold uppercase">Color</AccordionTrigger>
-                        <AccordionContent className="pt-4">
-                            <ColorFilter selectedColors={filters.colors} onColorChange={handleColorChange} defaultColors={defaultOptions.colors} />
-                        </AccordionContent>
-                    </AccordionItem> */}
                 </Accordion>
             </div>
         </aside>
