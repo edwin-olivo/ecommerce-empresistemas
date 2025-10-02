@@ -1,0 +1,134 @@
+'use client';
+
+import { Badge } from '@/components/ui/badge';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+import { Check, ChevronsUpDown, X } from 'lucide-react';
+import * as React from 'react';
+
+interface MultiSelectProps {
+    options?: { label: string; value: string }[];
+    value: string[];
+    onChange: (selected: string[]) => void;
+    placeholder?: string;
+    className?: string;
+    isLoading?: boolean;
+    disabled?: boolean;
+}
+
+export default function MultiSelect({
+    options,
+    value,
+    onChange,
+    placeholder = 'Select items...',
+    className,
+    isLoading = false,
+    disabled = false,
+}: MultiSelectProps) {
+    const [open, setOpen] = React.useState(false);
+
+    const handleUnselect = (item: string) => {
+        onChange(value.filter((i) => i !== item));
+    };
+
+    const handleSelect = (item: string) => {
+        if (value.includes(item)) {
+            handleUnselect(item);
+        } else {
+            onChange([...value, item]);
+        }
+    };
+
+    return (
+        <div className={cn('w-full', className)}>
+            <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger
+                    className={cn(
+                        'flex h-9 w-full items-center justify-between rounded-md border border-input bg-background text-sm transition-all',
+                        'focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none',
+                        'disabled:cursor-not-allowed disabled:opacity-50',
+                        'hover:bg-accent hover:text-accent-foreground',
+                    )}
+                    disabled={disabled}
+                    aria-expanded={open}
+                >
+                    <div className="flex flex-1 justify-between overflow-hidden">
+                        <div
+                            className="flex flex-1 gap-1 overflow-x-auto px-3 py-2"
+                            style={{
+                                scrollbarWidth: 'thin',
+                                scrollbarColor: 'hsl(var(--border)) transparent',
+                            }}
+                        >
+                            {value.length === 0 ? (
+                                <span className="truncate text-muted-foreground">{placeholder}</span>
+                            ) : (
+                                value.map((item) => {
+                                    const option = options?.find((opt) => opt.value === item);
+                                    return (
+                                        <Badge key={item} variant="default" className="text-xs">
+                                            {option?.label}
+                                            <span
+                                                role="button"
+                                                tabIndex={0}
+                                                className="ml-1 rounded-full p-0.5 transition-all hover:bg-destructive hover:text-destructive-foreground"
+                                                onKeyDown={(e) => e.key === 'Enter' && handleUnselect(item)}
+                                                onClick={() => handleUnselect(item)}
+                                            >
+                                                <X className="h-3 w-3" />
+                                            </span>
+                                        </Badge>
+                                    );
+                                })
+                            )}
+                        </div>
+                        <hr className="mx-0.5 my-auto h-6 border-l border-border bg-red-300" />
+                        <span
+                            role="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setOpen((prev) => !prev);
+                            }}
+                            tabIndex={0}
+                            className={cn(
+                                'mx-1.5 my-auto h-full p-1 outline-none',
+                                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                                'cursor-pointer rounded-sm hover:bg-accent/50',
+                            )}
+                        >
+                            <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                        </span>
+                    </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                    <Command>
+                        <CommandInput autoFocus={false} placeholder="Buscar elementos..." />
+                        <CommandList>
+                            <CommandEmpty className="p-0">
+                                {isLoading ? (
+                                    <div className="p-2">
+                                        {Array.from({ length: 6 }).map((_, index) => (
+                                            <Skeleton key={index} className="mb-1 h-4 w-full last:mb-0" />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="py-4 text-center text-sm text-muted-foreground">No hay elementos.</div>
+                                )}
+                            </CommandEmpty>
+                            <CommandGroup>
+                                {options?.map((option) => (
+                                    <CommandItem key={option.value} value={option.value} onSelect={() => handleSelect(option.value)}>
+                                        <Check className={cn('mr-2 h-4 w-4', value.includes(option.value) ? 'opacity-100' : 'opacity-0')} />
+                                        {option.label}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </CommandList>
+                    </Command>
+                </PopoverContent>
+            </Popover>
+        </div>
+    );
+}
