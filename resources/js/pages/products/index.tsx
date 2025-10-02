@@ -1,8 +1,7 @@
 import CustomPagination, { CustomPaginationProps } from '@/components/custom-pagination';
-import FilterMenu from '@/components/filter-menu';
+import { FilterAndSortMenu } from '@/components/filter-menu-mobile';
 import ProductCard from '@/components/products/product-card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useProductFilters } from '@/hooks/use-product-filters'; // Hook para manejar filtros
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, CheckboxOption } from '@/types';
@@ -41,7 +40,7 @@ export default function Products() {
     const { filters, setFilter, clearFilters } = useProductFilters({ initialFilters });
 
     const productsList = products.data || products || [];
-    const currentPriceRange = filters['filter[price]']?.split(',').map(Number) || [0, 5000];
+    const currentPriceRange = filters['filter[price]']?.split(',').map(Number) || [minPrice, maxPrice];
     const currentCategories = filters['filter[categories]'] || [];
     const currentClasses = filters['filter[classes]'] || [];
     const currentPageSize = filters.pageSize || '12';
@@ -51,25 +50,6 @@ export default function Products() {
             <Head title="Products" />
             <main className="h-full overflow-x-auto rounded-xl p-4">
                 <div className="flex flex-col gap-8 md:flex-row">
-                    <FilterMenu
-                        // Pasamos el estado actual de los filtros
-                        filters={{
-                            categories: currentCategories,
-                            classes: currentClasses,
-                            priceRange: currentPriceRange as [number, number],
-                        }}
-                        // Pasamos los manejadores del hook
-                        onCategoryChange={(value) => setFilter('filter[categories]', value, true)}
-                        onClassChange={(value) => setFilter('filter[classes]', value, true)}
-                        onPriceChange={(value) => setFilter('filter[price]', value.join(','))}
-                        onClearFilters={clearFilters}
-                        defaultOptions={{
-                            categories,
-                            classes,
-                            priceRange: [minPrice, maxPrice], // Usamos un rango fijo para el slider por simplicidad
-                        }}
-                    />
-
                     <section className="flex-1">
                         <div className="mb-4 flex items-center justify-between py-4">
                             <div>
@@ -95,18 +75,26 @@ export default function Products() {
                                 ))}
                             </div>
                             <div>
-                                <Select onValueChange={(value) => setFilter('sort', value, true)} value={filters.sort || 'part_number'}>
-                                    <SelectTrigger className="w-48">
-                                        <SelectValue placeholder="Ordenar por" />
-                                    </SelectTrigger>
-                                    <SelectContent className="bg-white">
-                                        {Object.entries(orderByOptions).map(([key, label]) => (
-                                            <SelectItem key={key} value={key}>
-                                                {label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                                <FilterAndSortMenu
+                                    // Pasamos el estado actual de los filtros
+                                    filters={{
+                                        categories: currentCategories,
+                                        classes: currentClasses,
+                                        priceRange: currentPriceRange as [number, number],
+                                        orderBy: filters.sort || 'part_number',
+                                    }}
+                                    // Pasamos los manejadores del hook
+                                    onCategoryChange={(value) => setFilter('filter[categories]', value)}
+                                    onClassChange={(value) => setFilter('filter[classes]', value)}
+                                    onPriceChange={(value) => setFilter('filter[price]', value.join(','))}
+                                    onSortChange={(value) => setFilter('sort', value, true)}
+                                    onClearFilters={clearFilters}
+                                    defaultOptions={{
+                                        categories,
+                                        classes,
+                                        priceRange: [minPrice, maxPrice],
+                                    }}
+                                />
                             </div>
                         </div>
 
