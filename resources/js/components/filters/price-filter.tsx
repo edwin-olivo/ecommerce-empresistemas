@@ -1,5 +1,4 @@
 import * as Slider from '@radix-ui/react-slider';
-import React from 'react';
 
 interface PriceFilterProps {
     minPrice: number;
@@ -11,7 +10,7 @@ interface PriceFilterProps {
     };
 }
 
-const PriceFilter: React.FC<PriceFilterProps> = ({ minPrice, maxPrice, onPriceChange, priceRange }) => {
+export default function PriceFilter({ minPrice, maxPrice, onPriceChange, priceRange }: PriceFilterProps) {
     const handlePriceChange = (value: [number, number]) => {
         const newPriceRange = value;
         if (onPriceChange) {
@@ -51,6 +50,4 @@ const PriceFilter: React.FC<PriceFilterProps> = ({ minPrice, maxPrice, onPriceCh
             </div>
         </div>
     );
-};
-
-export default PriceFilter;
+}
