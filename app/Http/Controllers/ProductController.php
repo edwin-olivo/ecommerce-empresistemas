@@ -46,13 +46,30 @@ class ProductController extends Controller
             $products = $productsQuery->paginate((int)$pageSize)->withQueryString();
         }
 
+        $filter = $request->all(['sort', 'pageSize']);
+        $filter += $this->extractFiltersFromRequest($request);
+
         return Inertia::render('products/index', [
             'products' => $products,
             'categories' => ListHelper::getERPList('categoria_0'),
             'classes' => ListHelper::getERPList('clase_list'),
-            'filters' => $request->all(['filter', 'sort', 'pageSize']),
+            'filters' => $filter,
             'minPrice' => AosProducts::min('price') ?? 0,
             'maxPrice' => AosProducts::max('price') ?? 1000,
         ]);
+    }
+
+    function extractFiltersFromRequest($request)
+    {
+        $filtersInRequest = $request->all(['filter']);
+
+        $filters = [];
+        if (isset($filtersInRequest['filter'])) {
+            foreach ($filtersInRequest['filter'] as $key => $value) {
+                $filters["filter[$key]"] = $value;
+            }
+        }
+
+        return $filters;
     }
 }
