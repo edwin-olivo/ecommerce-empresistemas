@@ -4,7 +4,7 @@ import ProductCard from '@/components/products/product-card';
 import { Button } from '@/components/ui/button';
 import { useProductFilters } from '@/hooks/use-product-filters'; // Hook para manejar filtros
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, CheckboxOption } from '@/types';
+import type { BreadcrumbItem, CheckboxOption, MultiSelectOption } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
 // Tipos actualizados
@@ -35,6 +35,9 @@ export default function Products() {
 
     minPrice = Number(minPrice) || 0;
     maxPrice = Number(maxPrice) || 5000;
+
+    const categoriesArray: MultiSelectOption[] = Object.entries(categories).map(([value, label]) => ({ value, label }));
+    const classesArray: MultiSelectOption[] = Object.entries(classes).map(([value, label]) => ({ value, label }));
 
     // Usamos el hook para manejar toda la lógica de filtros
     const { filters, setFilter, clearFilters } = useProductFilters({ initialFilters });
@@ -90,8 +93,8 @@ export default function Products() {
                                     onSortChange={(value) => setFilter('sort', value, true)}
                                     onClearFilters={clearFilters}
                                     defaultOptions={{
-                                        categories,
-                                        classes,
+                                        categories: categoriesArray,
+                                        classes: classesArray,
                                         priceRange: [minPrice, maxPrice],
                                     }}
                                 />

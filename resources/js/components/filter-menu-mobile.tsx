@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { CheckboxOption, FilterState } from '@/types';
+import { CheckboxOption, FilterState, MultiSelectOption } from '@/types';
 import { SlidersHorizontal } from 'lucide-react';
 import MultiSelect from './multi-select';
 
@@ -18,8 +18,8 @@ const orderByOptions: CheckboxOption = {
 interface FilterMenuProps {
     filters: FilterState;
     defaultOptions: {
-        categories: CheckboxOption;
-        classes: CheckboxOption;
+        categories: MultiSelectOption[];
+        classes: MultiSelectOption[];
         priceRange: [number, number];
     };
     onCategoryChange: (categories: string[]) => void;
@@ -88,10 +88,7 @@ export function FilterAndSortMenu({
                             Categoría
                         </Label>
                         <MultiSelect
-                            options={Object.entries(defaultOptions.categories).map(([key, label]) => ({
-                                label,
-                                value: key || 'N/A',
-                            }))}
+                            options={defaultOptions.categories}
                             value={filters.categories}
                             onChange={onCategoryChange}
                             placeholder="Seleccionar categorías"
@@ -104,10 +101,7 @@ export function FilterAndSortMenu({
                             Clase
                         </Label>
                         <MultiSelect
-                            options={Object.entries(defaultOptions.classes).map(([key, label]) => ({
-                                label,
-                                value: key || 'N/A',
-                            }))}
+                            options={defaultOptions.classes}
                             value={filters.classes}
                             onChange={onClassChange}
                             placeholder="Seleccionar clases"

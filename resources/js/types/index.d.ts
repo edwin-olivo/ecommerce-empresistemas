@@ -60,6 +60,11 @@ export interface CheckboxOption {
     [key: string]: string;
 }
 
+export interface MultiSelectOption {
+    label: string;
+    value: string;
+}
+
 export interface Product {
     id: number;
     name: string;
