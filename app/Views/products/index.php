@@ -45,7 +45,7 @@ $breadcrumbs = [
             </div>
 
             <!-- Grid de productos -->
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                 <?php if (isset($data['products']) && !empty($data['products'])): ?>
                     <?php foreach ($data['products'] as $product): ?>
                         <?php include '../app/Views/components/ProductCard.php'; ?>
@@ -79,6 +79,15 @@ $breadcrumbs = [
                         $currentParams = $_GET;
                         ?>
 
+                        <!-- Primera página -->
+                        <?php if ($currentPage > 1): ?>
+                            <?php $currentParams['page'] = 1; ?>
+                            <?php $firstUrl = $baseUrl . '?' . http_build_query($currentParams); ?>
+                            <a href="<?= $firstUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-200">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        <?php endif; ?>
+
                         <!-- Página anterior -->
                         <?php if ($currentPage > 1): ?>
                             <?php
@@ -111,6 +120,15 @@ $breadcrumbs = [
                             ?>
                             <a href="<?= $nextUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-200">
                                 <i class="fas fa-chevron-right"></i>
+                            </a>
+                        <?php endif; ?>
+
+                        <!-- Última página -->
+                        <?php if ($currentPage < $totalPages): ?>
+                            <?php $currentParams['page'] = $totalPages; ?>
+                            <?php $lastUrl = $baseUrl . '?' . http_build_query($currentParams); ?>
+                            <a href="<?= $lastUrl ?>" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-200">
+                                <i class="fas fa-angle-double-right"></i>
                             </a>
                         <?php endif; ?>
                     </nav>

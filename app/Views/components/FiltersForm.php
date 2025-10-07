@@ -1,3 +1,9 @@
+<?php
+$selectedCategories = $currentFilters['category'] ?? [];
+$selectedSubcategories = $currentFilters['subcategory'] ?? [];
+$selectedBrands = $currentFilters['brand'] ?? [];
+$selectedSort = $currentFilters['sort'] ?? 'name';
+?>
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-4">
     <h3 class="text-lg font-semibold text-gray-900 mb-4">Filtros</h3>
 
@@ -19,13 +25,12 @@
             <label for="category" class="form-label mb-2">Categoría</label>
             <select
                 id="category"
-                name="category"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="">Todas las categorías</option>
+                name="category[]"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" multiple>
                 <?php if (isset($categories) && is_array($categories)): ?>
                     <?php foreach ($categories as $key => $cat): ?>
                         <option value="<?= $key ?>"
-                            <?= ($key === ($_GET['category'] ?? '')) ? 'selected' : '' ?>>
+                            <?= (in_array($key, $selectedCategories)) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($cat) ?>
                         </option>
                     <?php endforeach; ?>
@@ -34,17 +39,16 @@
         </div>
 
         <!-- Sub Categorías -->
-         <div class="mb-6">
+        <div class="mb-6">
             <label for="subcategory" class="form-label mb-2">Subcategoría</label>
             <select
                 id="subcategory"
-                name="subcategory"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="">Todas las subcategorías</option>
+                name="subcategory[]"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" multiple>
                 <?php if (isset($subcategories) && is_array($subcategories)): ?>
                     <?php foreach ($subcategories as $key => $subcat): ?>
                         <option value="<?= $key ?>"
-                            <?= ($key === ($_GET['subcategory'] ?? '')) ? 'selected' : '' ?>>
+                            <?= (in_array($key, $selectedSubcategories)) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($subcat) ?>
                         </option>
                     <?php endforeach; ?>
@@ -57,13 +61,12 @@
             <label for="brand" class="form-label mb-2">Marca</label>
             <select
                 id="brand"
-                name="brand"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="">Todas las marcas</option>
+                name="brand[]"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" multiple>
                 <?php if (isset($brands) && is_array($brands)): ?>
                     <?php foreach ($brands as $key => $brand): ?>
                         <option value="<?= $key ?>"
-                            <?= ($key === ($_GET['brand'] ?? '')) ? 'selected' : '' ?>>
+                            <?= (in_array($key, $selectedBrands)) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($brand) ?>
                         </option>
                     <?php endforeach; ?>
