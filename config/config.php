@@ -38,20 +38,20 @@ date_default_timezone_set($_ENV['TIMEZONE']);
 
 // Autoloader personalizado
 spl_autoload_register(function ($class) {
-    $directories = [
-        '../app/Controllers/',
-        '../app/Models/',
-        '../app/Services/',
-        '../core/Traits/',
-        '../core/Helpers/',
-        '../core/'
+    $baseDirs = [
+        __DIR__ . '/../app/',
+        __DIR__ . '/../core/'
     ];
-    
-    foreach ($directories as $directory) {
-        $file = $directory . $class . '.php';
-        if (file_exists($file)) {
-            require_once $file;
-            break;
+
+    foreach ($baseDirs as $baseDir) {
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($baseDir, RecursiveDirectoryIterator::SKIP_DOTS)
+        );
+        foreach ($iterator as $file) {
+            if ($file->isFile() && $file->getFilename() === $class . '.php') {
+                require_once $file->getPathname();
+                return;
+            }
         }
     }
 });
