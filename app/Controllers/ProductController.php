@@ -24,6 +24,17 @@ class ProductController extends Controller
             $search = $_GET['search'] ?? null;
             $sortBy = $_GET['sortBy'] ?? 'name';
 
+
+            if (is_string($category)) {
+                $category = [$category];
+            }
+            if (is_string($subcategory)) {
+                $subcategory = [$subcategory];
+            }
+            if (is_string($brand)) {
+                $brand = [$brand];
+            }
+
             // Obtener productos con filtros
             $products = $productService->getProducts([
                 'page' => $page,
@@ -40,8 +51,7 @@ class ProductController extends Controller
                 $product['category'] = $this->categories[$product['category']];
             }
 
-            // $this->view('products/index', $data);
-            $this->viewLatte('products/index', [
+            $data = [
                 'title' => 'Productos - ' . APP_NAME,
                 'breadcrumbs' => [
                     ['label' => 'Inicio', 'url' => '/'],
@@ -52,10 +62,14 @@ class ProductController extends Controller
                 'currentFilters' => [
                     'category' => $category,
                     'subcategory' => $subcategory,
+                    'brand' => $brand,
                     'search' => $search,
                     'sort' => $sortBy
                 ]
-            ]);
+            ];
+
+            // $this->view('products/index', $data);
+            $this->viewLatte('products/index', $data);
         } catch (Exception $e) {
             error_log("Error en ProductController::index: " . $e->getMessage());
             $this->view('errors/500', ['error' => $e->getMessage()]);

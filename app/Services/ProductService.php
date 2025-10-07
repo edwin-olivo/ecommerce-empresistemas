@@ -59,27 +59,19 @@ class ProductService
 
         // Aplicar filtros
         if ($category) {
-            if (is_string($category)) {
-                $category = [$category];
-            }
             $placeholders = implode(',', array_fill(0, count($category), '?'));
             $sharedSql .= " AND p.category IN ($placeholders)";
             $params = array_merge($params, $category);
         }
 
         if ($subcategory) {
-            if (is_string($subcategory)) {
-                $subcategory = [$subcategory];
-            }
+
             $placeholders = implode(',', array_fill(0, count($subcategory), '?'));
             $sharedSql .= " AND pc.clase_c IN ($placeholders)";
             $params = array_merge($params, $subcategory);
         }
 
         if ($brand) {
-            if (is_string($brand)) {
-                $brand = [$brand];
-            }
             $placeholders = implode(',', array_fill(0, count($brand), '?'));
             $sharedSql .= " AND pc.marca_c IN ($placeholders)";
             $params = array_merge($params, $brand);
