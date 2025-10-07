@@ -48,7 +48,7 @@ class ProductController extends Controller
 
             // Procesar productos
             foreach ($products['data'] as &$product) {
-                $product['category'] = $this->categories[$product['category']];
+                $product['category'] = ListHelper::getCategories()[$product['category']];
             }
 
             $data = [
@@ -65,11 +65,14 @@ class ProductController extends Controller
                     'brand' => $brand,
                     'search' => $search,
                     'sort' => $sortBy
-                ]
+                ],
+                'categories' => ListHelper::getCategories(),
+                'subcategories' => ListHelper::getSubcategories(),
+                'brands' => ListHelper::getBrands(),
             ];
 
-            // $this->view('products/index', $data);
-            $this->viewLatte('products/index', $data);
+            $this->view('products/index', $data);
+            // $this->viewLatte('products/index', $data);
         } catch (Exception $e) {
             error_log("Error en ProductController::index: " . $e->getMessage());
             $this->view('errors/500', ['error' => $e->getMessage()]);

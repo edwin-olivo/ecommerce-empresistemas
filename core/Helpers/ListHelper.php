@@ -1,77 +1,93 @@
 <?php
-// https://wenzhou.erponweb.com.mx/customcode/getListasEcommerce.php?tipoDato=categoria_0
-
-/**
- * Helper para recuperar listas de datos
- * Utilizado para obtener categorías, marcas, etc.
- */
 
 class ListHelper
 {
-    private $cacheDir = __DIR__ . "/../../temp/list/";
+    private static $cacheDir = __DIR__ . "/../../temp/list/";
 
     /**
-     * Genera una clave de caché estandarizada para una lista
-     * 
-     * @param string $list Nombre de la lista
-     * @return string Clave de caché
+     * @var array Mapeo de alias a nombres de listas reales en el ERP.
      */
-    function generateListCacheKey($list)
+    private static $listMap = [
+        'categories'    => 'categoria_0',
+        'brands'        => 'marca_list',
+        'subcategories' => 'clase_list',
+        // Puedes agregar más alias aquí
+    ];
+
+    /**
+     * Obtiene una lista del ERP usando un alias.
+     * Esta es la nueva forma simplificada de acceder a las listas.
+     *
+     * @param string $alias El alias de la lista (ej. 'categories', 'brands').
+     * @return array Los datos de la lista.
+     */
+    public static function get($alias)
+    {
+        if (!isset(self::$listMap[$alias])) {
+            // Si el alias no existe, tal vez se pasó el nombre real de la lista
+            $listName = $alias;
+        } else {
+            $listName = self::$listMap[$alias];
+        }
+        
+        return self::cleanEmptyEntries(self::listERP($listName));
+    }
+
+    /**
+     * Obtiene la lista de categorías (método de conveniencia).
+     */
+    public static function getCategories()
+    {
+        return self::get('categories');
+    }
+
+    /**
+     * Obtiene la lista de marcas (método de conveniencia).
+     */
+    public static function getBrands()
+    {
+        return self::get('brands');
+    }
+
+    /**
+     * Obtiene la lista de subcategorías (método de conveniencia).
+     */
+    public static function getSubcategories()
+    {
+        return self::get('subcategories');
+    }
+
+    // --- MÉTODOS INTERNOS (AHORA ESTÁTICOS) ---
+
+    private static function generateListCacheKey($list)
     {
         return "list_{$list}";
     }
 
-    /**
-     * Obtiene la ruta del archivo de caché para una lista
-     * 
-     * @param string $list Nombre de la lista
-     * @return string Ruta del archivo de caché
-     */
-    function getListCacheFilePath($list)
+    private static function getListCacheFilePath($list)
     {
-        $cacheKey = $this->generateListCacheKey($list);
-        return $this->cacheDir . "{$cacheKey}.json";
+        $cacheKey = self::generateListCacheKey($list);
+        return self::$cacheDir . "{$cacheKey}.json";
     }
 
-    /**
-     * Verifica si existe una caché válida para una lista
-     * 
-     * @param string $list Nombre de la lista
-     * @param int $cacheExpiry Tiempo de expiración en segundos
-     * @return bool True si la caché es válida
-     */
-    function hasValidCache($list, $cacheExpiry = 3600)
+    private static function hasValidCache($list, $cacheExpiry = 3600)
     {
-        $cacheFile = $this->getListCacheFilePath($list);
+        $cacheFile = self::getListCacheFilePath($list);
         return file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheExpiry);
     }
 
-    /**
-     * Obtiene datos desde la caché
-     * 
-     * @param string $list Nombre de la lista
-     * @return array Datos almacenados en caché
-     */
-    function getListFromCache($list)
+    private static function getListFromCache($list)
     {
-        $cacheFile = $this->getListCacheFilePath($list);
+        $cacheFile = self::getListCacheFilePath($list);
         if (file_exists($cacheFile)) {
             return json_decode(file_get_contents($cacheFile), true);
         }
         return [];
     }
 
-    /**
-     * Guarda datos en la caché
-     * 
-     * @param string $list Nombre de la lista
-     * @param string $responseData Datos a almacenar (JSON string)
-     * @return bool True si se guardó correctamente
-     */
-    function saveListToCache($list, $responseData)
+    private static function saveListToCache($list, $responseData)
     {
-        $cacheFile = $this->getListCacheFilePath($list);
-        // Crear directorio si no existe
+        $cacheFile = self::getListCacheFilePath($list);
         $cacheDir = dirname($cacheFile);
         if (!is_dir($cacheDir)) {
             mkdir($cacheDir, 0755, true);
@@ -79,13 +95,7 @@ class ListHelper
         return file_put_contents($cacheFile, $responseData) !== false;
     }
 
-    /**
-     * Realiza una petición HTTP a la API
-     * 
-     * @param string $url URL a consultar
-     * @return array [response, error, httpCode]
-     */
-    function makeApiRequest($url)
+    private static function makeApiRequest($url)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -101,92 +111,36 @@ class ListHelper
         return ['response' => $response, 'error' => $error, 'httpCode' => $httpCode];
     }
 
-    /**
-     * Obtiene una lista del ERP con manejo de caché
-     * 
-     * @param string $list Nombre de la lista a obtener
-     * @return array Datos de la lista
-     */
-    function listERP($list = '')
+    private static function listERP($list = '')
     {
-        if (empty($list)) {
-            return [];
+        if (empty($list)) return [];
+
+        if (self::hasValidCache($list)) {
+            return self::getListFromCache($list);
         }
 
-        // Verificar si hay caché válida
-        if ($this->hasValidCache($list)) {
-            return $this->getListFromCache($list);
-        }
-
-        // Intentar obtener datos frescos
         $url = "https://wenzhou.erponweb.com.mx/index.php?entryPoint=SugarListExternalAccess&list={$list}";
-        $apiResult = $this->makeApiRequest($url);
+        $apiResult = self::makeApiRequest($url);
 
-        // Procesar respuesta
         if (empty($apiResult['error']) && $apiResult['httpCode'] == 200) {
             $result = json_decode($apiResult['response'], true);
-            // Guardar en caché si la respuesta es válida
             if ($result !== null) {
-                $this->saveListToCache($list, $apiResult['response']);
+                self::saveListToCache($list, $apiResult['response']);
                 return $result;
             }
         }
 
-        // Registrar el error
-        // error_log("Error obteniendo lista ERP '{$list}': {$apiResult['error']}, HTTP Code: {$apiResult['httpCode']}");
-
-        // En caso de error, intentar usar caché antigua
-        $cachedData = $this->getListFromCache($list);
+        $cachedData = self::getListFromCache($list);
         if (!empty($cachedData)) {
-            // error_log("Usando datos en caché para lista ERP '{$list}'");
             return $cachedData;
         }
 
-        // Si todo falla, devolver array vacío
         return [];
     }
 
-    /**
-     * Obtiene la lista de categorías
-     * 
-     * @return array Lista de categorías
-     */
-    function getCategories()
+    private static function cleanEmptyEntries($list)
     {
-        return $this->cleanEmptyEntries($this->listERP('categoria_0'));
-    }
-
-    /**
-     * Obtiene la lista de marcas
-     * 
-     * @return array Lista de marcas
-     */
-    function getBrands()
-    {
-        return $this->cleanEmptyEntries($this->listERP('marca_list'));
-    }
-
-    /**
-     * Obtiene la lista de subcategorías
-     * 
-     * @return array Lista de subcategorías
-     */
-    function getSubcategories()
-    {
-        return $this->cleanEmptyEntries($this->listERP('clase_list'));
-    }
-
-    /**
-     * Elimina las entradas vacías de una lista.
-     *
-     * Esta función recorre el arreglo proporcionado y elimina cualquier elemento cuyo valor
-     * sea vacío (null, false, array vacío, string vacío, etc.) o que, al aplicar trim, resulte en una cadena vacía.
-     *
-     * @param array $list El arreglo que se desea limpiar de entradas vacías.
-     * @return array El arreglo resultante sin las entradas vacías.
-     */
-    function cleanEmptyEntries($list)
-    {
+        if (!is_array($list)) return [];
         foreach ($list as $key => $value) {
             if (empty($value) || trim($value) === '') {
                 unset($list[$key]);
@@ -195,25 +149,10 @@ class ListHelper
         return $list;
     }
 
-    /**
-     * Elimina archivos de caché JSON generados para listas.
-     *
-     * Busca y elimina todos los archivos que coincidan con el patrón 'list_*.json'
-     * dentro del directorio de caché temporal de listas. Esta función ayuda a limpiar
-     * archivos de caché antiguos o innecesarios para mantener el sistema ordenado.
-     *
-     * @return void
-     */
-    function cleanupCache()
+    public static function cleanupCache()
     {
-        if (is_dir($this->cacheDir)) {
-            $cacheDir = $this->cacheDir;
-        } else {
-            $cacheDir = __DIR__ . "/../../temp/list/";
-        }
-
-        if (is_dir($cacheDir)) {
-            $files = glob($cacheDir . 'list_*.json');
+        if (is_dir(self::$cacheDir)) {
+            $files = glob(self::$cacheDir . 'list_*.json');
             foreach ($files as $file) {
                 if (is_file($file)) {
                     unlink($file);

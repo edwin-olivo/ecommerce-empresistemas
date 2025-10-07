@@ -10,9 +10,6 @@ use Latte\Engine;
 abstract class Controller
 {
     protected $db;
-    protected $categories;
-    protected $brands;
-    protected $subcategories;
 
     protected Engine $latte;
 
@@ -27,13 +24,6 @@ abstract class Controller
 
         // Inicializar conexión a la base de datos
         $this->db = Database::getInstance();
-        
-        // Obtener categorías, marcas y subcategorías para el menú
-        $listHelper = new ListHelper();
-
-        $this->categories = $listHelper->getCategories();
-        $this->brands = $listHelper->getBrands();
-        $this->subcategories = $listHelper->getSubcategories();
     }
 
     /**
@@ -41,10 +31,6 @@ abstract class Controller
      */
     protected function view($view, $data = [])
     {
-        $categories = $this->categories;
-        $brands = $this->brands;
-        $subcategories = $this->subcategories;
-
         // Extraer variables para la vista
         extract($data);
 
@@ -52,41 +38,38 @@ abstract class Controller
         ob_start();
         include "../app/Views/{$view}.php";
         $content = ob_get_clean();
-        
+
         // Si es una petición AJAX, devolver solo el contenido
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+        if (
+            isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        ) {
             echo $content;
             return;
         }
-        
+
         // Incluir el layout principal
         require_once "../app/Views/layout/main.php";
     }
-    
+
     /**
      * Renderiza una plantilla Latte
      */
     protected function viewLatte($template, $params = [])
     {
-        // Agregar categorías, marcas y subcategorías a los parámetros
-        $params['categories'] = $this->categories;
-        $params['brands'] = $this->brands;
-        $params['subcategories'] = $this->subcategories;
-        
         // Agregar constantes PHP que se usan comúnmente en las plantillas
         $params['APP_NAME'] = APP_NAME;
-        
+
         // Registrar helpers para Latte
         $this->latte->addFilter('json', function ($value) {
             return json_encode($value, JSON_HEX_APOS | JSON_HEX_QUOT);
         });
-        
+
         // Agregar función Router::url() para usar en plantillas Latte
         $this->latte->addFunction('url', function ($path) {
             return Router::url($path);
         });
-        
+
         $this->latte->render("{$template}.latte", $params);
     }
 
