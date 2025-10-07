@@ -5,11 +5,7 @@
         <!-- Buscador -->
         <div class="mb-6">
             <label for="search" class="form-label mb-2">Buscar</label>
-            <input
-                type="text"
-                id="search"
-                name="search"
-                value="{$_GET['search'] ?? ''}"
+            <input type="text" id="search" name="search" value="{$_GET['search'] ?? ''}"
                 placeholder="Nombre del producto..."
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
         </div>
@@ -17,37 +13,31 @@
         <!-- Categorías -->
         <div class="mb-6">
             <label for="category" class="form-label mb-2">Categoría</label>
-            <select
-                id="category"
-                name="category"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="">Todas las categorías</option>
+            <select id="category" name="category[]"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" multiple>
+                {* <option value="">Todas las categorías</option> *}
                 {if (isset($categories) && is_array($categories))}
                     {foreach $categories as $key => $cat}
-                        <option value="{$key}" 
-                            {if $key === ($_GET['category'] ?? '')} selected{/if}>
-                            {$cat}
-                        </option>
+                    <option value="{$key}" {if in_array($key, $appliedFilters['category'] ?? [])} selected{/if}>
+                        {$cat}
+                    </option>
                     {/foreach}
                 {/if}
             </select>
         </div>
 
         <!-- Sub Categorías -->
-         <div class="mb-6">
+        <div class="mb-6">
             <label for="subcategory" class="form-label mb-2">Subcategoría</label>
-            <select
-                id="subcategory"
-                name="subcategory"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="">Todas las subcategorías</option>
+            <select id="subcategory" name="subcategory[]"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" multiple>
+                {* <option value="">Todas las subcategorías</option> *}
                 {if (isset($subcategories) && is_array($subcategories))}
-                    {foreach $subcategories as $key => $subcat}
-                        <option value="{$key}"
-                            {if $key === ($_GET['subcategory'] ?? '')} selected{/if}>
-                            {$subcat}
-                        </option>
-                    {/foreach}
+                {foreach $subcategories as $key => $subcat}
+                <option value="{$key}" {if in_array($key, $appliedFilters['subcategory'] ?? [])} selected{/if}>
+                    {$subcat}
+                </option>
+                {/foreach}
                 {/if}
             </select>
         </div>
@@ -55,18 +45,15 @@
         <!-- Marcas -->
         <div class="mb-6">
             <label for="brand" class="form-label mb-2">Marca</label>
-            <select
-                id="brand"
-                name="brand"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="">Todas las marcas</option>
+            <select id="brand" name="brand[]"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500" multiple>
+                {* <option value="">Todas las marcas</option> *}
                 {if (isset($brands) && is_array($brands))}
-                    {foreach $brands as $key => $brand}
-                        <option value="{$key}"
-                            {if $key === ($_GET['brand'] ?? '')} selected{/if}>
-                            {$brand}
-                        </option>
-                    {/foreach}
+                {foreach $brands as $key => $brand}
+                <option value="{$key}" {if in_array($key, $appliedFilters['brand'] ?? [])} selected{/if}>
+                    {$brand}
+                </option>
+                {/foreach}
                 {/if}
             </select>
         </div>
@@ -74,28 +61,28 @@
         <!-- Ordenamiento -->
         <div class="mb-6">
             <label for="sortBy" class="form-label mb-2">Ordenar por</label>
-            <select
-                id="sortBy"
-                name="sortBy"
+            <select id="sortBy" name="sortBy"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <option value="name" {if ($_GET['sortBy'] ?? '') === 'name'} selected{/if}>Nombre A-Z</option>
-                <option value="name_desc" {if ($_GET['sortBy'] ?? '') === 'name_desc'} selected{/if}>Nombre Z-A</option>
-                <option value="price" {if ($_GET['sortBy'] ?? '') === 'price'} selected{/if}>Precio: Menor a Mayor</option>
-                <option value="price_desc" {if ($_GET['sortBy'] ?? '') === 'price_desc'} selected{/if}>Precio: Mayor a Menor</option>
-                <option value="date_entered" {if ($_GET['sortBy'] ?? '') === 'date_entered'} selected{/if}>Más Recientes</option>
-                <option value="date_entered_desc" {if ($_GET['sortBy'] ?? '') === 'date_entered_desc'} selected{/if}>Más Antiguos</option>
+                <option value="name" {if ($_GET['sortBy'] ?? '' )==='name' } selected{/if}>Nombre A-Z</option>
+                <option value="name_desc" {if ($_GET['sortBy'] ?? '' )==='name_desc' } selected{/if}>Nombre Z-A</option>
+                <option value="price" {if ($_GET['sortBy'] ?? '' )==='price' } selected{/if}>Precio: Menor a Mayor
+                </option>
+                <option value="price_desc" {if ($_GET['sortBy'] ?? '' )==='price_desc' } selected{/if}>Precio: Mayor a
+                    Menor</option>
+                <option value="date_entered" {if ($_GET['sortBy'] ?? '' )==='date_entered' } selected{/if}>Más Recientes
+                </option>
+                <option value="date_entered_desc" {if ($_GET['sortBy'] ?? '' )==='date_entered_desc' } selected{/if}>Más
+                    Antiguos</option>
             </select>
         </div>
 
         <!-- Botones -->
         <div class="flex space-x-2">
-            <button
-                type="submit"
+            <button type="submit"
                 class="flex-1 bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors">
                 Aplicar
             </button>
-            <a
-                href="{url('/productos')}"
+            <a href="{url('/productos')}"
                 class="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors text-center">
                 Limpiar
             </a>
