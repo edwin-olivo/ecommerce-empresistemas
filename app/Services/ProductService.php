@@ -55,32 +55,45 @@ class ProductService
                 LEFT JOIN aos_products_cstm pc ON p.id = pc.id_c 
                 WHERE p.deleted = 0 AND pc.estatus_c = 'Activo' AND pc.enportal_c = 'Si'";
         $params = [];
+        $sharedSql = "";
 
         // Aplicar filtros
         if ($category) {
-            $sql .= " AND p.category = ?";
-            $params[] = $category;
+            if (is_string($category)) {
+                $category = [$category];
+            }
+            $placeholders = implode(',', array_fill(0, count($category), '?'));
+            $sharedSql .= " AND p.category IN ($placeholders)";
+            $params = array_merge($params, $category);
         }
 
         if ($subcategory) {
-            $sql .= " AND pc.clase_c = ?";
-            $params[] = $subcategory;
+            if (is_string($subcategory)) {
+                $subcategory = [$subcategory];
+            }
+            $placeholders = implode(',', array_fill(0, count($subcategory), '?'));
+            $sharedSql .= " AND pc.clase_c IN ($placeholders)";
+            $params = array_merge($params, $subcategory);
         }
 
         if ($brand) {
-            $sql .= " AND pc.marca_c = ?";
-            $params[] = $brand;
+            if (is_string($brand)) {
+                $brand = [$brand];
+            }
+            $placeholders = implode(',', array_fill(0, count($brand), '?'));
+            $sharedSql .= " AND pc.marca_c IN ($placeholders)";
+            $params = array_merge($params, $brand);
         }
 
         if ($search) {
-            $sql .= " AND (p.name LIKE ? OR p.description LIKE ? OR p.part_number LIKE ?)";
+            $sharedSql .= " AND (p.name LIKE ? OR p.description LIKE ? OR p.part_number LIKE ?)";
             $params[] = "%{$search}%";
             $params[] = "%{$search}%";
             $params[] = "%{$search}%";
         }
 
         if ($onlyOnSale) {
-            $sql .= " AND (pc.pa1_c > 0)";
+            $sharedSql .= " AND (pc.pa1_c > 0)";
         }
 
         // Ordenamiento
@@ -99,9 +112,9 @@ class ProductService
         }
 
         if (array_key_exists($sortBy, $allowedSorts)) {
-            $sql .= " ORDER BY " . $allowedSorts[$sortBy];
+            $sharedSql .= " ORDER BY " . $allowedSorts[$sortBy];
         } else {
-            $sql .= " ORDER BY p.name ASC";
+            $sharedSql .= " ORDER BY p.name ASC";
         }
 
         // Contar total para paginación
@@ -109,31 +122,12 @@ class ProductService
                      FROM aos_products p 
                      LEFT JOIN aos_products_cstm pc ON p.id = pc.id_c 
                      WHERE p.deleted = 0 AND pc.estatus_c = 'Activo' AND pc.enportal_c = 'Si'";
-
-        if ($category) {
-            $countSql .= " AND p.category = ?";
-        }
-
-        if ($subcategory) {
-            $countSql .= " AND pc.clase_c = ?";
-        }
-
-        if ($brand) {
-            $countSql .= " AND pc.marca_c = ?";
-        }
-
-        if ($search) {
-            $countSql .= " AND (p.name LIKE ? OR p.description LIKE ? OR p.part_number LIKE ?)";
-        }
-
-        if ($onlyOnSale) {
-            $countSql .= " AND (pc.pa1_c > 0)";
-        }
-
+        $countSql .= $sharedSql;
         $totalRecords = $this->db->selectOne($countSql, $params)['total'];
         $totalPages = ceil($totalRecords / $limit);
 
         // Aplicar límite y offset
+        $sql .= $sharedSql;
         $sql .= " LIMIT ? OFFSET ?";
         $params[] = $limit;
         $params[] = $offset;
