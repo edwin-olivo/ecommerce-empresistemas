@@ -8,6 +8,8 @@
 
 class ListHelper
 {
+    private $cacheDir = __DIR__ . "/../../temp/list/";
+
     /**
      * Genera una clave de caché estandarizada para una lista
      * 
@@ -28,7 +30,7 @@ class ListHelper
     function getListCacheFilePath($list)
     {
         $cacheKey = $this->generateListCacheKey($list);
-        return __DIR__ . "/../../temp/list/{$cacheKey}.json";
+        return $this->cacheDir . "{$cacheKey}.json";
     }
 
     /**
@@ -174,6 +176,15 @@ class ListHelper
         return $this->cleanEmptyEntries($this->listERP('clase_list'));
     }
 
+    /**
+     * Elimina las entradas vacías de una lista.
+     *
+     * Esta función recorre el arreglo proporcionado y elimina cualquier elemento cuyo valor
+     * sea vacío (null, false, array vacío, string vacío, etc.) o que, al aplicar trim, resulte en una cadena vacía.
+     *
+     * @param array $list El arreglo que se desea limpiar de entradas vacías.
+     * @return array El arreglo resultante sin las entradas vacías.
+     */
     function cleanEmptyEntries($list)
     {
         foreach ($list as $key => $value) {
@@ -184,9 +195,23 @@ class ListHelper
         return $list;
     }
 
+    /**
+     * Elimina archivos de caché JSON generados para listas.
+     *
+     * Busca y elimina todos los archivos que coincidan con el patrón 'list_*.json'
+     * dentro del directorio de caché temporal de listas. Esta función ayuda a limpiar
+     * archivos de caché antiguos o innecesarios para mantener el sistema ordenado.
+     *
+     * @return void
+     */
     function cleanupCache()
     {
-        $cacheDir = __DIR__ . "/../../temp/list/";
+        if (is_dir($this->cacheDir)) {
+            $cacheDir = $this->cacheDir;
+        } else {
+            $cacheDir = __DIR__ . "/../../temp/list/";
+        }
+
         if (is_dir($cacheDir)) {
             $files = glob($cacheDir . 'list_*.json');
             foreach ($files as $file) {
