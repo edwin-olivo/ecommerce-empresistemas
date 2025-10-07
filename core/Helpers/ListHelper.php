@@ -151,7 +151,7 @@ class ListHelper
      */
     function getCategories()
     {
-        return $this->listERP('categoria_0');
+        return $this->cleanEmptyEntries($this->listERP('categoria_0'));
     }
 
     /**
@@ -161,7 +161,7 @@ class ListHelper
      */
     function getBrands()
     {
-        return $this->listERP('marca_list');
+        return $this->cleanEmptyEntries($this->listERP('marca_list'));
     }
 
     /**
@@ -171,6 +171,29 @@ class ListHelper
      */
     function getSubcategories()
     {
-        return $this->listERP('clase_list');
+        return $this->cleanEmptyEntries($this->listERP('clase_list'));
+    }
+
+    function cleanEmptyEntries($list)
+    {
+        foreach ($list as $key => $value) {
+            if (empty($value) || trim($value) === '') {
+                unset($list[$key]);
+            }
+        }
+        return $list;
+    }
+
+    function cleanupCache()
+    {
+        $cacheDir = __DIR__ . "/../../temp/list/";
+        if (is_dir($cacheDir)) {
+            $files = glob($cacheDir . 'list_*.json');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+        }
     }
 }
