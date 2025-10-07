@@ -29,9 +29,11 @@ abstract class Controller
         $this->db = Database::getInstance();
         
         // Obtener categorías, marcas y subcategorías para el menú
-        $this->categories = ListHelper::getCategories();
-        $this->brands = ListHelper::getBrands();
-        $this->subcategories = ListHelper::getSubcategories();
+        $listHelper = new ListHelper();
+
+        $this->categories = $listHelper->getCategories();
+        $this->brands = $listHelper->getBrands();
+        $this->subcategories = $listHelper->getSubcategories();
     }
 
     /**

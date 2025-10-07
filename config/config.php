@@ -42,6 +42,8 @@ spl_autoload_register(function ($class) {
         '../app/Controllers/',
         '../app/Models/',
         '../app/Services/',
+        '../core/Traits/',
+        '../core/Helpers/',
         '../core/'
     ];
     
