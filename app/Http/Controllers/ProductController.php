@@ -13,9 +13,9 @@ class ProductController extends Controller
 {
     function index(Request $request)
     {
-        $pageSize = $request->input('pageSize', '12');
+        $pageSize = $request->input('pageSize', '24');
         if (!in_array($pageSize, ['12', '24', '48', 'all'])) {
-            $pageSize = '12';
+            $pageSize = '24';
             $request->merge(['pageSize' => $pageSize]);
         }
 

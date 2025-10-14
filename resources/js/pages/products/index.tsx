@@ -46,27 +46,27 @@ export default function Products() {
     const currentPriceRange = filters['filter[price]']?.split(',').map(Number) || [minPrice, maxPrice];
     const currentCategories = filters['filter[categories]'] || [];
     const currentClasses = filters['filter[classes]'] || [];
-    const currentPageSize = filters.pageSize || '12';
+    const currentPageSize = filters.pageSize || pageSizeOptions['24'];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Products" />
-            <main className="h-full overflow-x-auto rounded-xl p-4">
+            <Head title="Productos" />
+            <main className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-8">
                 <div className="flex flex-col gap-8 md:flex-row">
                     <section className="flex-1">
-                        <div className="mb-4 flex items-center justify-between py-4">
-                            <div>
+                        <div className="mb-4 flex flex-wrap items-center justify-between gap-y-4 lg:gap-y-0">
+                            <div className="order-3 w-full lg:order-none lg:flex-1">
                                 {currentPageSize === 'all' ? (
-                                    <p className="text-sm text-neutral-600">Mostrando todos los productos</p>
+                                    <p className="text-sm text-neutral-600 dark:text-white">Mostrando todos los productos</p>
                                 ) : (
                                     products.total > 0 && (
-                                        <p className="text-sm text-neutral-600">
+                                        <p className="text-sm text-neutral-600 dark:text-white">
                                             Mostrando {products.from} - {products.to} de {products.total} productos
                                         </p>
                                     )
                                 )}
                             </div>
-                            <div className="flex gap-2">
+                            <div className="order-1 flex flex-grow justify-start gap-2 lg:order-none lg:flex-1 lg:justify-center">
                                 {Object.entries(pageSizeOptions).map(([key, label]) => (
                                     <Button
                                         variant={currentPageSize === key ? 'default' : 'outline'}
@@ -77,7 +77,7 @@ export default function Products() {
                                     </Button>
                                 ))}
                             </div>
-                            <div>
+                            <div className="order-2 flex flex-grow justify-end align-middle md:flex-1 lg:order-none">
                                 <FilterAndSortMenu
                                     // Pasamos el estado actual de los filtros
                                     filters={{
@@ -101,7 +101,7 @@ export default function Products() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
                             {productsList.map((product) => (
                                 <ProductCard key={product.id} product={product} />
                             ))}
