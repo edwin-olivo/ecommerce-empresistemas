@@ -10,10 +10,13 @@ import { Trash2 } from 'lucide-react';
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Cart', href: '/cart' }];
 
 interface CartItem {
+    cart_id: number;
+    created_at: string;
     id: string;
-    name: string;
-    price: number;
+    product: Record<string, any>;
+    product_id: number;
     quantity: number;
+    updated_at: string;
 }
 
 interface CartIndexProps {
@@ -26,18 +29,18 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
 
     // Función para actualizar la cantidad de un ítem
-    const updateQuantity = (itemId: string, newQuantity: string) => {
+    const updateQuantity = (item: CartItem, newQuantity: string) => {
         const quantity = parseInt(newQuantity, 10);
         if (quantity > 0) {
-            patch(route('cart.update', { itemId }), {
+            patch(route('cart.update', { item, quantity }), {
                 preserveScroll: true,
             });
         }
     };
 
     // Función para eliminar un ítem del carrito
-    const removeItem = (itemId: string) => {
-        destroy(route('cart.remove', { itemId }), {
+    const removeItem = (item: CartItem) => {
+        destroy(route('cart.remove', { item }), {
             preserveScroll: true,
         });
     };
@@ -51,7 +54,7 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
             <main className="container mx-auto px-4 py-8">
                 <Card className="mx-auto max-w-4xl">
                     <CardHeader>
-                        <CardTitle className="text-2xl font-bold tracking-tight">Tu Carrito de Compras</CardTitle>
+                        <CardTitle className="text-2xl font-bold tracking-tight">Carrito de Compras</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {cartItems.length > 0 ? (
@@ -68,26 +71,32 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                                 <TableBody>
                                     {cartItems.map((item) => (
                                         <TableRow key={item.id}>
-                                            <TableCell className="font-medium">{item.name}</TableCell>
+                                            <TableCell className="font-medium">
+                                                <div className="flex flex-col items-start">
+                                                    <div className="font-bold whitespace-nowrap text-neutral-900">{item.product?.part_number}</div>
+                                                    <div className="text-xs text-neutral-600">{item.product?.name}</div>
+                                                </div>
+                                            </TableCell>
                                             <TableCell className="text-center">
                                                 <Input
                                                     type="number"
                                                     value={item.quantity}
-                                                    onChange={(e) => updateQuantity(item.id, e.target.value)}
+                                                    onChange={(e) => updateQuantity(item, e.target.value)}
                                                     className="mx-auto w-20 text-center"
                                                     min="1"
                                                     disabled={processing}
                                                 />
                                             </TableCell>
-                                            <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
-                                            <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                                            <TableCell className="text-right">${item.product?.price.toFixed(2)}</TableCell>
+                                            <TableCell className="text-right">${(item.product?.price * item.quantity).toFixed(2)}</TableCell>
                                             <TableCell className="text-center">
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    onClick={() => removeItem(item.id)}
+                                                    onClick={() => removeItem(item)}
                                                     disabled={processing}
                                                     aria-label="Eliminar producto"
+                                                    className="cursor-pointer hover:bg-red-100 focus:ring-2 focus:ring-red-300"
                                                 >
                                                     <Trash2 className="h-4 w-4 text-red-500" />
                                                 </Button>
@@ -108,7 +117,9 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                     {cartItems.length > 0 && (
                         <CardFooter className="flex items-center justify-between bg-gray-50 p-6">
                             <span className="text-xl font-bold">Total: ${total.toFixed(2)}</span>
-                            <Button size="lg">Proceder al Pago</Button>
+                            <Button size="lg" className="cursor-pointer">
+                                Proceder al Pago
+                            </Button>
                         </CardFooter>
                     )}
                 </Card>
