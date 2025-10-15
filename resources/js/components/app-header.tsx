@@ -11,7 +11,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search, Shirt, ShoppingCart } from 'lucide-react';
+import { LayoutGrid, Menu, Search, Shirt, ShoppingCartIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -26,25 +26,14 @@ const mainNavItems: NavItem[] = [
         href: '/products',
         icon: Shirt,
     },
-    {
-        title: 'Carrito',
-        href: '/cart',
-        icon: ShoppingCart,
-    },
+    // {
+    //     title: 'Carrito',
+    //     href: '/cart',
+    //     icon: ShoppingCart,
+    // },
 ];
 
-const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+const rightNavItems: NavItem[] = [];
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
@@ -52,10 +41,17 @@ interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
+interface Cart {
+    count: number;
+}
+
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
-    const { auth } = page.props;
+    const { auth, cart } = page.props;
     const getInitials = useInitials();
+
+    let currentCart = cart as Cart;
+
     return (
         <>
             <div className="border-b border-sidebar-border/80">
@@ -139,6 +135,16 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Button>
+                            <Link href="/cart" className="relative">
+                                <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
+                                    <ShoppingCartIcon className="!size-5 opacity-80 group-hover:opacity-100" />
+                                    {currentCart.count > 0 && (
+                                        <span className="absolute top-0 right-0 inline-flex items-center justify-center rounded-full bg-lime-400 p-1 text-[0.625rem] leading-none font-bold text-black">
+                                            {currentCart.count}
+                                        </span>
+                                    )}
+                                </Button>
+                            </Link>
                             <div className="hidden lg:flex">
                                 {rightNavItems.map((item) => (
                                     <TooltipProvider key={item.title} delayDuration={0}>
