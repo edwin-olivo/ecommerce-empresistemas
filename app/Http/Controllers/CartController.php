@@ -2,63 +2,126 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CartItemRequest;
 use App\Models\AosProducts;
-use Illuminate\Http\Request;
+use App\Models\CartItem;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
-    private $cart = [];
-
-    // Muestra el contenido del carrito
+    /**
+     * Muestra la vista del carrito.
+     */
     public function index()
     {
-        $cartContent = $this->cart;
-        $total = array_sum(array_column($cartContent, 'price'));
+        $cartItems = [];
+        $total = 0;
+
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart) {
+                $cartItems = $cart->items()->with('product')->get();
+                $total = $cartItems->sum(function ($item) {
+                    return $item->product->price * $item->quantity;
+                });
+            }
+        } else {
+            $sessionCart = session()->get('cart', []);
+            $cartItems = $sessionCart;
+            $total = array_sum(array_map(function ($item) {
+                return $item['price'] * $item['quantity'];
+            }, $sessionCart));
+        }
 
         return Inertia::render('cart/index', [
-            'cartContent' => $cartContent,
+            'cartContent' => $cartItems,
             'total' => $total,
         ]);
     }
 
-    // Agrega un producto al carrito
-    public function add(Request $request)
+    /**
+     * Agrega un producto al carrito.
+     */
+    public function add(AosProducts $product)
     {
-        $product = AosProducts::find($request->id);
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cart = $user->cart()->firstOrCreate([]); // Obtiene o crea el carrito
 
-        $this->cart[] = [
-            'id' => $product->id,
-            'name' => $product->name,
-            'price' => $product->price,
-            'quantity' => $request->quantity,
-            'attributes' => []
-        ];
+            $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
-        return redirect()->route('cart.index')->with('success', '¡Producto agregado al carrito!');
-    }
+            if ($cartItem) {
+                $cartItem->increment('quantity');
+            } else {
+                $cart->items()->create([
+                    'product_id' => $product->id,
+                    'quantity' => 1
+                ]);
+            }
+        } else {
+            $cart = session()->get('cart', []);
 
-    // Actualiza la cantidad de un producto
-    public function update(Request $request, $itemId)
-    {
-        $itemIndex = array_search($itemId, array_column($this->cart, 'id'));
-
-        if ($itemIndex !== false) {
-            $this->cart[$itemIndex]['quantity'] = $request->quantity;
+            if (isset($cart[$product->id])) {
+                $cart[$product->id]['quantity']++;
+            } else {
+                $cart[$product->id] = [
+                    "name" => $product->name,
+                    "quantity" => 1,
+                    "price" => $product->price,
+                ];
+            }
+            session()->put('cart', $cart);
         }
 
-        return redirect()->route('cart.index');
+        return redirect()->back()->with('success', '¡Producto añadido al carrito!');
     }
 
-    // Elimina un producto del carrito
+    /**
+     * Actualiza la cantidad de un producto en el carrito.
+     */
+    public function update(CartItemRequest $request, $itemId)
+    {
+        $quantity = $request->input('quantity');
+
+        if (Auth::check()) {
+            $cartItem = CartItem::where('id', $itemId)
+                ->where('cart_id', Auth::user()->cart->id)
+                ->firstOrFail();
+
+            $cartItem->update(['quantity' => $quantity]);
+        } else {
+            $cart = session()->get('cart', []);
+
+            if (isset($cart[$itemId])) {
+                $cart[$itemId]['quantity'] = $quantity;
+                session()->put('cart', $cart);
+            }
+        }
+
+        return redirect()->route('cart.index')->with('success', '¡Cantidad actualizada!');
+    }
+
+    /**
+     * Elimina un producto del carrito.
+     */
     public function remove($itemId)
     {
-        $itemIndex = array_search($itemId, array_column($this->cart, 'id'));
+        if (Auth::check()) {
+            $cartItem = CartItem::where('id', $itemId)
+                ->where('cart_id', Auth::user()->cart->id)
+                ->firstOrFail();
 
-        if ($itemIndex !== false) {
-            unset($this->cart[$itemIndex]);
+            $cartItem->delete();
+        } else {
+            $cart = session()->get('cart', []);
+
+            if (isset($cart[$itemId])) {
+                unset($cart[$itemId]);
+                session()->put('cart', $cart);
+            }
         }
 
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.index')->with('success', '¡Producto eliminado del carrito!');
     }
 }
