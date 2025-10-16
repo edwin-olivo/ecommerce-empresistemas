@@ -124,4 +124,18 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', '¡Producto eliminado del carrito!');
     }
+
+    public function clear()
+    {
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart) {
+                $cart->items()->delete();
+            }
+        } else {
+            session()->forget('cart');
+        }
+
+        return redirect()->route('cart.index')->with('success', '¡Carrito vaciado!');
+    }
 }

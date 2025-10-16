@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
+import { ButtonGroup } from '@/components/ui/button-group';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Cart', href: '/cart' }];
 
@@ -29,10 +30,9 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
 
     // Función para actualizar la cantidad de un ítem
-    const updateQuantity = (item: CartItem, newQuantity: string) => {
-        const quantity = parseInt(newQuantity, 10);
-        if (quantity > 0) {
-            patch(route('cart.update', { item, quantity }), {
+    const updateQuantity = (item: CartItem, newQuantity: number) => {
+        if (newQuantity > 0) {
+            patch(route('cart.update', { item, quantity: newQuantity }), {
                 preserveScroll: true,
             });
         }
@@ -41,6 +41,13 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
     // Función para eliminar un ítem del carrito
     const removeItem = (item: CartItem) => {
         destroy(route('cart.remove', { item }), {
+            preserveScroll: true,
+        });
+    };
+
+    // Función para limpiar el carrito
+    const clearCart = () => {
+        destroy(route('cart.clear'), {
             preserveScroll: true,
         });
     };
@@ -78,14 +85,36 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-center">
-                                                <Input
-                                                    type="number"
-                                                    value={item.quantity}
-                                                    onChange={(e) => updateQuantity(item, e.target.value)}
-                                                    className="mx-auto w-20 text-center"
-                                                    min="1"
-                                                    disabled={processing}
-                                                />
+                                                <ButtonGroup>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        onClick={() => updateQuantity(item, item.quantity - 1)}
+                                                        disabled={processing || item.quantity <= 1}
+                                                        aria-label="Quitar producto"
+                                                        className="group cursor-pointer"
+                                                    >
+                                                        <Minus className="h-4 w-4 text-neutral-700 group-hover:text-red-700" />
+                                                    </Button>
+                                                    <Input
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        onChange={(e) => updateQuantity(item, parseInt(e.target.value, 10) || 1)}
+                                                        className="remove-arrow mx-auto w-12 text-center"
+                                                        min="1"
+                                                        disabled={processing}
+                                                    />
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        onClick={() => updateQuantity(item, item.quantity + 1)}
+                                                        disabled={processing}
+                                                        aria-label="Agregar producto"
+                                                        className="group cursor-pointer"
+                                                    >
+                                                        <Plus className="h-4 w-4 text-neutral-700 group-hover:text-green-700" />
+                                                    </Button>
+                                                </ButtonGroup>
                                             </TableCell>
                                             <TableCell className="text-right">${item.product?.price.toFixed(2)}</TableCell>
                                             <TableCell className="text-right">${(item.product?.price * item.quantity).toFixed(2)}</TableCell>
@@ -109,7 +138,7 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                             <div className="py-12 text-center">
                                 <p className="text-gray-500">Tu carrito está vacío.</p>
                                 <Button asChild className="mt-4">
-                                    <Link href="/">Ir a la tienda</Link>
+                                    <Link href={route('products.index')}>Ir a la tienda</Link>
                                 </Button>
                             </div>
                         )}
@@ -117,9 +146,14 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                     {cartItems.length > 0 && (
                         <CardFooter className="flex items-center justify-between bg-gray-50 p-6">
                             <span className="text-xl font-bold">Total: ${total.toFixed(2)}</span>
-                            <Button size="lg" className="cursor-pointer">
-                                Proceder al Pago
-                            </Button>
+                            <div className="flex space-x-4">
+                                <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart}>
+                                    Limpiar Carrito
+                                </Button>
+                                <Button size="lg" className="cursor-pointer">
+                                    Proceder al Pago
+                                </Button>
+                            </div>
                         </CardFooter>
                     )}
                 </Card>

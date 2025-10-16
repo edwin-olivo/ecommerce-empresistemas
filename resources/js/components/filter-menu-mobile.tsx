@@ -125,10 +125,10 @@ export function FilterAndSortMenu({
                 </div>
 
                 <DialogFooter>
-                    <Button type="submit" className="w-full">
+                    <Button variant={'default'} type="submit">
                         Aplicar filtros
                     </Button>
-                    <Button variant="outline" onClick={onClearFilters} className="w-full">
+                    <Button variant={'outline'} onClick={onClearFilters}>
                         Limpiar filtros
                     </Button>
                 </DialogFooter>
