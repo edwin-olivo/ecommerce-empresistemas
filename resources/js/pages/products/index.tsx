@@ -36,8 +36,14 @@ export default function Products() {
     minPrice = Number(minPrice) || 0;
     maxPrice = Number(maxPrice) || 5000;
 
-    const categoriesArray: MultiSelectOption[] = Object.entries(categories).map(([value, label]) => ({ value, label }));
-    const classesArray: MultiSelectOption[] = Object.entries(classes).map(([value, label]) => ({ value, label }));
+    const categoriesArray: MultiSelectOption[] = Object.entries(categories).map(([value, label]) => {
+        if (label === '') label = 'Sin categoría';
+        return { value, label };
+    });
+    const classesArray: MultiSelectOption[] = Object.entries(classes).map(([value, label]) => {
+        if (label === '') label = 'Sin clase';
+        return { value, label };
+    });
 
     // Usamos el hook para manejar toda la lógica de filtros
     const { filters, setFilter, clearFilters } = useProductFilters({ initialFilters });

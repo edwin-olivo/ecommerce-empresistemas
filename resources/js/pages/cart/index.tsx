@@ -25,6 +25,11 @@ interface CartIndexProps {
     total: number;
 }
 
+function formatName(name: string) {
+    if (name.length <= 40) return name;
+    return name.slice(0, 40) + '...';
+}
+
 // Componente principal del carrito
 export default function CartIndex({ cartContent, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
@@ -80,7 +85,9 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                                         <TableRow key={item.id}>
                                             <TableCell className="font-medium">
                                                 <div className="flex flex-col items-start">
-                                                    <div className="font-bold whitespace-nowrap text-neutral-900">{item.product?.part_number}</div>
+                                                    <div className="font-bold whitespace-nowrap text-neutral-900" title={item.product?.part_number}>
+                                                        {formatName(item.product?.part_number)}
+                                                    </div>
                                                     <div className="text-xs text-neutral-600">{item.product?.name}</div>
                                                 </div>
                                             </TableCell>
