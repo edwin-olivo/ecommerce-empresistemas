@@ -17,6 +17,7 @@ class MigrateFreshExcept extends Command
     protected $except = [
         'aos_products',
         'aos_products_cstm',
+        'iv02_subalmacenes',
     ];
 
     public function handle()
