@@ -42,3 +42,9 @@ export function renderLabel(label: string) {
     if (label === 'pagination.next') return '>';
     return label;
 }
+
+export function resolveImageSource(src: string | undefined) {
+    return typeof src === 'string' && src.trim() !== ''
+        ? src
+        : 'https://placehold.co/600x400';
+}
