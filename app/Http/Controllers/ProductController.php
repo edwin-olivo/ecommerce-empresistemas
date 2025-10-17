@@ -59,6 +59,22 @@ class ProductController extends Controller
         ]);
     }
 
+    function show($id)
+    {
+        try {
+            $product = AosProducts::with('custom')->findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            abort(404, 'Product not found');
+        }
+
+        return Inertia::render('products/product-page', [
+            'product' => $product,
+            'categories' => ListHelper::getERPList('categoria_0'),
+            'classes' => ListHelper::getERPList('clase_list'),
+            'types' => ListHelper::getERPList('product_type_dom'),
+        ]);
+    }
+
     function extractFiltersFromRequest($request)
     {
         $filtersInRequest = $request->all(['filter']);
