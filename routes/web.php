@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rutas para productos
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
     // Rutas para el carrito
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
