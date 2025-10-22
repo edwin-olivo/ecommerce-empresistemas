@@ -14,7 +14,7 @@ export default function ProductCarousel({ images }: ProductCarouselProps) {
                         <div className="p-1">
                             <Card>
                                 <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">{index + 1}</span>
+                                    <img src={image.src} alt={image.alt} className="max-h-full max-w-full object-contain" />
                                 </CardContent>
                             </Card>
                         </div>

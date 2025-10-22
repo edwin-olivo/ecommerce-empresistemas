@@ -17,7 +17,7 @@ interface ProductPageProps {
 const breadcrumbs = [{ title: 'Productos', href: '/products' }];
 
 export default function ProductPage({ product, categories, classes, types }: ProductPageProps) {
-    const { post } = useForm({
+    const { post, processing } = useForm({
         id: product.id,
         quantity: 1,
     });
@@ -74,7 +74,7 @@ export default function ProductPage({ product, categories, classes, types }: Pro
                                         </SelectContent>
                                     </Select> */}
                                 </div>
-                                <Button size="lg" onClick={addToCart}>
+                                <Button size="lg" onClick={addToCart} disabled={processing} aria-label={`Agregar ${product.name} al carrito`}>
                                     Agregar al Carrito
                                 </Button>
                             </div>
