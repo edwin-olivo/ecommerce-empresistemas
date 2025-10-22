@@ -44,7 +44,5 @@ export function renderLabel(label: string) {
 }
 
 export function resolveImageSource(src: string | undefined) {
-    return typeof src === 'string' && src.trim() !== ''
-        ? src
-        : 'https://placehold.co/600x400';
+    return typeof src === 'string' && src.trim() !== '' ? src : 'https://placehold.co/600x400';
 }

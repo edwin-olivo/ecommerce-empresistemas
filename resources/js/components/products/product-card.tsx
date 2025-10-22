@@ -1,7 +1,7 @@
+import { Image } from '@/components/image';
 import { Button } from '@/components/ui/button';
 import type { Product } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
-import { Image } from '@/components/image';
 
 interface Props {
     product: Product;
