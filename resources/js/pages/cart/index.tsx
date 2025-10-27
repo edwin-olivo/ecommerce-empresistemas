@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Cart', href: '/cart' }];
 
@@ -33,6 +34,7 @@ function formatName(name: string) {
 // Componente principal del carrito
 export default function CartIndex({ cartContent, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
 
     // Función para actualizar la cantidad de un ítem
     const updateQuantity = (item: CartItem, newQuantity: number) => {
@@ -53,8 +55,46 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
     // Función para limpiar el carrito
     const clearCart = () => {
         destroy(route('cart.clear'), {
-            preserveScroll: true,
+            preserveScroll: false,
         });
+    };
+
+    // Función para ir al proceso de checkout
+    const proceedToCheckout = async () => {
+        setIsCheckingOut(true);
+
+        try {
+            // Obtenemos el token CSRF del <meta> tag
+            const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content;
+
+            const response = await fetch(route('checkout'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': csrfToken, // ¡Muy importante para Laravel!
+                },
+                credentials: 'same-origin',
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al contactar el servidor');
+            }
+
+            const data = await response.json();
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error('No se recibió la URL de checkout');
+            }
+        } catch (error) {
+            console.error('Error al procesar el pago:', error);
+            alert('Hubo un error al procesar el pago. Por favor, intenta nuevamente.');
+        } finally {
+            // Si falla la redirección
+            setIsCheckingOut(false);
+        }
     };
 
     // Convertimos el objeto a un array para poder usar .map() y .length
@@ -154,11 +194,11 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                         <CardFooter className="flex items-center justify-between bg-gray-50 p-6">
                             <span className="text-xl font-bold">Total: ${total.toFixed(2)}</span>
                             <div className="flex space-x-4">
-                                <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart}>
+                                <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart} disabled={processing}>
                                     Limpiar Carrito
                                 </Button>
-                                <Button size="lg" className="cursor-pointer">
-                                    Proceder al Pago
+                                <Button size="lg" className="cursor-pointer" onClick={proceedToCheckout} disabled={processing || isCheckingOut}>
+                                    {isCheckingOut ? 'Procesando...' : 'Proceder al Pago'}
                                 </Button>
                             </div>
                         </CardFooter>
