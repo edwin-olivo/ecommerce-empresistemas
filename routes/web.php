@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -24,6 +25,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/cart/update/{item}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{item}', [CartController::class, 'remove'])->name('cart.remove');
     Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
+    // Rutas para el proceso de pago
+    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
 });
 
 require __DIR__ . '/settings.php';
