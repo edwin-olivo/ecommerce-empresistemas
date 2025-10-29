@@ -60,7 +60,7 @@ export default function Products() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Productos" />
-            <main className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-8">
+            <main className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-4">
                 <div className="flex flex-col gap-8 md:flex-row">
                     <section className="flex-1">
                         <div className="mb-4 flex flex-wrap items-center justify-between gap-y-4 lg:gap-y-0">
