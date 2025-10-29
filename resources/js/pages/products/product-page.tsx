@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { resolveImageSource } from '@/lib/utils';
 import ProductCarousel from '@/pages/products/product-carousel';
-import { Product } from '@/types';
+import { BreadcrumbItem, Product } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
 interface ProductPageProps {
@@ -13,8 +13,6 @@ interface ProductPageProps {
     classes: Record<string, string>;
     types: Record<string, string>;
 }
-
-const breadcrumbs = [{ title: 'Productos', href: '/products' }];
 
 export default function ProductPage({ product, categories, classes, types }: ProductPageProps) {
     const { post, processing } = useForm({
@@ -39,6 +37,11 @@ export default function ProductPage({ product, categories, classes, types }: Pro
             preserveScroll: true,
         });
     }
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Productos', href: '/products' },
+        { title: part_number || 'Detalle del Producto', href: '' },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

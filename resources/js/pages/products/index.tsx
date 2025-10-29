@@ -27,7 +27,10 @@ const orderByOptions: CheckboxOption = {
 };
 
 const pageSizeOptions: CheckboxOption = { '12': '12', '24': '24', '48': '48', all: 'Todos' };
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Products', href: '/products' }];
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Products', href: '/products' },
+    { title: 'Todos los Productos', href: '' },
+];
 
 export default function Products() {
     const { products, categories, classes, filters: initialFilters } = usePage<ProductsProps>().props;
