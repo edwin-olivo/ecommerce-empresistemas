@@ -101,5 +101,18 @@ class CheckoutController extends Controller
         }
     }
 
-    public function cancel() {}
+    public function cancel(Request $request)
+    {
+        $sessionId = $request->get('session_id');
+
+        $order = Order::where('session_id', $sessionId)->first();
+        if ($order) {
+            $order->status = 'cancelled';
+            $order->save();
+        }
+
+        return Inertia::render('products/checkout-cancel', [
+            'message' => 'Tu proceso de compra ha sido cancelado. Los artículos en tu carrito aún están guardados.',
+        ]);
+    }
 }
