@@ -2,9 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
+import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { resolveImageSource } from '@/lib/utils';
 import ProductCarousel from '@/pages/products/product-carousel';
-import { BreadcrumbItem, Product } from '@/types';
+import { Product } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
 interface ProductPageProps {
@@ -38,10 +39,16 @@ export default function ProductPage({ product, categories, classes, types }: Pro
         });
     }
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Productos', href: '/products' },
-        { title: part_number || 'Detalle del Producto', href: '' },
-    ];
+    const breadcrumbs = getBreadcrumbs('/products', [
+        {
+            title: categories[category] || category || 'Categoría',
+            href: `/products?filter%5Bcategories%5D%5B0%5D=${categories[category] || category}`,
+        },
+        {
+            title: product.name,
+            href: '',
+        },
+    ]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

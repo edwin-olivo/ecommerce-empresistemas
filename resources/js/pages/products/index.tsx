@@ -4,6 +4,7 @@ import ProductCard from '@/components/products/product-card';
 import { Button } from '@/components/ui/button';
 import { useProductFilters } from '@/hooks/use-product-filters'; // Hook para manejar filtros
 import AppLayout from '@/layouts/app-layout';
+import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import type { BreadcrumbItem, CheckboxOption, MultiSelectOption } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
@@ -27,10 +28,6 @@ const orderByOptions: CheckboxOption = {
 };
 
 const pageSizeOptions: CheckboxOption = { '12': '12', '24': '24', '48': '48', all: 'Todos' };
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Products', href: '/products' },
-    { title: 'Todos los Productos', href: '' },
-];
 
 export default function Products() {
     const { products, categories, classes, filters: initialFilters } = usePage<ProductsProps>().props;
@@ -56,6 +53,17 @@ export default function Products() {
     const currentCategories = filters['filter[categories]'] || [];
     const currentClasses = filters['filter[classes]'] || [];
     const currentPageSize = filters.pageSize || pageSizeOptions['24'];
+
+    const crumbs: BreadcrumbItem[] = [];
+
+    if (currentCategories && categories[currentCategories]) {
+        crumbs.push({
+            title: categories[currentCategories],
+            href: '', // Página actual
+        });
+    }
+
+    const breadcrumbs = getBreadcrumbs('/products', crumbs);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

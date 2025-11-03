@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { Head, Link } from '@inertiajs/react';
 import { CircleCheckBig, ShoppingBag, ShoppingCart } from 'lucide-react';
 
@@ -11,13 +11,12 @@ interface CheckoutSuccessProps {
     };
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Inicio', href: route('home') },
-    { title: 'Carrito de Compras', href: route('cart.index') },
-    { title: 'Éxito en la Compra', href: '' },
-];
-
 export default function CheckoutSuccess({ customerEmail, order }: CheckoutSuccessProps) {
+    const breadcrumbs = getBreadcrumbs('/success', [
+        { title: 'Carrito de Compras', href: route('cart.index') },
+        { title: 'Éxito en la Compra', href: '' },
+    ]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Carrito de Compras" />

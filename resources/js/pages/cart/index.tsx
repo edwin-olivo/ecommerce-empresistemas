@@ -4,12 +4,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { debounce } from 'lodash-es';
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Cart', href: '/cart' }];
+import { useRef, useState } from 'react';
 
 interface CartItem {
     cart_id: number;
@@ -36,6 +35,9 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
 
+    const [localQuantities, setLocalQuantities] = useState<Record<string, number>>({});
+    const debouncedUpdateRef = useRef<Record<string, ReturnType<typeof debounce>>>({});
+
     // Función para actualizar la cantidad de un ítem
     const updateQuantity = (item: CartItem, newQuantity: number) => {
         if (newQuantity > 0) {
@@ -43,6 +45,26 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                 preserveScroll: true,
             });
         }
+    };
+
+    const handleQuantityChange = (item: CartItem, value: string) => {
+        const newQuantity = parseInt(value, 10) || 1;
+
+        // Actualiza el estado local inmediatamente para que el usuario vea lo que escribe
+        setLocalQuantities((prev) => ({
+            ...prev,
+            [item.id]: newQuantity,
+        }));
+
+        // Crea o reutiliza la función debounced para este ítem
+        if (!debouncedUpdateRef.current[item.id]) {
+            debouncedUpdateRef.current[item.id] = debounce((qty: number) => {
+                updateQuantity(item, qty);
+            }, 500);
+        }
+
+        // Ejecuta la función debounced
+        debouncedUpdateRef.current[item.id](newQuantity);
     };
 
     // Función para eliminar un ítem del carrito
@@ -100,6 +122,12 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
     // Convertimos el objeto a un array para poder usar .map() y .length
     const cartItems = Object.values(cartContent);
 
+    const textoBreadcrumb = cartItems.length > 0 ? `Productos en el Carrito` : 'El Carrito está Vacío';
+
+    const breadcrumbs = getBreadcrumbs('/cart', [
+        cartItems.length > 0 ? { title: textoBreadcrumb, href: '/cart' } : { title: 'El Carrito está Vacío', href: '/cart' },
+    ]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Carrito de Compras" />
@@ -126,7 +154,12 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                                             <TableCell className="font-medium">
                                                 <div className="flex flex-col items-start">
                                                     <div className="font-bold whitespace-nowrap text-neutral-900" title={item.product?.part_number}>
-                                                        {formatName(item.product?.part_number)}
+                                                        <Link
+                                                            href={route('products.show', item.product?.id)}
+                                                            className="hover:text-blue-600 hover:underline"
+                                                        >
+                                                            {formatName(item.product?.part_number)}
+                                                        </Link>
                                                     </div>
                                                     <div className="text-xs text-neutral-600">{item.product?.name}</div>
                                                 </div>
@@ -145,8 +178,8 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                                                     </Button>
                                                     <Input
                                                         type="number"
-                                                        value={item.quantity}
-                                                        onChange={(e) => updateQuantity(item, parseInt(e.target.value, 10) || 1)}
+                                                        value={localQuantities[item.id] ?? item.quantity}
+                                                        onChange={(e) => handleQuantityChange(item, e.target.value)}
                                                         className="remove-arrow mx-auto w-12 text-center"
                                                         min="1"
                                                         disabled={processing}
