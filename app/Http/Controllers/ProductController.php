@@ -75,6 +75,19 @@ class ProductController extends Controller
         ]);
     }
 
+    function search(Request $request)
+    {
+        $searchTerm = $request->input('search', '');
+
+        $products = AosProducts::where('part_number', 'like', '%' . $searchTerm . '%')
+            ->orWhere('name', 'like', '%' . $searchTerm . '%')
+            ->get();
+
+        return response()->json([
+            'products' => $products,
+        ]);
+    }
+
     function extractFiltersFromRequest($request)
     {
         $filtersInRequest = $request->all(['filter']);
