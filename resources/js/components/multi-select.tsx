@@ -41,6 +41,10 @@ export default function MultiSelect({
         }
     };
 
+    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+    };
+
     return (
         <div className={cn('w-full', className)}>
             <Popover open={open} onOpenChange={setOpen}>
@@ -105,7 +109,14 @@ export default function MultiSelect({
                 <PopoverContent className="w-full p-0" align="start">
                     <Command>
                         <CommandInput autoFocus={false} placeholder="Buscar elementos..." />
-                        <CommandList>
+                        <CommandList
+                            onWheel={handleWheel}
+                            style={{
+                                overflowY: 'auto',
+                                scrollBehavior: 'smooth',
+                                overscrollBehavior: 'contain',
+                            }}
+                        >
                             <CommandEmpty className="p-0">
                                 {isLoading ? (
                                     <div className="p-2">
