@@ -23,6 +23,9 @@ interface CartItem {
 
 interface CartIndexProps {
     cartContent: CartItem[];
+    subtotal: number;
+    taxes: number;
+    shipping: number;
     total: number;
 }
 
@@ -32,7 +35,7 @@ function formatName(name: string) {
 }
 
 // Componente principal del carrito
-export default function CartIndex({ cartContent, total }: CartIndexProps) {
+export default function CartIndex({ cartContent, subtotal, taxes, shipping, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -133,119 +136,148 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Carrito de Compras" />
             <main className="container mx-auto px-4 py-8">
-                <Card className="mx-auto max-w-4xl">
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-bold tracking-tight">Carrito de Compras</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {cartItems.length > 0 ? (
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead className="w-1/2">Producto</TableHead>
-                                        <TableHead className="text-center">Cantidad</TableHead>
-                                        <TableHead className="text-right">Precio</TableHead>
-                                        <TableHead className="text-right">Subtotal</TableHead>
-                                        <TableHead></TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {cartItems.map((item) => {
-                                        if (!item.product) return null;
-
-                                        const product = item.product;
-                                        const formattedPrice = formatCurrency(product?.price);
-                                        const subtotal = formatCurrency(product?.price * item.quantity);
-
-                                        return (
-                                            <TableRow key={item.id}>
-                                                <TableCell className="font-medium">
-                                                    <div className="flex flex-col items-start">
-                                                        <div className="font-bold whitespace-nowrap text-neutral-900" title={product?.part_number}>
-                                                            <Link
-                                                                href={route('products.show', product?.id)}
-                                                                className="hover:text-blue-600 hover:underline"
-                                                            >
-                                                                {formatName(product?.part_number)}
-                                                            </Link>
-                                                        </div>
-                                                        <div className="text-xs text-neutral-600">{product?.name}</div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell className="text-center">
-                                                    <ButtonGroup>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="icon"
-                                                            onClick={() => updateQuantity(item, item.quantity - 1)}
-                                                            disabled={processing || item.quantity <= 1}
-                                                            aria-label="Quitar producto"
-                                                            className="group cursor-pointer"
-                                                        >
-                                                            <Minus className="h-4 w-4 text-neutral-700 group-hover:text-red-700" />
-                                                        </Button>
-                                                        <Input
-                                                            type="number"
-                                                            value={localQuantities[item.id] ?? item.quantity}
-                                                            onChange={(e) => handleQuantityChange(item, e.target.value)}
-                                                            className="remove-arrow mx-auto w-12 text-center"
-                                                            min="1"
-                                                            disabled={processing}
-                                                        />
-                                                        <Button
-                                                            variant="outline"
-                                                            size="icon"
-                                                            onClick={() => updateQuantity(item, item.quantity + 1)}
-                                                            disabled={processing}
-                                                            aria-label="Agregar producto"
-                                                            className="group cursor-pointer"
-                                                        >
-                                                            <Plus className="h-4 w-4 text-neutral-700 group-hover:text-green-700" />
-                                                        </Button>
-                                                    </ButtonGroup>
-                                                </TableCell>
-                                                <TableCell className="text-right">{formattedPrice}</TableCell>
-                                                <TableCell className="text-right">{subtotal}</TableCell>
-                                                <TableCell className="text-center">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={() => removeItem(item)}
-                                                        disabled={processing}
-                                                        aria-label="Eliminar producto"
-                                                        className="cursor-pointer hover:bg-red-100 focus:ring-2 focus:ring-red-300"
-                                                    >
-                                                        <Trash2 className="h-4 w-4 text-red-500" />
-                                                    </Button>
-                                                </TableCell>
+                <div className="flex flex-col space-y-6 xl:flex-row xl:space-y-0 xl:space-x-6">
+                    <div className="w-full xl:w-2/3">
+                        <Card className="mx-auto max-w-4xl">
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-bold tracking-tight">Carrito de Compras</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                {cartItems.length > 0 ? (
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead className="w-1/2">Producto</TableHead>
+                                                <TableHead className="text-center">Cantidad</TableHead>
+                                                <TableHead className="text-right">Precio</TableHead>
+                                                <TableHead className="text-right">Subtotal</TableHead>
+                                                <TableHead></TableHead>
                                             </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        ) : (
-                            <div className="py-12 text-center">
-                                <p className="text-gray-500">Tu carrito está vacío.</p>
-                                <Button asChild className="mt-4">
-                                    <Link href={route('products.index')}>Ir a la tienda</Link>
-                                </Button>
-                            </div>
-                        )}
-                    </CardContent>
-                    {cartItems.length > 0 && (
-                        <CardFooter className="flex items-center justify-between bg-gray-50 p-6">
-                            <span className="text-xl font-bold">Total: {formatCurrency(total)}</span>
-                            <div className="flex space-x-4">
+                                        </TableHeader>
+                                        <TableBody>
+                                            {cartItems.map((item) => {
+                                                if (!item.product) return null;
+
+                                                const product = item.product;
+                                                const formattedPrice = formatCurrency(product?.price);
+                                                const subtotal = formatCurrency(product?.price * item.quantity);
+
+                                                return (
+                                                    <TableRow key={item.id}>
+                                                        <TableCell className="font-medium">
+                                                            <div className="flex flex-col items-start">
+                                                                <div
+                                                                    className="font-bold whitespace-nowrap text-neutral-900"
+                                                                    title={product?.part_number}
+                                                                >
+                                                                    <Link
+                                                                        href={route('products.show', product?.id)}
+                                                                        className="hover:text-blue-600 hover:underline"
+                                                                    >
+                                                                        {formatName(product?.part_number)}
+                                                                    </Link>
+                                                                </div>
+                                                                <div className="text-xs text-neutral-600">{product?.name}</div>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            <ButtonGroup>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() => updateQuantity(item, item.quantity - 1)}
+                                                                    disabled={processing || item.quantity <= 1}
+                                                                    aria-label="Quitar producto"
+                                                                    className="group cursor-pointer"
+                                                                >
+                                                                    <Minus className="h-4 w-4 text-neutral-700 group-hover:text-red-700" />
+                                                                </Button>
+                                                                <Input
+                                                                    type="number"
+                                                                    value={localQuantities[item.id] ?? item.quantity}
+                                                                    onChange={(e) => handleQuantityChange(item, e.target.value)}
+                                                                    className="remove-arrow mx-auto w-12 text-center"
+                                                                    min="1"
+                                                                    disabled={processing}
+                                                                />
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="icon"
+                                                                    onClick={() => updateQuantity(item, item.quantity + 1)}
+                                                                    disabled={processing}
+                                                                    aria-label="Agregar producto"
+                                                                    className="group cursor-pointer"
+                                                                >
+                                                                    <Plus className="h-4 w-4 text-neutral-700 group-hover:text-green-700" />
+                                                                </Button>
+                                                            </ButtonGroup>
+                                                        </TableCell>
+                                                        <TableCell className="text-right">{formattedPrice}</TableCell>
+                                                        <TableCell className="text-right">{subtotal}</TableCell>
+                                                        <TableCell className="text-center">
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                onClick={() => removeItem(item)}
+                                                                disabled={processing}
+                                                                aria-label="Eliminar producto"
+                                                                className="cursor-pointer hover:bg-red-100 focus:ring-2 focus:ring-red-300"
+                                                            >
+                                                                <Trash2 className="h-4 w-4 text-red-500" />
+                                                            </Button>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
+                                        </TableBody>
+                                    </Table>
+                                ) : (
+                                    <div className="py-12 text-center">
+                                        <p className="text-gray-500">Tu carrito está vacío.</p>
+                                        <Button asChild className="mt-4">
+                                            <Link href={route('products.index')}>Ir a la tienda</Link>
+                                        </Button>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className="w-full xl:w-1/3">
+                        <Card className="mx-auto">
+                            <CardHeader>
+                                <h2 className="text-lg font-bold">Resumen del Pedido</h2>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-2">
+                                    <div className="flex justify-between">
+                                        <span>Subtotal:</span>
+                                        <span>{formatCurrency(subtotal)}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>Impuestos (16%):</span>
+                                        <span>{formatCurrency(taxes)}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>Envío:</span>
+                                        <span>{shipping === 0 ? 'Gratis' : formatCurrency(shipping)}</span>
+                                    </div>
+                                    <div className="mt-4 flex justify-between text-lg font-bold">
+                                        <span>Total:</span>
+                                        <span>{formatCurrency(total)}</span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                            <CardFooter className="flex justify-between">
                                 <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart} disabled={processing}>
                                     Limpiar Carrito
                                 </Button>
                                 <Button size="lg" className="cursor-pointer" onClick={proceedToCheckout} disabled={processing || isCheckingOut}>
                                     {isCheckingOut ? 'Procesando...' : 'Proceder al Pago'}
                                 </Button>
-                            </div>
-                        </CardFooter>
-                    )}
-                </Card>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </div>
             </main>
         </AppLayout>
     );

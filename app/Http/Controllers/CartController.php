@@ -16,26 +16,42 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = [];
+        $subtotal = 0;
+        $taxes = 0;
+        $shipping = 0;
         $total = 0;
 
         if (Auth::check()) {
             $cart = Auth::user()->cart;
             if ($cart) {
                 $cartItems = $cart->items()->with('product')->get();
-                $total = $cartItems->sum(function ($item) {
+
+                // Filtramos los items con "product" cargado
+                $cartItems = $cartItems->filter(function ($item) {
+                    return $item->product !== null;
+                });
+
+                $subtotal = $cartItems->sum(function ($item) {
                     return $item->product->price * $item->quantity;
                 });
             }
         } else {
             $sessionCart = session()->get('cart', []);
             $cartItems = $sessionCart;
-            $total = array_sum(array_map(function ($item) {
+            $subtotal = array_sum(array_map(function ($item) {
                 return $item['price'] * $item['quantity'];
             }, $sessionCart));
         }
 
+        $taxes = $subtotal * 0.16; // Ejemplo: 16% de impuestos
+        $shipping = $subtotal > 100 ? 0 : 10; // Ejemplo: envío gratis si el subtotal es mayor a 100
+        $total = $subtotal + $taxes + $shipping;
+
         return Inertia::render('cart/index', [
             'cartContent' => $cartItems,
+            'subtotal' => $subtotal,
+            'taxes' => $taxes,
+            'shipping' => $shipping,
             'total' => $total,
         ]);
     }
