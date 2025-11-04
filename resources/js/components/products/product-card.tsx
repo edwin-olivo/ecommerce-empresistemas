@@ -1,13 +1,19 @@
 import { Image } from '@/components/image';
+import ProductQuickView from '@/components/products/product-quick-view';
 import { Button } from '@/components/ui/button';
+import { formatCurrency } from '@/lib/utils';
 import type { Product } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
+import { Eye } from 'lucide-react';
+import { useState } from 'react';
 
 interface Props {
     product: Product;
 }
 
-function ProductCard({ product }: Props) {
+export default function ProductCard({ product }: Props) {
+    const [openQuickView, setOpenQuickView] = useState(false);
+
     const { post, processing } = useForm({
         id: product.id,
         quantity: 1,
@@ -22,30 +28,59 @@ function ProductCard({ product }: Props) {
     }
 
     return (
-        <Link href={route('products.show', { id: product.id })} className="">
-            <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-neutral-100 p-[15px] transition-all duration-300 dark:bg-neutral-800">
-                <div className="flex h-fit w-full flex-col items-center justify-center gap-[15px]">
-                    <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-300 group-hover:h-[120px]">
-                        <Image src={product?.custom?.url_imagen} alt={product.part_number || product.name} className="h-full w-full object-cover" />
+        <>
+            <Link href={route('products.show', { id: product.id })} className="">
+                <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-neutral-100 p-[15px] transition-all duration-300 dark:bg-neutral-800">
+                    <div className="flex h-fit w-full flex-col items-center justify-center gap-[15px]">
+                        <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-300 group-hover:h-[120px]">
+                            <Image
+                                src={product?.custom?.url_imagen}
+                                alt={product.part_number || product.name}
+                                className="h-full w-full object-cover"
+                            />
+                        </div>
+                        <div className="flex h-fit w-full flex-col items-start justify-between overflow-hidden">
+                            <p className="truncate text-[0.72em] font-medium text-neutral-600 uppercase dark:text-neutral-50">
+                                {product.part_number}
+                            </p>
+                            <p className="text-[1em] font-bold text-neutral-600 uppercase dark:text-neutral-50">{formatCurrency(product.price)}</p>
+                            <p></p>
+                        </div>
+                        <Button
+                            className="mt-2.5 h-10 w-full cursor-pointer rounded-[40px] border-0 bg-neutral-900 font-medium text-white transition-all duration-300 group-hover:mt-0 hover:bg-lime-400 hover:text-neutral-900"
+                            onClick={addToCart}
+                            disabled={processing}
+                            aria-label={`Agregar ${product.name} al carrito`}
+                        >
+                            Agregar al carrito
+                        </Button>
                     </div>
-                    <div className="flex h-fit w-full flex-col items-start justify-between overflow-hidden">
-                        <p className="truncate text-[0.72em] font-medium text-neutral-600 uppercase dark:text-neutral-50">{product.part_number}</p>
-                        <p className="text-[1em] font-bold text-neutral-600 uppercase dark:text-neutral-50">$ {product.price}</p>
-                        <p></p>
-                    </div>
+
+                    {/* Mostrar ofertas o similar */}
+                    <p className="absolute top-5 left-5 rounded-[15px] bg-lime-400 px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p>
+
+                    {/* Boton Quick View */}
                     <Button
-                        className="mt-2.5 h-10 w-full cursor-pointer rounded-[40px] border-0 bg-neutral-900 font-medium text-white transition-all duration-300 group-hover:mt-0 hover:bg-lime-400 hover:text-neutral-900"
-                        onClick={addToCart}
-                        disabled={processing}
-                        aria-label={`Agregar ${product.name} al carrito`}
+                        className="absolute top-5 right-5 !h-8 rounded-full bg-neutral-900 !py-0.5 text-white transition-all duration-300 hover:bg-lime-400 hover:text-neutral-900"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setOpenQuickView(true);
+                        }}
+                        aria-label={`Vista rápida de ${product.name}`}
+                        title={`Vista rápida de ${product.part_number}`}
                     >
-                        Agregar al carrito
+                        <Eye className="h-4 w-4" />
                     </Button>
                 </div>
-                <p className="absolute top-5 left-5 rounded-[15px] bg-lime-400 px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p>
-            </div>
-        </Link>
+            </Link>
+
+            <ProductQuickView
+                product={product}
+                open={openQuickView}
+                onOpenChange={setOpenQuickView}
+                handleAddToCart={addToCart}
+                processing={processing}
+            />
+        </>
     );
 }
-
-export default ProductCard;
