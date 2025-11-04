@@ -1,6 +1,6 @@
 import PriceFilter from '@/components/filters/price-filter';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
@@ -125,12 +125,12 @@ export function FilterAndSortMenu({
                 </div>
 
                 <DialogFooter>
-                    <Button variant={'default'} type="submit">
-                        Aplicar filtros
-                    </Button>
                     <Button variant={'outline'} onClick={onClearFilters}>
                         Limpiar filtros
                     </Button>
+                    <DialogClose asChild>
+                        <Button variant={'default'}>Cerrar</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

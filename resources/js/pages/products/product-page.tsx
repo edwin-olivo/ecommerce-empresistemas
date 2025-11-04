@@ -61,9 +61,10 @@ export default function ProductPage({ product, categories, classes, types }: Pro
                             <ProductCarousel images={images} />
                         </div>
                         <div className="flex flex-col gap-6">
-                            <div>
+                            <div className="space-y-2">
                                 <h1 className="text-2xl font-bold lg:text-3xl">{part_number}</h1>
-                                <p className="mt-2 text-xl font-semibold">{formatCurrency(price)}</p>
+                                <p className="text-sm font-semibold text-gray-600">Precio</p>
+                                <p className="text-3xl font-bold text-gray-900">{formatCurrency(product.price)}</p>
                             </div>
                             <Separator />
                             <div>

@@ -20,13 +20,6 @@ interface ProductsProps {
     [key: string]: any; // Index signature to satisfy PageProps constraint
 }
 
-const orderByOptions: CheckboxOption = {
-    part_number: 'Nombre: A a Z',
-    '-part_number': 'Nombre: Z a A',
-    price: 'Precio: Bajo a Alto',
-    '-price': 'Precio: Alto a Bajo',
-};
-
 const pageSizeOptions: CheckboxOption = { '12': '12', '24': '24', '48': '48', all: 'Todos' };
 
 export default function Products() {
@@ -83,7 +76,7 @@ export default function Products() {
                                     )
                                 )}
                             </div>
-                            <div className="order-1 flex flex-grow justify-start gap-2 lg:order-none lg:flex-1 lg:justify-center">
+                            <div className="order-1 flex flex-grow justify-center gap-2 lg:order-none lg:flex-1">
                                 {Object.entries(pageSizeOptions).map(([key, label]) => (
                                     <Button
                                         variant={currentPageSize === key ? 'default' : 'outline'}
@@ -94,7 +87,7 @@ export default function Products() {
                                     </Button>
                                 ))}
                             </div>
-                            <div className="order-2 flex flex-grow justify-end align-middle md:flex-1 lg:order-none">
+                            <div className="order-2 flex flex-grow justify-center align-middle md:flex-1 lg:order-none lg:justify-end">
                                 <FilterAndSortMenu
                                     // Pasamos el estado actual de los filtros
                                     filters={{
