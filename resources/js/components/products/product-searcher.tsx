@@ -29,7 +29,7 @@ export default function ProductSearcher({ onProductSelect }: ProductSearcherProp
                 onChange={(e) => setSearch(e.target.value)}
                 disabled={loading}
             />
-            <ScrollArea className="mt-4 max-h-72 w-full rounded-md border">
+            <ScrollArea className="mt-4 h-72 w-full rounded-md border">
                 <div className="p-4">
                     {loading && <div className="text-sm text-gray-500">Buscando...</div>}
                     {!loading && products.length === 0 && search.trim() && <div className="text-sm text-gray-500">No se encontraron productos</div>}
