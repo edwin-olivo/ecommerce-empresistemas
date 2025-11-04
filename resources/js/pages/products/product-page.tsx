@@ -1,3 +1,4 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -94,20 +95,57 @@ export default function ProductPage({ product, categories, classes, types }: Pro
                                     <CardTitle>Detalles del Producto</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <ul className="space-y-2 text-sm text-muted-foreground">
-                                        <li className="flex justify-between">
-                                            <span className="font-semibold">Categoría:</span>
-                                            <span className="capitalize">{(categories[category] || category).toLocaleLowerCase()}</span>
-                                        </li>
-                                        <li className="flex justify-between">
-                                            <span className="font-semibold">Sub Categoría:</span>
-                                            <span className="capitalize">{(classes[clase_c] || clase_c).toLocaleLowerCase()}</span>
-                                        </li>
-                                        <li className="flex justify-between">
-                                            <span className="font-semibold">Tipo:</span>
-                                            <span className="capitalize">{(types[type] || type).toLocaleLowerCase()}</span>
-                                        </li>
-                                    </ul>
+                                    <div>
+                                        <p className="mb-4">Aquí encontrarás información adicional sobre el producto.</p>
+                                    </div>
+                                    <Accordion type="multiple" defaultValue={['product-details']} className="w-full">
+                                        <AccordionItem value="product-details">
+                                            <AccordionTrigger>Más Detalles</AccordionTrigger>
+                                            <AccordionContent className="flex flex-col gap-4">
+                                                <ul className="space-y-2">
+                                                    <li className="flex justify-between">
+                                                        <span className="font-semibold">Categoría:</span>
+                                                        <span className="capitalize">{(categories[category] || category).toLocaleLowerCase()}</span>
+                                                    </li>
+                                                    <li className="flex justify-between">
+                                                        <span className="font-semibold">Sub Categoría:</span>
+                                                        <span className="capitalize">{(classes[clase_c] || clase_c).toLocaleLowerCase()}</span>
+                                                    </li>
+                                                    <li className="flex justify-between">
+                                                        <span className="font-semibold">Tipo:</span>
+                                                        <span className="capitalize">{(types[type] || type).toLocaleLowerCase()}</span>
+                                                    </li>
+                                                </ul>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                        <AccordionItem value="shipping-details">
+                                            <AccordionTrigger>Detalles de Envío</AccordionTrigger>
+                                            <AccordionContent className="flex flex-col gap-4">
+                                                <p>
+                                                    Ofrecemos envío mundial a través de socios de mensajería de confianza. La entrega estándar tarda
+                                                    de 3 a 5 días hábiles, mientras que el envío exprés garantiza la entrega en 1-2 días hábiles.
+                                                </p>
+                                                <p>
+                                                    Todos los pedidos están cuidadosamente empaquetados y completamente asegurados. Realiza un
+                                                    seguimiento de tu envío en tiempo real a través de nuestro portal de seguimiento dedicado.
+                                                </p>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                        <AccordionItem value="return-policy">
+                                            <AccordionTrigger>Política de Devoluciones</AccordionTrigger>
+                                            <AccordionContent className="flex flex-col gap-4">
+                                                <p>
+                                                    Respaldamos nuestros productos con una completa política de devoluciones de 30 días. Si no estás
+                                                    completamente satisfecho, simplemente devuelve el artículo en su estado original.
+                                                </p>
+                                                <p>
+                                                    Nuestro proceso de devolución sin complicaciones incluye el envío de devolución gratuito y
+                                                    reembolsos completos procesados dentro de las 48 horas posteriores a la recepción del artículo
+                                                    devuelto.
+                                                </p>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
                                 </CardContent>
                             </Card>
                         </div>
