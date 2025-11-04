@@ -1,9 +1,11 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Icon } from '@/components/icon';
+import ProductSearcher from '@/components/products/product-searcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/user-menu-content';
@@ -26,11 +28,6 @@ const mainNavItems: NavItem[] = [
         href: '/products',
         icon: Shirt,
     },
-    // {
-    //     title: 'Carrito',
-    //     href: '/cart',
-    //     icon: ShoppingCart,
-    // },
 ];
 
 const rightNavItems: NavItem[] = [];
@@ -132,9 +129,16 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
 
                     <div className="ml-auto flex items-center space-x-2">
                         <div className="relative flex items-center space-x-1">
-                            <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                                <Search className="!size-5 opacity-80 group-hover:opacity-100" />
-                            </Button>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
+                                        <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-80 p-4">
+                                    <ProductSearcher />
+                                </PopoverContent>
+                            </Popover>
                             <Link href="/cart" className="relative">
                                 <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
                                     <ShoppingCartIcon className="!size-5 opacity-80 group-hover:opacity-100" />
