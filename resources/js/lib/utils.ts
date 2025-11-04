@@ -46,3 +46,10 @@ export function renderLabel(label: string) {
 export function resolveImageSource(src: string | undefined) {
     return typeof src === 'string' && src.trim() !== '' ? src : 'https://placehold.co/600x400';
 }
+
+export function formatCurrency(amount: number, locale = 'es-MX', currency = 'MXN'): string {
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency,
+    }).format(amount);
+}

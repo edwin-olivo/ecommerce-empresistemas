@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
+import { formatCurrency } from '@/lib/utils';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { debounce } from 'lodash-es';
 import { Minus, Plus, Trash2 } from 'lucide-react';
@@ -149,69 +150,77 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {cartItems.map((item) => (
-                                        <TableRow key={item.id}>
-                                            <TableCell className="font-medium">
-                                                <div className="flex flex-col items-start">
-                                                    <div className="font-bold whitespace-nowrap text-neutral-900" title={item.product?.part_number}>
-                                                        <Link
-                                                            href={route('products.show', item.product?.id)}
-                                                            className="hover:text-blue-600 hover:underline"
-                                                        >
-                                                            {formatName(item.product?.part_number)}
-                                                        </Link>
+                                    {cartItems.map((item) => {
+                                        if (!item.product) return null;
+
+                                        const product = item.product;
+                                        const formattedPrice = formatCurrency(product?.price);
+                                        const subtotal = formatCurrency(product?.price * item.quantity);
+
+                                        return (
+                                            <TableRow key={item.id}>
+                                                <TableCell className="font-medium">
+                                                    <div className="flex flex-col items-start">
+                                                        <div className="font-bold whitespace-nowrap text-neutral-900" title={product?.part_number}>
+                                                            <Link
+                                                                href={route('products.show', product?.id)}
+                                                                className="hover:text-blue-600 hover:underline"
+                                                            >
+                                                                {formatName(product?.part_number)}
+                                                            </Link>
+                                                        </div>
+                                                        <div className="text-xs text-neutral-600">{product?.name}</div>
                                                     </div>
-                                                    <div className="text-xs text-neutral-600">{item.product?.name}</div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                <ButtonGroup>
+                                                </TableCell>
+                                                <TableCell className="text-center">
+                                                    <ButtonGroup>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon"
+                                                            onClick={() => updateQuantity(item, item.quantity - 1)}
+                                                            disabled={processing || item.quantity <= 1}
+                                                            aria-label="Quitar producto"
+                                                            className="group cursor-pointer"
+                                                        >
+                                                            <Minus className="h-4 w-4 text-neutral-700 group-hover:text-red-700" />
+                                                        </Button>
+                                                        <Input
+                                                            type="number"
+                                                            value={localQuantities[item.id] ?? item.quantity}
+                                                            onChange={(e) => handleQuantityChange(item, e.target.value)}
+                                                            className="remove-arrow mx-auto w-12 text-center"
+                                                            min="1"
+                                                            disabled={processing}
+                                                        />
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon"
+                                                            onClick={() => updateQuantity(item, item.quantity + 1)}
+                                                            disabled={processing}
+                                                            aria-label="Agregar producto"
+                                                            className="group cursor-pointer"
+                                                        >
+                                                            <Plus className="h-4 w-4 text-neutral-700 group-hover:text-green-700" />
+                                                        </Button>
+                                                    </ButtonGroup>
+                                                </TableCell>
+                                                <TableCell className="text-right">{formattedPrice}</TableCell>
+                                                <TableCell className="text-right">{subtotal}</TableCell>
+                                                <TableCell className="text-center">
                                                     <Button
-                                                        variant="outline"
+                                                        variant="ghost"
                                                         size="icon"
-                                                        onClick={() => updateQuantity(item, item.quantity - 1)}
-                                                        disabled={processing || item.quantity <= 1}
-                                                        aria-label="Quitar producto"
-                                                        className="group cursor-pointer"
-                                                    >
-                                                        <Minus className="h-4 w-4 text-neutral-700 group-hover:text-red-700" />
-                                                    </Button>
-                                                    <Input
-                                                        type="number"
-                                                        value={localQuantities[item.id] ?? item.quantity}
-                                                        onChange={(e) => handleQuantityChange(item, e.target.value)}
-                                                        className="remove-arrow mx-auto w-12 text-center"
-                                                        min="1"
+                                                        onClick={() => removeItem(item)}
                                                         disabled={processing}
-                                                    />
-                                                    <Button
-                                                        variant="outline"
-                                                        size="icon"
-                                                        onClick={() => updateQuantity(item, item.quantity + 1)}
-                                                        disabled={processing}
-                                                        aria-label="Agregar producto"
-                                                        className="group cursor-pointer"
+                                                        aria-label="Eliminar producto"
+                                                        className="cursor-pointer hover:bg-red-100 focus:ring-2 focus:ring-red-300"
                                                     >
-                                                        <Plus className="h-4 w-4 text-neutral-700 group-hover:text-green-700" />
+                                                        <Trash2 className="h-4 w-4 text-red-500" />
                                                     </Button>
-                                                </ButtonGroup>
-                                            </TableCell>
-                                            <TableCell className="text-right">${item.product?.price.toFixed(2)}</TableCell>
-                                            <TableCell className="text-right">${(item.product?.price * item.quantity).toFixed(2)}</TableCell>
-                                            <TableCell className="text-center">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => removeItem(item)}
-                                                    disabled={processing}
-                                                    aria-label="Eliminar producto"
-                                                    className="cursor-pointer hover:bg-red-100 focus:ring-2 focus:ring-red-300"
-                                                >
-                                                    <Trash2 className="h-4 w-4 text-red-500" />
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         ) : (
@@ -225,7 +234,7 @@ export default function CartIndex({ cartContent, total }: CartIndexProps) {
                     </CardContent>
                     {cartItems.length > 0 && (
                         <CardFooter className="flex items-center justify-between bg-gray-50 p-6">
-                            <span className="text-xl font-bold">Total: ${total.toFixed(2)}</span>
+                            <span className="text-xl font-bold">Total: {formatCurrency(total)}</span>
                             <div className="flex space-x-4">
                                 <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart} disabled={processing}>
                                     Limpiar Carrito

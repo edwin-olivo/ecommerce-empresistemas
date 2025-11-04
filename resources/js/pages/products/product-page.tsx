@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
-import { resolveImageSource } from '@/lib/utils';
+import { formatCurrency, resolveImageSource } from '@/lib/utils';
 import ProductCarousel from '@/pages/products/product-carousel';
 import { Product } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
@@ -63,11 +63,14 @@ export default function ProductPage({ product, categories, classes, types }: Pro
                         <div className="flex flex-col gap-6">
                             <div>
                                 <h1 className="text-2xl font-bold lg:text-3xl">{part_number}</h1>
-                                <p className="mt-2 text-xl font-semibold">${price}</p>
+                                <p className="mt-2 text-xl font-semibold">{formatCurrency(price)}</p>
                             </div>
                             <Separator />
                             <div>
-                                <p className="text-muted-foreground">{description}</p>
+                                <p className="text-muted-foreground">
+                                    {description ||
+                                        'Deleniti maiores porro ab quisquam beatae rerum itaque architecto et. Tempore architecto fugiat. Earum tenetur expedita voluptas ullam ducimus sapiente provident dolorum.'}
+                                </p>
                             </div>
                             <div className="flex flex-col gap-4">
                                 <div className="flex items-center gap-0">
