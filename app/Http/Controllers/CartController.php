@@ -10,6 +10,11 @@ use Inertia\Inertia;
 
 class CartController extends Controller
 {
+    private const TAX_RATE = 0.16; // 16% IVA
+    private const FREE_SHIPPING_THRESHOLD = 1000; // Umbral para envío gratis
+    private const SHIPPING_FEE = 140; // Costo de envío estándar
+    private const TAX_INCLUDED = true;
+
     /**
      * Muestra la vista del carrito.
      */
@@ -43,13 +48,17 @@ class CartController extends Controller
             }, $sessionCart));
         }
 
-        $taxes = $subtotal * 0.16; // Ejemplo: 16% de impuestos
-        $shipping = $subtotal > 100 ? 0 : 10; // Ejemplo: envío gratis si el subtotal es mayor a 100
-        $total = $subtotal + $taxes + $shipping;
+        // Calcular IVA: el precio ya incluye IVA, así que usamos el cálculo inverso
+        $taxCalculation = $this->calculateTaxes($subtotal, self::TAX_INCLUDED, self::TAX_RATE);
+        $subtotalWithoutTax = $taxCalculation['subtotal'];
+        $taxes = $taxCalculation['taxes'];
+
+        $shipping = $subtotal > self::FREE_SHIPPING_THRESHOLD ? 0 : self::SHIPPING_FEE; // Envío gratis si el subtotal es mayor a FREE_SHIPPING_THRESHOLD
+        $total = $subtotal + $shipping;
 
         return Inertia::render('cart/index', [
             'cartContent' => $cartItems,
-            'subtotal' => $subtotal,
+            'subtotal' => $subtotalWithoutTax,
             'taxes' => $taxes,
             'shipping' => $shipping,
             'total' => $total,
@@ -156,5 +165,32 @@ class CartController extends Controller
         }
 
         return redirect()->route('cart.index')->with('success', '¡Carrito vaciado!');
+    }
+
+    /**
+     * Calcula IVA y subtotal según si el precio ya incluye IVA o no.
+     *
+     * @param float $monto Monto a calcular
+     * @param bool $incluyeImpuesto Si true, el monto ya incluye IVA (inverso). Si false, suma el IVA.
+     * @param float $tasaImpuesto Tasa de IVA (default: 0.16 = 16%)
+     * @return array ['subtotal' => float, 'taxes' => float]
+     */
+    private function calculateTaxes(float $monto, bool $incluyeImpuesto = true, float $tasaImpuesto = 0.16): array
+    {
+        if ($incluyeImpuesto) {
+            // Cálculo inverso: el monto ya incluye IVA
+            // Fórmula: IVA = (Monto × tasa) / (1 + tasa)
+            $taxes = ($monto * $tasaImpuesto) / (1 + $tasaImpuesto);
+            $subtotal = $monto - $taxes;
+        } else {
+            // Cálculo directo: el monto NO incluye IVA, hay que sumarlo
+            $taxes = $monto * $tasaImpuesto;
+            $subtotal = $monto;
+        }
+
+        return [
+            'subtotal' => round($subtotal, 2),
+            'taxes' => round($taxes, 2),
+        ];
     }
 }
