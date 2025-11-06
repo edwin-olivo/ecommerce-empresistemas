@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('cart_id')->constrained('carts')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->char('cart_id', 36);
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->char('product_id', 36);
             $table->foreign('product_id')->references('id')->on('aos_products')->onDelete('cascade');
             $table->integer('quantity')->default(1);
