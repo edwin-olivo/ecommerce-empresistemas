@@ -30,21 +30,27 @@ interface CartIndexProps {
 }
 
 function formatName(name: string) {
-    if (name.length <= 40) return name;
-    return name.slice(0, 40) + '...';
+    if (name.length <= 37) return name;
+    return name.slice(0, 37) + '...';
 }
 
 // Componente principal del carrito
 export default function CartIndex({ cartContent, subtotal, taxes, shipping, total }: CartIndexProps) {
     const { patch, delete: destroy, processing } = useForm();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
-
     const [localQuantities, setLocalQuantities] = useState<Record<string, number>>({});
     const debouncedUpdateRef = useRef<Record<string, ReturnType<typeof debounce>>>({});
+    const hasItems = cartContent.length > 0;
 
     // Función para actualizar la cantidad de un ítem
     const updateQuantity = (item: CartItem, newQuantity: number) => {
         if (newQuantity > 0) {
+            // Sincroniza el estado local con la nueva cantidad
+            setLocalQuantities((prev) => ({
+                ...prev,
+                [item.id]: newQuantity,
+            }));
+
             patch(route('cart.update', { item, quantity: newQuantity }), {
                 preserveScroll: true,
             });
@@ -63,7 +69,11 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
         // Crea o reutiliza la función debounced para este ítem
         if (!debouncedUpdateRef.current[item.id]) {
             debouncedUpdateRef.current[item.id] = debounce((qty: number) => {
-                updateQuantity(item, qty);
+                if (qty > 0) {
+                    patch(route('cart.update', { item, quantity: qty }), {
+                        preserveScroll: true,
+                    });
+                }
             }, 500);
         }
 
@@ -126,10 +136,10 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
     // Convertimos el objeto a un array para poder usar .map() y .length
     const cartItems = Object.values(cartContent);
 
-    const textoBreadcrumb = cartItems.length > 0 ? `Productos en el Carrito` : 'El Carrito está Vacío';
+    const textoBreadcrumb = hasItems ? `Productos en el Carrito` : 'El Carrito está Vacío';
 
     const breadcrumbs = getBreadcrumbs('/cart', [
-        cartItems.length > 0 ? { title: textoBreadcrumb, href: '/cart' } : { title: 'El Carrito está Vacío', href: '/cart' },
+        hasItems ? { title: textoBreadcrumb, href: '/cart' } : { title: 'El Carrito está Vacío', href: '/cart' },
     ]);
 
     return (
@@ -143,7 +153,7 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
                                 <CardTitle className="text-2xl font-bold tracking-tight">Carrito de Compras</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {cartItems.length > 0 ? (
+                                {hasItems ? (
                                     <Table>
                                         <TableHeader>
                                             <TableRow>
@@ -243,38 +253,44 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
                         </Card>
                     </div>
                     <div className="w-full xl:w-1/3">
-                        <Card className="mx-auto">
+                        <Card className="mx-auto max-w-4xl">
                             <CardHeader>
                                 <h2 className="text-lg font-bold">Resumen del Pedido</h2>
                             </CardHeader>
                             <CardContent>
-                                <div className="space-y-2">
-                                    <div className="flex justify-between">
-                                        <span>Subtotal:</span>
-                                        <span>{formatCurrency(subtotal)}</span>
+                                {hasItems ? (
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between">
+                                            <span>Subtotal:</span>
+                                            <span>{formatCurrency(subtotal)}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>Impuestos (16%):</span>
+                                            <span>{formatCurrency(taxes)}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>Envío:</span>
+                                            <span>{shipping === 0 ? 'Gratis' : formatCurrency(shipping)}</span>
+                                        </div>
+                                        <div className="mt-4 flex justify-between text-lg font-bold">
+                                            <span>Total:</span>
+                                            <span>{formatCurrency(total)}</span>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <span>Impuestos (16%):</span>
-                                        <span>{formatCurrency(taxes)}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Envío:</span>
-                                        <span>{shipping === 0 ? 'Gratis' : formatCurrency(shipping)}</span>
-                                    </div>
-                                    <div className="mt-4 flex justify-between text-lg font-bold">
-                                        <span>Total:</span>
-                                        <span>{formatCurrency(total)}</span>
-                                    </div>
-                                </div>
+                                ) : (
+                                    <p className="text-gray-500">No hay productos en el carrito.</p>
+                                )}
                             </CardContent>
-                            <CardFooter className="flex justify-between">
-                                <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart} disabled={processing}>
-                                    Limpiar Carrito
-                                </Button>
-                                <Button size="lg" className="cursor-pointer" onClick={proceedToCheckout} disabled={processing || isCheckingOut}>
-                                    {isCheckingOut ? 'Procesando...' : 'Proceder al Pago'}
-                                </Button>
-                            </CardFooter>
+                            {hasItems && (
+                                <CardFooter className="flex justify-between">
+                                    <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart} disabled={processing}>
+                                        Limpiar Carrito
+                                    </Button>
+                                    <Button size="lg" className="cursor-pointer" onClick={proceedToCheckout} disabled={processing || isCheckingOut}>
+                                        {isCheckingOut ? 'Procesando...' : 'Proceder al Pago'}
+                                    </Button>
+                                </CardFooter>
+                            )}
                         </Card>
                     </div>
                 </div>
