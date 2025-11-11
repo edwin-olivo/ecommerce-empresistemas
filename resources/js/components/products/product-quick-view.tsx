@@ -13,6 +13,15 @@ interface ProductQuickViewProps {
     processing?: boolean;
 }
 
+export function ProductDescriptionItem(title: string, description: string) {
+    return (
+        <div className="space-y-2">
+            <p className="text-sm font-semibold text-gray-600 dark:text-gray-300">{title}</p>
+            <p className="line-clamp-3 text-sm text-gray-700 dark:text-gray-300">{description}</p>
+        </div>
+    );
+}
+
 export default function ProductQuickView({ product, open, onOpenChange, handleAddToCart, processing }: ProductQuickViewProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -36,30 +45,13 @@ export default function ProductQuickView({ product, open, onOpenChange, handleAd
                     <div className="flex flex-col justify-between">
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <p className="text-sm font-semibold text-gray-600">Precio</p>
-                                <p className="text-3xl font-bold text-gray-900">{formatCurrency(product.price)}</p>
+                                <p className="text-sm font-semibold text-gray-600 dark:text-gray-300">Precio</p>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-gray-300">{formatCurrency(product.price)}</p>
                             </div>
 
-                            {product.description && (
-                                <div className="space-y-2">
-                                    <p className="text-sm font-semibold text-gray-600">Descripción</p>
-                                    <p className="line-clamp-3 text-sm text-gray-700">{product.description}</p>
-                                </div>
-                            )}
-
-                            {product.category && (
-                                <div className="space-y-2">
-                                    <p className="text-sm font-semibold text-gray-600">Categoría</p>
-                                    <p className="text-sm text-gray-700">{product.category}</p>
-                                </div>
-                            )}
-
-                            {product.type && (
-                                <div className="space-y-2">
-                                    <p className="text-sm font-semibold text-gray-600">Tipo</p>
-                                    <p className="text-sm text-gray-700">{product.type}</p>
-                                </div>
-                            )}
+                            {product.description && ProductDescriptionItem('Descripción', product.description)}
+                            {product.category && ProductDescriptionItem('Categoría', product.category)}
+                            {product.type && ProductDescriptionItem('Tipo', product.type)}
                         </div>
 
                         {/* Botones de acción */}
