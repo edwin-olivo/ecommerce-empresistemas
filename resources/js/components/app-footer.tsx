@@ -1,6 +1,8 @@
 import { Link } from '@inertiajs/react';
 
 export function AppFooter() {
+    const currentYear = new Date().getFullYear();
+
     return (
         <footer className="border-t border-neutral-200 bg-neutral-950 py-12 text-neutral-400 dark:border-neutral-800">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -33,19 +35,19 @@ export function AppFooter() {
                         <h3 className="mb-4 font-semibold text-white">Soporte</h3>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="hover:text-white">
+                                <Link href={route('page.contact')} className="hover:text-white">
                                     Contacto
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-white">
+                                <Link href={route('page.faq')} className="hover:text-white">
                                     Preguntas Frecuentes
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-white">
+                                <Link href={route('page.shipping')} className="hover:text-white">
                                     Envíos
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -53,25 +55,25 @@ export function AppFooter() {
                         <h3 className="mb-4 font-semibold text-white">Legal</h3>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="hover:text-white">
+                                <Link href={route('page.privacy')} className="hover:text-white">
                                     Privacidad
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-white">
+                                <Link href={route('page.terms')} className="hover:text-white">
                                     Términos
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-white">
+                                <Link href={route('page.cookies')} className="hover:text-white">
                                     Cookies
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-sm">
-                    <p>&copy; 2024 Tienda Online. Todos los derechos reservados.</p>
+                    <p>&copy; {currentYear} Tienda Online. Todos los derechos reservados.</p>
                 </div>
             </div>
         </footer>

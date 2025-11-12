@@ -13,7 +13,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Menu, Search, Shirt, ShoppingCartIcon } from 'lucide-react';
+import { Book, Menu, MessageCircle, Search, Shirt, ShoppingCartIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -22,6 +22,16 @@ const mainNavItems: NavItem[] = [
         title: 'Productos',
         href: '/products',
         icon: Shirt,
+    },
+    {
+        title: 'Contacto',
+        href: '/contact',
+        icon: MessageCircle,
+    },
+    {
+        title: 'Acerca de',
+        href: '/about',
+        icon: Book,
     },
 ];
 
