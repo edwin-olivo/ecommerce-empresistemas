@@ -165,6 +165,6 @@ class AosProductsCstm extends Model
 
 	public function getUrlImagenAttribute()
 	{
-		return $this->nombre_imagen_c ? 'https://wenzhou.erponweb.com.mx/customcode/redim.php?&ancho=300&alto=300&img=imagenes/' . $this->nombre_imagen_c : null;
+		return $this->nombre_imagen_c ? config('app.base_url') . '/customcode/redim.php?&ancho=300&alto=300&img=imagenes/' . $this->nombre_imagen_c : null;
 	}
 }
