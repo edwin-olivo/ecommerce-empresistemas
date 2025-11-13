@@ -42,10 +42,26 @@ class CartController extends Controller
             }
         } else {
             $sessionCart = session()->get('cart', []);
-            $cartItems = $sessionCart;
-            $subtotal = array_sum(array_map(function ($item) {
-                return $item['price'] * $item['quantity'];
-            }, $sessionCart));
+            
+            // Consultamos la base de datos para obtener los productos
+            $productIds = array_keys($sessionCart);
+            $products = AosProducts::whereIn('id', $productIds)->get()->keyBy('id');
+            foreach ($sessionCart as $productId => $item) {
+                if (isset($products[$productId])) {
+                    $product = $products[$productId];
+                    $quantity = $item['quantity'];
+                    $cartItems[] = (object)[
+                        'id' => $product->id,
+                        'cart_id' => null,
+                        'product_id' => $product->id,
+                        'product' => $product,
+                        'quantity' => $quantity,
+                        'created_at' => null,
+                        'updated_at' => null,
+                    ];
+                    $subtotal += $product->price * $quantity;
+                }
+            }
         }
 
         // Calcular IVA: el precio ya incluye IVA, así que usamos el cálculo inverso
@@ -91,9 +107,8 @@ class CartController extends Controller
                 $cart[$product->id]['quantity']++;
             } else {
                 $cart[$product->id] = [
-                    "name" => $product->name,
+                    "product_id" => $product->id,
                     "quantity" => 1,
-                    "price" => $product->price,
                 ];
             }
             session()->put('cart', $cart);
@@ -108,6 +123,7 @@ class CartController extends Controller
     public function update(CartItemRequest $request, $itemId)
     {
         $quantity = $request->input('quantity');
+        $quantity = max(1, (int)$quantity); // Asegura que la cantidad sea al menos 1
 
         if (Auth::check()) {
             $cartItem = CartItem::where('id', $itemId)

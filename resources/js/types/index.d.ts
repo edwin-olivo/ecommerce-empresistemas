@@ -82,3 +82,13 @@ export interface PaginationLinkItem {
     label: string;
     active: boolean;
 }
+
+interface CartItem {
+    id: string;
+    cart_id: number;
+    product_id: number;
+    product: Record<string, any>;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+}

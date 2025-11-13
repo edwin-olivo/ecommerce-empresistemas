@@ -6,20 +6,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { formatCurrency } from '@/lib/utils';
+import { CartItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { debounce } from 'lodash-es';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
-
-interface CartItem {
-    cart_id: number;
-    created_at: string;
-    id: string;
-    product: Record<string, any>;
-    product_id: number;
-    quantity: number;
-    updated_at: string;
-}
 
 interface CartIndexProps {
     cartContent: CartItem[];
