@@ -1,3 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import EmailLink from '@/components/ui/email-link';
 import AppLayout from '@/layouts/app-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { SharedData } from '@/types';
@@ -6,10 +8,13 @@ import { MessageCircle } from 'lucide-react';
 
 const breadcrumbs = getBreadcrumbs('contact', [{ title: 'Contacto', href: route('page.contact') }]);
 
-export default function Contact() {
-    const page = usePage<SharedData>();
-    const { name } = page.props;
+interface ContactProps {
+    correo: string;
+}
 
+export default function Contact() {
+    const page = usePage<SharedData & ContactProps>();
+    const { name, correo } = page.props;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Contacto" />
@@ -26,6 +31,20 @@ export default function Contact() {
                         <p className="text-lg text-neutral-600 dark:text-neutral-400">
                             Mantente en contacto con nosotros para cualquier consulta o soporte
                         </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-lg">Información de Contacto</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p>
+                                    Puedes contactarnos a través del correo electrónico: <EmailLink email={correo} variant="inline" />. Estamos aquí
+                                    para ayudarte con cualquier consulta o soporte que necesites.
+                                </p>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </main>

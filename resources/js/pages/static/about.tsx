@@ -73,19 +73,30 @@ export default function About() {
                             <CardContent>
                                 <List>
                                     <ListItem icon={<CheckCircle2 />}>
-                                        <span><strong>Calidad:</strong> Nos comprometemos a ofrecer productos que cumplen con los más altos estándares.</span>
+                                        <span>
+                                            <strong>Calidad:</strong> Nos comprometemos a ofrecer productos que cumplen con los más altos estándares.
+                                        </span>
                                     </ListItem>
                                     <ListItem icon={<Shield />}>
-                                        <span><strong>Integridad:</strong> Operamos con honestidad y transparencia en todas nuestras interacciones.</span>
+                                        <span>
+                                            <strong>Integridad:</strong> Operamos con honestidad y transparencia en todas nuestras interacciones.
+                                        </span>
                                     </ListItem>
                                     <ListItem icon={<LucideTruck />}>
-                                        <span><strong>Servicio al Cliente:</strong> Nuestra prioridad es la satisfacción y el bienestar de nuestros clientes.</span>
+                                        <span>
+                                            <strong>Servicio al Cliente:</strong> Nuestra prioridad es la satisfacción y el bienestar de nuestros
+                                            clientes.
+                                        </span>
                                     </ListItem>
                                     <ListItem icon={<Lock />}>
-                                        <span><strong>Seguridad:</strong> Garantizamos un entorno de compra seguro y confiable.</span>
+                                        <span>
+                                            <strong>Seguridad:</strong> Garantizamos un entorno de compra seguro y confiable.
+                                        </span>
                                     </ListItem>
                                     <ListItem icon={<Flame />}>
-                                        <span><strong>Pasión:</strong> Amamos lo que hacemos y eso se refleja en nuestro trabajo diario.</span>
+                                        <span>
+                                            <strong>Pasión:</strong> Amamos lo que hacemos y eso se refleja en nuestro trabajo diario.
+                                        </span>
                                     </ListItem>
                                 </List>
                             </CardContent>
