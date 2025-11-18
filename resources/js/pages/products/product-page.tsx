@@ -63,15 +63,22 @@ export default function ProductPage({ product, categories, classes, types }: Pro
                         <div className="flex flex-col gap-6">
                             <div className="space-y-2">
                                 <h1 className="text-2xl font-bold lg:text-3xl">{part_number}</h1>
-                                <p className="text-sm font-semibold text-gray-600">Precio</p>
-                                <p className="text-3xl font-bold text-gray-900">{formatCurrency(product.price)}</p>
+                                <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Precio</p>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{formatCurrency(price)}</p>
                             </div>
                             <Separator />
                             <div>
-                                <p className="text-muted-foreground">
-                                    {description ||
-                                        'Deleniti maiores porro ab quisquam beatae rerum itaque architecto et. Tempore architecto fugiat. Earum tenetur expedita voluptas ullam ducimus sapiente provident dolorum.'}
-                                </p>
+                                {description && description.trim() !== '' ? (
+                                    <>
+                                        {description.split('\n').map((line: string, index: number) => (
+                                            <p key={index} className="mb-2 text-muted-foreground">
+                                                {line}
+                                            </p>
+                                        ))}
+                                    </>
+                                ) : (
+                                    <p className="text-muted-foreground">No hay descripción disponible para este producto.</p>
+                                )}
                             </div>
                             <div className="flex flex-col gap-4">
                                 <div className="flex items-center gap-0">
