@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import type { BreadcrumbItem, CheckboxOption, MultiSelectOption } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import { ShoppingCart } from 'lucide-react';
 
 // Tipos actualizados
 interface ProductsProps {
@@ -61,7 +62,19 @@ export default function Products() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Productos" />
-            <main className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-4">
+            <main className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-12">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                    <div className="mb-12 text-center">
+                        <div className="mb-4 flex justify-center">
+                            <div className="rounded-lg bg-blue-100 p-3 dark:bg-blue-900/30">
+                                <ShoppingCart className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                            </div>
+                        </div>
+                        <h1 className="mb-2 text-4xl font-bold text-neutral-900 dark:text-white">Productos</h1>
+                        <p className="text-lg text-neutral-600 dark:text-neutral-400">Todos los productos disponibles</p>
+                    </div>
+                </div>
+
                 <div className="flex flex-col gap-8 md:flex-row">
                     <section className="flex-1">
                         <div className="mb-4 flex flex-wrap items-center justify-between gap-y-4 lg:gap-y-0">
@@ -112,9 +125,10 @@ export default function Products() {
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-                            {productsList.map((product) => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
+                            {productsList.map((product) => {
+                                product.category = categories[product.category] || product.category;
+                                return <ProductCard key={product.id} product={product} />;
+                            })}
                         </div>
 
                         {productsList.length === 0 && (

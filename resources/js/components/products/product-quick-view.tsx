@@ -33,7 +33,7 @@ export default function ProductQuickView({ product, open, onOpenChange, handleAd
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {/* Imagen del producto */}
-                    <div className="flex items-center justify-center rounded-lg bg-gray-100 p-4">
+                    <div className="flex items-center justify-center rounded-lg bg-white p-4">
                         <Image
                             src={product?.custom?.url_imagen}
                             alt={product.part_number || product.name}

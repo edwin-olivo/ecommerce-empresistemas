@@ -30,8 +30,8 @@ export default function ProductCard({ product }: Props) {
     return (
         <>
             <Link href={route('products.show', { id: product.id })} className="">
-                <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-neutral-100 p-[15px] transition-all duration-300 dark:bg-neutral-800">
-                    <div className="flex h-fit w-full flex-col items-center justify-center gap-[15px]">
+                <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-neutral-50 p-2 transition-all duration-300 dark:bg-neutral-800">
+                    <div className="flex h-fit w-full flex-col items-center justify-center gap-4">
                         <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-300 group-hover:h-[120px]">
                             <Image
                                 src={product?.custom?.url_imagen}
@@ -57,7 +57,7 @@ export default function ProductCard({ product }: Props) {
                     </div>
 
                     {/* Mostrar ofertas o similar */}
-                    <p className="absolute top-5 left-5 rounded-[15px] bg-lime-400 px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p>
+                    <p className="rounded-4 absolute top-5 left-5 bg-lime-400 px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p>
 
                     {/* Boton Quick View */}
                     <Button
