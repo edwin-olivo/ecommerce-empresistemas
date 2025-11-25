@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,11 +37,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AosProducts extends Model
 {
+	use HasUuids;
+
 	protected $table = 'aos_products';
 	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
+		'id' => 'string',
 		'date_entered' => 'datetime',
 		'date_modified' => 'datetime',
 		'deleted' => 'bool',

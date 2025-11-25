@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -69,6 +70,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AosProductsCstm extends Model
 {
+	use HasUuids;
+
 	protected $table = 'aos_products_cstm';
 	protected $primaryKey = 'id_c';
 	protected $appends = ['url_imagen'];
@@ -76,6 +79,7 @@ class AosProductsCstm extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+		'id_c' => 'string',
 		'pa1_c' => 'float',
 		'pa2_c' => 'float',
 		'pa3_c' => 'float',
