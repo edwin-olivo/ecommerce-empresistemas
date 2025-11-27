@@ -57,13 +57,14 @@ export default function ProductPage({ product, categories, classes, types }: Pro
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={part_number || 'Producto'} />
-            <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white px-4 py-8 sm:px-6 lg:px-8 dark:from-slate-950 dark:to-slate-900">
-                <div className="mx-auto max-w-7xl">
+
+            <main className="min-h-screen bg-white py-12 dark:bg-neutral-950">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
                         {/* Columna Izquierda: Carrusel de imágenes */}
                         <div className="lg:col-span-1">
                             <div className="sticky top-4 space-y-4">
-                                <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+                                <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
                                     <ProductCarousel images={images} />
                                 </div>
                             </div>

@@ -21,7 +21,7 @@ export default function Privacy({ correo }: PrivacyProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Privacidad" />
 
-            <main className="min-h-screen bg-gradient-to-b from-neutral-50 to-white py-12 dark:from-neutral-950 dark:to-neutral-900">
+            <main className="min-h-screen bg-white py-12 dark:bg-neutral-950">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-12 text-center">
                         <div className="mb-4 flex justify-center">
