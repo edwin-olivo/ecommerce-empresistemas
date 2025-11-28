@@ -4,6 +4,7 @@ import ProductCard from '@/components/products/product-card';
 import { Button } from '@/components/ui/button';
 import { useProductFilters } from '@/hooks/use-product-filters'; // Hook para manejar filtros
 import AppLayout from '@/layouts/app-layout';
+import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import type { BreadcrumbItem, CheckboxOption, MultiSelectOption } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -62,7 +63,8 @@ export default function Products() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Productos" />
-            <main className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl px-4 py-12">
+
+            <MainLayout>
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-12 text-center">
                         <div className="mb-4 flex justify-center">
@@ -150,7 +152,7 @@ export default function Products() {
                         )}
                     </section>
                 </div>
-            </main>
+            </MainLayout>
         </AppLayout>
     );
 }

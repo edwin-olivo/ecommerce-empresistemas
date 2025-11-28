@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import EmailLink from '@/components/ui/email-link';
 import { List, ListItem } from '@/components/ui/list';
 import AppLayout from '@/layouts/app-layout';
+import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -21,7 +22,7 @@ export default function Privacy({ correo }: PrivacyProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Privacidad" />
 
-            <main className="min-h-screen bg-white py-12 dark:bg-neutral-950">
+            <MainLayout className="bg-white dark:bg-neutral-950">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-12 text-center">
                         <div className="mb-4 flex justify-center">
@@ -269,7 +270,7 @@ export default function Privacy({ correo }: PrivacyProps) {
                         <EmailLink email={correo} variant="button" showIcon={true} title="Enviar correo" />
                     </div>
                 </div>
-            </main>
+            </MainLayout>
         </AppLayout>
     );
 }

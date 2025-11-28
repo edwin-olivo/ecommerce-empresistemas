@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { formatCurrency } from '@/lib/utils';
 import { CartItem } from '@/types';
@@ -136,7 +137,8 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Carrito de Compras" />
-            <main className="container mx-auto px-4 py-8">
+
+            <MainLayout>
                 <div className="flex flex-col space-y-6 xl:flex-row xl:space-y-0 xl:space-x-6">
                     <div className="w-full xl:w-2/3">
                         <Card className="mx-auto max-w-4xl">
@@ -285,7 +287,7 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
                         </Card>
                     </div>
                 </div>
-            </main>
+            </MainLayout>
         </AppLayout>
     );
 }

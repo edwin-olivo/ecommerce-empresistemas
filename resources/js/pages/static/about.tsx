@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { List, ListItem } from '@/components/ui/list';
 import AppLayout from '@/layouts/app-layout';
+import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -16,7 +17,7 @@ export default function About() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Acerca de" />
 
-            <main className="min-h-screen bg-white py-12 dark:bg-neutral-950">
+            <MainLayout className="bg-white dark:bg-neutral-950">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-12 text-center">
                         <div className="mb-4 flex justify-center">
@@ -103,7 +104,7 @@ export default function About() {
                         </Card>
                     </div>
                 </div>
-            </main>
+            </MainLayout>
         </AppLayout>
     );
 }
