@@ -1,7 +1,7 @@
 import { Image } from '@/components/image';
 import ProductQuickView from '@/components/products/product-quick-view';
 import { Button } from '@/components/ui/button';
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import type { Product } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
 import { Eye } from 'lucide-react';
@@ -9,9 +9,10 @@ import { useState } from 'react';
 
 interface Props {
     product: Product;
+    className?: string;
 }
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ product, className }: Props) {
     const [openQuickView, setOpenQuickView] = useState(false);
 
     const { post, processing } = useForm({
@@ -30,7 +31,12 @@ export default function ProductCard({ product }: Props) {
     return (
         <>
             <Link href={route('products.show', { id: product.id })} className="">
-                <div className="group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-neutral-50 p-2 transition-all duration-300 dark:bg-neutral-800">
+                <div
+                    className={cn(
+                        'group relative h-[254px] w-full overflow-hidden rounded-[10px] bg-neutral-50 p-2 transition-all duration-300 dark:bg-neutral-800',
+                        className,
+                    )}
+                >
                     <div className="flex h-fit w-full flex-col items-center justify-center gap-4">
                         <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-300 group-hover:h-[120px]">
                             <Image
