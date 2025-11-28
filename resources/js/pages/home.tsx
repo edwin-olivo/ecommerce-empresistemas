@@ -49,14 +49,18 @@ export default function Home({ featured_products = [], categories = [] }: HomePr
 
                                     <div className="flex flex-wrap gap-3">
                                         <Link href={route('products.index')}>
-                                            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                                            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:text-white">
                                                 Explorar Productos
                                                 <ArrowRight className="ml-2 h-4 w-4" />
                                             </Button>
                                         </Link>
                                         {!auth.user && (
                                             <Link href={route('register')}>
-                                                <Button size="lg" variant="outline" className="border-neutral-600 hover:bg-neutral-800">
+                                                <Button
+                                                    size="lg"
+                                                    variant="outline"
+                                                    className="border-neutral-600 text-black hover:bg-neutral-800 hover:text-white dark:border-neutral-400 dark:text-white dark:hover:bg-neutral-700"
+                                                >
                                                     Registrarse
                                                 </Button>
                                             </Link>
@@ -161,7 +165,7 @@ export default function Home({ featured_products = [], categories = [] }: HomePr
                             {featured_products.length > 0 ? (
                                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                                     {featured_products.map((product) => (
-                                        <ProductCard key={product.id} product={product} />
+                                        <ProductCard key={product.id} product={product} className="bg-neutral-200 dark:bg-neutral-800" />
                                     ))}
                                 </div>
                             ) : (
@@ -220,7 +224,11 @@ export default function Home({ featured_products = [], categories = [] }: HomePr
                                 </Link>
                                 {!auth.user && (
                                     <Link href={route('register')}>
-                                        <Button size="lg" variant="outline" className="w-full border-white text-white hover:bg-white/10 sm:w-auto">
+                                        <Button
+                                            size="lg"
+                                            variant="outline"
+                                            className="w-full border-neutral-600 text-black hover:bg-neutral-800 hover:text-white dark:border-neutral-400 dark:text-white dark:hover:bg-neutral-700"
+                                        >
                                             Crear Cuenta
                                         </Button>
                                     </Link>
