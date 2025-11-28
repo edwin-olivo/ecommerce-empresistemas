@@ -7,8 +7,8 @@ import AppLayout from '@/layouts/app-layout';
 import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { formatCurrency } from '@/lib/utils';
-import { CartItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { CartItem, SharedData } from '@/types';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { debounce } from 'lodash-es';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -28,6 +28,8 @@ function formatName(name: string) {
 
 // Componente principal del carrito
 export default function CartIndex({ cartContent, subtotal, taxes, shipping, total }: CartIndexProps) {
+    const page = usePage<SharedData>();
+    const { auth } = page.props;
     const { patch, delete: destroy, processing } = useForm();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [localQuantities, setLocalQuantities] = useState<Record<string, number>>({});
@@ -279,9 +281,20 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
                                     <Button variant={'outline'} size="lg" className="cursor-pointer" onClick={clearCart} disabled={processing}>
                                         Limpiar Carrito
                                     </Button>
-                                    <Button size="lg" className="cursor-pointer" onClick={proceedToCheckout} disabled={processing || isCheckingOut}>
-                                        {isCheckingOut ? 'Procesando...' : 'Proceder al Pago'}
-                                    </Button>
+                                    {auth.user ? (
+                                        <Button
+                                            size="lg"
+                                            className="cursor-pointer"
+                                            onClick={proceedToCheckout}
+                                            disabled={processing || isCheckingOut}
+                                        >
+                                            {isCheckingOut ? 'Procesando...' : 'Proceder al Pago'}
+                                        </Button>
+                                    ) : (
+                                        <Button size="lg" variant="link" className="cursor-pointer">
+                                            <Link href={route('login', { redirect: 'cart' })}>Iniciar Sesión para Pagar</Link>
+                                        </Button>
+                                    )}
                                 </CardFooter>
                             )}
                         </Card>
