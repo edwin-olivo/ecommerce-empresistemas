@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
+import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { formatCurrency, resolveImageSource } from '@/lib/utils';
 import ProductCarousel from '@/pages/products/product-carousel';
@@ -58,8 +59,8 @@ export default function ProductPage({ product, categories, classes, types }: Pro
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={part_number || 'Producto'} />
 
-            <main className="min-h-screen bg-white py-12 dark:bg-neutral-950">
-                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <MainLayout>
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
                         {/* Columna Izquierda: Carrusel de imágenes */}
                         <div className="lg:col-span-1">
@@ -231,7 +232,7 @@ export default function ProductPage({ product, categories, classes, types }: Pro
                         </div>
                     </div>
                 </div>
-            </main>
+            </MainLayout>
         </AppLayout>
     );
 }
