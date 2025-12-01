@@ -29,7 +29,8 @@ class PageController extends Controller
 
     public function contact()
     {
-        return Inertia::render('static/contact');
+        $correo = config('settings.contact_email', 'clientes.dulcerialasuiza@gmail.com');
+        return Inertia::render('static/contact', ['correo' => $correo]);
     }
 
     public function faq()
