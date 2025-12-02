@@ -33,8 +33,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/webhook', [CheckoutController::class, 'webhook'])->name('checkout.webhook');
 });
 
-// Rutas de configuración y autenticación
+// Rutas de configuración
 require __DIR__ . '/settings.php';
+// Rutas de autenticación
 require __DIR__ . '/auth.php';
 // Rutas de páginas estáticas
 require __DIR__ . '/static.php';
+// Rutas del dashboard
+require __DIR__ . '/dashboard.php';
