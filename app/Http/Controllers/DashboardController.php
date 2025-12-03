@@ -18,6 +18,6 @@ class DashboardController extends Controller
 
     function wishlist()
     {
-        return inertia('dashboard/wishlist');
+        return redirect()->route('wishlist');
     }
 }
