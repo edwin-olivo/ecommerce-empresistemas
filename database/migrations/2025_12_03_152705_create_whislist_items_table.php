@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('whislist_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->char('whishlist_id', 36);
-            $table->foreign('whishlist_id')->references('id')->on('whishlists')->onDelete('cascade');
+            $table->foreign('whishlist_id')->references('id')->on('wishlists')->onDelete('cascade');
             $table->char('product_id', 36);
             $table->foreign('product_id')->references('id')->on('aos_products')->onDelete('cascade');
         });
