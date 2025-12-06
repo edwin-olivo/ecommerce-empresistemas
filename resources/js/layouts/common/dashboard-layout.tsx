@@ -59,8 +59,8 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">{children}</section>
+                <div className="flex-1 md:max-w-2xl lg:max-w-4xl">
+                    <section className="space-y-12">{children}</section>
                 </div>
             </div>
         </div>
