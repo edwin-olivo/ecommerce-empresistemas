@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/app-layout';
 import MainLayout from '@/layouts/common/main-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, trimTextWithEllipsis } from '@/lib/utils';
 import { CartItem, SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { debounce } from 'lodash-es';
@@ -19,11 +19,6 @@ interface CartIndexProps {
     taxes: number;
     shipping: number;
     total: number;
-}
-
-function formatName(name: string) {
-    if (name.length <= 37) return name;
-    return name.slice(0, 37) + '...';
 }
 
 // Componente principal del carrito
@@ -179,7 +174,7 @@ export default function CartIndex({ cartContent, subtotal, taxes, shipping, tota
                                                                         href={route('products.show', product?.id)}
                                                                         className="hover:text-blue-600 hover:underline"
                                                                     >
-                                                                        {formatName(product?.part_number)}
+                                                                        {trimTextWithEllipsis(product?.part_number)}
                                                                     </Link>
                                                                 </div>
                                                                 <div className="text-xs text-neutral-600">{product?.name}</div>

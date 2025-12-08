@@ -53,3 +53,8 @@ export function formatCurrency(amount: number, locale = 'es-MX', currency = 'MXN
         currency,
     }).format(amount);
 }
+
+export function trimTextWithEllipsis(fullText: string, maxLength = 37): string {
+    if (fullText.length <= maxLength) return fullText;
+    return fullText.slice(0, maxLength) + '...';
+}

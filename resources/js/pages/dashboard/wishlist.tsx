@@ -4,6 +4,7 @@ import { WishlistForm } from '@/components/whislists/wishlist-form';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
+import { trimTextWithEllipsis } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
@@ -30,7 +31,7 @@ export default function Wishlist({ wishlists }: WishlistProps) {
                         Crear Lista de Deseos
                     </Button>
 
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
                         <Fragment>
                             <WishlistForm
                                 open={openWishlistId === 'create'}
@@ -47,7 +48,7 @@ export default function Wishlist({ wishlists }: WishlistProps) {
                                         onClick={() => setOpenWishlistId(item.id)}
                                     >
                                         <h3 className="text-lg font-medium">{item.name}</h3>
-                                        <p className="text-sm text-gray-600">{item.description}</p>
+                                        <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description, 60)}</p>
                                     </div>
 
                                     <WishlistForm
