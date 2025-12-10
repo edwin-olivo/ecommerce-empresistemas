@@ -194,6 +194,13 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         )}
+                        {!auth.user && (
+                            <Link href="/login">
+                                <Button variant="outline" size="sm">
+                                    Iniciar sesión
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
