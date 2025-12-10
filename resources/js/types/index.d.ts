@@ -83,7 +83,7 @@ export interface PaginationLinkItem {
     active: boolean;
 }
 
-interface CartItem {
+export interface CartItem {
     id: string;
     cart_id: number;
     product_id: number;
@@ -91,4 +91,24 @@ interface CartItem {
     quantity: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface Wishlist {
+    id: string;
+    name: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at?: string | null;
+    [key: string]: any; // This allows for additional properties...
+}
+
+export interface WishlistItem {
+    id: string;
+    wishlist_id: string;
+    product_id: string;
+    product?: Product | null;
+    created_at: string;
+    updated_at: string;
+    deleted_at?: string | null;
 }

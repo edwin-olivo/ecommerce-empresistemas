@@ -1,21 +1,33 @@
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
+import { DeleteWishlistModal } from '@/components/whislists/delete-wishlist';
 import { WishlistForm } from '@/components/whislists/wishlist-form';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { trimTextWithEllipsis } from '@/lib/utils';
-import { Head } from '@inertiajs/react';
+import { Wishlist } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
 const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de deseos', href: route('wishlist') }]);
 
 interface WishlistProps {
-    wishlists: any[];
+    wishlists: Wishlist[];
 }
 
-export default function Wishlist({ wishlists }: WishlistProps) {
+export default function UserWishList({ wishlists }: WishlistProps) {
     const [openWishlistId, setOpenWishlistId] = useState<string | null>(null);
+
+    const { delete: deleteWishlist, processing } = useForm({
+        id: '',
+    });
+
+    function handleDeleteWishlist(id: string) {
+        deleteWishlist(route('wishlist.destroy', id), {
+            preserveScroll: true,
+        });
+    }
 
     return (
         <AppLayout breadcrumbs={[]}>
@@ -31,7 +43,7 @@ export default function Wishlist({ wishlists }: WishlistProps) {
                         Crear Lista de Deseos
                     </Button>
 
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                         <Fragment>
                             <WishlistForm
                                 open={openWishlistId === 'create'}
@@ -42,11 +54,8 @@ export default function Wishlist({ wishlists }: WishlistProps) {
 
                         {wishlists.length > 0 ? (
                             wishlists.map((item) => (
-                                <Fragment key={item.id}>
-                                    <div
-                                        className="cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg"
-                                        onClick={() => setOpenWishlistId(item.id)}
-                                    >
+                                <div key={item.id}>
+                                    <div className="min-h-[100px] cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg">
                                         <h3 className="text-lg font-medium">{item.name}</h3>
                                         <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description, 60)}</p>
                                     </div>
@@ -56,7 +65,19 @@ export default function Wishlist({ wishlists }: WishlistProps) {
                                         onOpenChange={(open) => setOpenWishlistId(open ? item.id : null)}
                                         wishlist={item}
                                     />
-                                </Fragment>
+
+                                    <div className="mt-2 grid grid-cols-2 gap-2">
+                                        <Button variant="outline" onClick={() => setOpenWishlistId(item.id)} disabled={processing}>
+                                            Editar
+                                        </Button>
+                                        <DeleteWishlistModal
+                                            handleConfirm={() => handleDeleteWishlist(item.id)}
+                                            className="w-full cursor-pointer"
+                                            processing={processing}
+                                            wishlist={item}
+                                        />
+                                    </div>
+                                </div>
                             ))
                         ) : (
                             <p>No hay listas de deseos disponibles.</p>

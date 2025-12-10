@@ -3,12 +3,13 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Wishlist } from '@/types';
 import { useForm } from '@inertiajs/react';
 
 interface WishlistFormProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    wishlist?: { id: number; name: string; description: string } | null;
+    wishlist?: Wishlist | null;
 }
 
 export function WishlistForm({ open, onOpenChange, wishlist }: WishlistFormProps) {
