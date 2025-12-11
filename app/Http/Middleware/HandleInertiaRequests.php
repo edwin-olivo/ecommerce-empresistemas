@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Cart;
+use App\Models\Wishlist;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -43,6 +44,11 @@ class HandleInertiaRequests extends Middleware
         $cart = new Cart();
         $cartCount = $cart->getCartItemCount($request);
 
+        $wishlists = [];
+        if ($request->user()) {
+            $wishlists = Wishlist::where('user_id', $request->user()->id)->get();
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -58,6 +64,7 @@ class HandleInertiaRequests extends Middleware
             'cart' => [
                 'count' => $cartCount,
             ],
+            'wishlists' => $wishlists,
         ];
     }
 }

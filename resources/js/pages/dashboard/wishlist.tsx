@@ -7,7 +7,7 @@ import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { trimTextWithEllipsis } from '@/lib/utils';
 import { Wishlist } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
 const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de deseos', href: route('wishlist') }]);
@@ -55,10 +55,12 @@ export default function UserWishList({ wishlists }: WishlistProps) {
                         {wishlists.length > 0 ? (
                             wishlists.map((item) => (
                                 <div key={item.id}>
-                                    <div className="min-h-[100px] cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg">
-                                        <h3 className="text-lg font-medium">{item.name}</h3>
-                                        <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description, 60)}</p>
-                                    </div>
+                                    <Link href={route('wishlist.show', item.id)} className="">
+                                        <div className="min-h-[100px] cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg">
+                                            <h3 className="text-lg font-medium">{item.name}</h3>
+                                            <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description, 60)}</p>
+                                        </div>
+                                    </Link>
 
                                     <WishlistForm
                                         open={openWishlistId === item.id}

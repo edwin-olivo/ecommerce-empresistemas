@@ -22,7 +22,7 @@ class Wishlist extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function items()
+    public function products()
     {
         return $this->hasMany(WishlistItem::class);
     }

@@ -69,4 +69,43 @@ class WishlistController extends Controller
         $wishlist->delete();
         return redirect()->back()->with('success', 'Lista de deseos eliminada exitosamente');
     }
+
+    /**
+     * Add a product to a wishlist.
+     */
+    public function addProduct(Request $request, Wishlist $wishlist)
+    {
+        $validated = $request->validate([
+            'product' => 'required|exists:aos_products,id',
+        ]);
+
+        // Check if product already exists in wishlist
+        $exists = $wishlist->products()->where('product_id', $validated['product'])->exists();
+
+        if ($exists) {
+            return response()->json(['message' => 'El producto ya está en la lista de deseos'], 422);
+        }
+
+        $wishlist->products()->create([
+            'product_id' => $validated['product'],
+        ]);
+
+        return response()->json(['message' => 'Producto agregado a la lista de deseos'], 201);
+    }
+
+    /**
+     * Remove a product from a wishlist.
+     */
+    public function removeProduct(Request $request, Wishlist $wishlist)
+    {
+        $validated = $request->validate([
+            'product' => 'required|exists:aos_products,id',
+        ]);
+
+        $wishlist->products()
+            ->where('product_id', $validated['product'])
+            ->delete();
+
+        return response()->json(['message' => 'Producto removido de la lista de deseos']);
+    }
 }

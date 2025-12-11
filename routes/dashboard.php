@@ -17,4 +17,8 @@ Route::middleware('auth')->group(function () {
         'update' => 'wishlist.update',
         'destroy' => 'wishlist.destroy',
     ]);
+
+    // Rutas para agregar/remover productos de wishlist
+    Route::post('/dashboard/wishlist/{wishlist}/add-product', [WishlistController::class, 'addProduct'])->name('wishlist.add-product');
+    Route::delete('/dashboard/wishlist/{wishlist}/remove-product', [WishlistController::class, 'removeProduct'])->name('wishlist.remove-product');
 });

@@ -100,6 +100,7 @@ export interface Wishlist {
     created_at: string;
     updated_at: string;
     deleted_at?: string | null;
+    products?: Product[];
     [key: string]: any; // This allows for additional properties...
 }
 

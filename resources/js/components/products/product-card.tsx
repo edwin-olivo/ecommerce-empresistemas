@@ -1,19 +1,23 @@
 import { Image } from '@/components/image';
 import ProductQuickView from '@/components/products/product-quick-view';
 import { Button } from '@/components/ui/button';
+import WishlistSelectDialog from '@/components/whislists/wishlist-select-dialog';
 import { cn, formatCurrency } from '@/lib/utils';
-import type { Product } from '@/types';
-import { Link, useForm } from '@inertiajs/react';
-import { Eye } from 'lucide-react';
+import type { Product, SharedData, Wishlist } from '@/types';
+import { Link, useForm, usePage } from '@inertiajs/react';
+import { Eye, Heart, HeartOff } from 'lucide-react';
 import { useState } from 'react';
 
 interface Props {
     product: Product;
     className?: string;
+    wishlists?: Wishlist[];
 }
 
-export default function ProductCard({ product, className }: Props) {
+export default function ProductCard({ product, className, wishlists = [] }: Props) {
+    const { auth } = usePage<SharedData>().props;
     const [openQuickView, setOpenQuickView] = useState(false);
+    const [openWishlistDialog, setOpenWishlistDialog] = useState(false);
 
     const { post, processing } = useForm({
         id: product.id,
@@ -27,6 +31,32 @@ export default function ProductCard({ product, className }: Props) {
             preserveScroll: true,
         });
     }
+
+    function toggleWishlist(event: React.FormEvent, wishlistId: string) {
+        event.preventDefault();
+        if (product.is_in_wishlist) {
+            post(route('wishlist.remove-product', { product: product.id, wishlist: wishlistId }), {
+                preserveState: true,
+                preserveScroll: true,
+            });
+        } else {
+            post(route('wishlist.add-product', { product: product.id, wishlist: wishlistId }), {
+                preserveState: true,
+                preserveScroll: true,
+            });
+        }
+    }
+
+    function handleWishlistSelect(wishlist: Wishlist) {
+        toggleWishlist(new Event('submit') as any, wishlist.id);
+    }
+
+    const wishlistAriaLabel = product.is_in_wishlist
+        ? `Eliminar ${product.name} de la lista de deseos`
+        : `Agregar ${product.name} a la lista de deseos`;
+    const wishlistTitle = product.is_in_wishlist
+        ? `Eliminar ${product.part_number} de la lista de deseos`
+        : `Agregar ${product.part_number} a la lista de deseos`;
 
     return (
         <>
@@ -63,7 +93,26 @@ export default function ProductCard({ product, className }: Props) {
                     </div>
 
                     {/* Mostrar ofertas o similar */}
-                    <p className="rounded-4 absolute top-5 left-5 bg-lime-400 px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p>
+                    {/* <p className="rounded-4 absolute top-5 left-5 bg-lime-400 px-3 py-1.5 text-[0.75em] font-medium text-black">-50%</p> */}
+
+                    {/* Boton Wishlist */}
+                    {auth?.user && (
+                        <Button
+                            className="absolute top-5 right-16 !h-8 rounded-full bg-white !py-0.5 text-neutral-900 transition-all duration-300 hover:bg-lime-400 hover:text-neutral-900"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setOpenWishlistDialog(true);
+                            }}
+                            aria-label={wishlistAriaLabel}
+                            title={wishlistTitle}
+                        >
+                            {product.is_in_wishlist ? (
+                                <HeartOff className="h-4 w-4 stroke-current text-red-500" />
+                            ) : (
+                                <Heart className="h-4 w-4 stroke-current" />
+                            )}
+                        </Button>
+                    )}
 
                     {/* Boton Quick View */}
                     <Button
@@ -87,6 +136,16 @@ export default function ProductCard({ product, className }: Props) {
                 handleAddToCart={addToCart}
                 processing={processing}
             />
+
+            {auth?.user && (
+                <WishlistSelectDialog
+                    open={openWishlistDialog}
+                    onOpenChange={setOpenWishlistDialog}
+                    onSelectWishlist={handleWishlistSelect}
+                    productName={product.part_number || product.name}
+                    processing={processing}
+                />
+            )}
         </>
     );
 }
