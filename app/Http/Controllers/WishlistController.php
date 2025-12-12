@@ -83,14 +83,14 @@ class WishlistController extends Controller
         $exists = $wishlist->products()->where('product_id', $validated['product'])->exists();
 
         if ($exists) {
-            return response()->json(['message' => 'El producto ya está en la lista de deseos'], 422);
+            return redirect()->back()->with('info', 'El producto ya está en la lista de deseos');
         }
 
         $wishlist->products()->create([
             'product_id' => $validated['product'],
         ]);
 
-        return response()->json(['message' => 'Producto agregado a la lista de deseos'], 201);
+        return redirect()->back()->with('success', 'Producto agregado a la lista de deseos');
     }
 
     /**
@@ -106,6 +106,6 @@ class WishlistController extends Controller
             ->where('product_id', $validated['product'])
             ->delete();
 
-        return response()->json(['message' => 'Producto removido de la lista de deseos']);
+        return redirect()->back()->with('success', 'Producto removido de la lista de deseos');
     }
 }
