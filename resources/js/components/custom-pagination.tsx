@@ -1,5 +1,5 @@
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
-import { cn, filterLinks, renderLabel } from '@/lib/utils';
+import { cn, filterLinks } from '@/lib/utils';
 import { PaginationLinkItem, Product } from '@/types';
 import { Link } from '@inertiajs/react';
 import { buttonVariants } from './ui/button';
@@ -61,7 +61,7 @@ export default function CustomPagination(props: CustomPaginationProps) {
                                     '',
                                 )}
                             >
-                                {renderLabel(link.label)}
+                                {link.label}
                             </Link>
                         ) : (
                             <PaginationEllipsis />
