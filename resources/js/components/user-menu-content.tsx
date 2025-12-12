@@ -3,7 +3,7 @@ import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings, User2 } from 'lucide-react';
+import { Heart, LogOut, MapPin, Settings, ShoppingCart } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
@@ -27,9 +27,21 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                    <Link className="block w-full" href={route('dashboard')} as="button" prefetch onClick={cleanup}>
-                        <User2 className="mr-2" />
-                        Dashboard
+                    <Link className="block w-full" href={route('dashboard.orders')} as="button" prefetch onClick={cleanup}>
+                        <ShoppingCart className="mr-2" />
+                        Ordenes
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link className="block w-full" href={route('dashboard.addresses')} as="button" prefetch onClick={cleanup}>
+                        <MapPin className="mr-2" />
+                        Direcciones
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link className="block w-full" href={route('wishlist')} as="button" prefetch onClick={cleanup}>
+                        <Heart className="mr-2" />
+                        Lista de deseos
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
