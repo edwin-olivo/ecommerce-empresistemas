@@ -45,21 +45,19 @@ export default function WishlistSelectDialog({ open, onOpenChange, onSelectWishl
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="max-h-[400px] space-y-2 overflow-y-auto">
+                <div className="max-h-96 space-y-2 overflow-y-auto">
                     {wishlists && wishlists.length > 0 ? (
                         wishlists.map((wishlist) => (
-                            <button
+                            <Button
                                 key={wishlist.id}
                                 onClick={() => handleSelectWishlist(wishlist)}
                                 disabled={processing || selectedWishlist?.id === wishlist.id}
-                                className="w-full rounded-lg border-2 border-gray-200 p-4 text-left transition-all duration-200 hover:border-lime-400 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                                variant="link"
+                                className="w-full cursor-pointer rounded-lg border-2 border-gray-200 p-1 text-left transition-all duration-200 hover:border-lime-400 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <h4 className="font-semibold text-gray-900 dark:text-gray-100">{wishlist.name}</h4>
-                                        {wishlist.description && (
-                                            <p className="mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{wishlist.description}</p>
-                                        )}
                                     </div>
                                     {selectedWishlist?.id === wishlist.id && (
                                         <div className="ml-4 flex h-5 w-5 items-center justify-center rounded-full bg-lime-400">
@@ -67,7 +65,7 @@ export default function WishlistSelectDialog({ open, onOpenChange, onSelectWishl
                                         </div>
                                     )}
                                 </div>
-                            </button>
+                            </Button>
                         ))
                     ) : (
                         <div className="py-8 text-center">
