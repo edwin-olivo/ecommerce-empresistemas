@@ -42,7 +42,7 @@ class WishlistController extends Controller
      */
     public function show(Wishlist $wishlist)
     {
-        return response()->json($wishlist);
+        return Inertia::render('dashboard/wishlist-show', ['wishlist' => $wishlist->load('products.product')]);
     }
 
     /**
