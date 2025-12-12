@@ -46,7 +46,7 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
                                 variant="ghost"
                                 asChild
                                 className={cn('w-full justify-start', {
-                                    'bg-muted': currentPath === item.href,
+                                    'bg-muted': currentPath.includes(item.href),
                                 })}
                             >
                                 <Link href={item.href} prefetch>
