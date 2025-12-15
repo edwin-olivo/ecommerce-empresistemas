@@ -42,7 +42,7 @@ export default function WishlistShow({ wishlist }: WishlistShowProps) {
                         <Table>
                             <TableCaption>Productos en la lista de deseos</TableCaption>
                             <TableHeader>
-                                <TableRow className="bg-gray-50">
+                                <TableRow>
                                     <TableHead className="font-bold text-gray-900">Producto</TableHead>
                                     <TableHead className="font-bold text-gray-900">Precio</TableHead>
                                     <TableHead className="font-bold text-gray-900">Disponibilidad</TableHead>
