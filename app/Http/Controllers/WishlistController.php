@@ -34,7 +34,7 @@ class WishlistController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        return redirect(route('wishlist'))->with('success', 'Lista de deseos creada exitosamente');
+        return redirect(route('wishlist.index'))->with('success', 'Lista de deseos creada exitosamente');
     }
 
     /**
@@ -58,7 +58,7 @@ class WishlistController extends Controller
 
         $wishlist->update($validated);
 
-        return redirect(route('wishlist'))->with('success', 'Lista de deseos actualizada exitosamente');
+        return redirect(route('wishlist.index'))->with('success', 'Lista de deseos actualizada exitosamente');
     }
 
     /**

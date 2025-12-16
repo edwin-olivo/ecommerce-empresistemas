@@ -15,9 +15,4 @@ class DashboardController extends Controller
     {
         return inertia('dashboard/addresses');
     }
-
-    function wishlist()
-    {
-        return redirect()->route('wishlist');
-    }
 }

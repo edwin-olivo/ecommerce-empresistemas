@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AddressController;
 
 Route::middleware('auth')->group(function () {
     // Rutas para el perfil del usuario (ordenes, historial, direcciones, etc.)
@@ -11,7 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/addresses', [DashboardController::class, 'addresses'])->name('dashboard.addresses');
 
     Route::resource('/dashboard/wishlist', WishlistController::class)->names([
-        'index' => 'wishlist',
+        'index' => 'wishlist.index',
         'store' => 'wishlist.store',
         'show' => 'wishlist.show',
         'update' => 'wishlist.update',

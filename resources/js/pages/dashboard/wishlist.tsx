@@ -10,7 +10,7 @@ import { Wishlist } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
-const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de deseos', href: route('wishlist') }]);
+const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de Deseos', href: route('wishlist.index') }]);
 
 interface WishlistProps {
     wishlists: Wishlist[];
@@ -30,7 +30,7 @@ export default function UserWishList({ wishlists }: WishlistProps) {
     }
 
     return (
-        <AppLayout breadcrumbs={[]}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Listado de deseos" />
             <DashboardLayout>
                 <div className="space-y-6">

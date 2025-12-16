@@ -5,19 +5,14 @@ import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { formatCurrency } from '@/lib/utils';
-import { SharedData, Wishlist } from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-
-const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listas de Deseos', href: route('wishlist') }]);
+import { Wishlist } from '@/types';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 interface WishlistShowProps {
     wishlist: Wishlist;
 }
 
 export default function WishlistShow({ wishlist }: WishlistShowProps) {
-    const page = usePage<SharedData>();
-    const { auth } = page.props;
-
     const { delete: destroy, processing } = useForm({});
 
     function handleRemoveProduct(event: React.FormEvent, productId: string) {
@@ -28,8 +23,13 @@ export default function WishlistShow({ wishlist }: WishlistShowProps) {
         });
     }
 
+    const breadcrumbs = getBreadcrumbs('wishlist', [
+        { title: 'Listado de Deseos', href: route('wishlist.index') },
+        { title: wishlist.name, href: route('wishlist.show', wishlist.id) },
+    ]);
+
     return (
-        <AppLayout breadcrumbs={[]}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Listado de deseos - ${wishlist.name}`} />
             <DashboardLayout>
                 <div className="space-y-6">
