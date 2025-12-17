@@ -113,3 +113,22 @@ export interface WishlistItem {
     updated_at: string;
     deleted_at?: string | null;
 }
+
+export interface Address {
+    id: string;
+    user_id: number;
+    name: string;
+    recipient: string;
+    phone: string;
+    street_address: string;
+    apartment?: string | null;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+    instructions?: string | null;
+    is_default: boolean;
+    created_at: string;
+    updated_at: string;
+    deleted_at?: string | null;
+}

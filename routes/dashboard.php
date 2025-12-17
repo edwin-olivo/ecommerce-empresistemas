@@ -9,7 +9,6 @@ Route::middleware('auth')->group(function () {
     // Rutas para el perfil del usuario (ordenes, historial, direcciones, etc.)
     Route::redirect('/dashboard', '/dashboard/orders');
     Route::get('/dashboard/orders', [DashboardController::class, 'orders'])->name('dashboard.orders');
-    Route::get('/dashboard/addresses', [DashboardController::class, 'addresses'])->name('dashboard.addresses');
 
     Route::resource('/dashboard/wishlist', WishlistController::class)->names([
         'index' => 'wishlist.index',
@@ -22,4 +21,16 @@ Route::middleware('auth')->group(function () {
     // Rutas para agregar/remover productos de wishlist
     Route::post('/dashboard/wishlist/{wishlist}/add-product', [WishlistController::class, 'addProduct'])->name('wishlist.add-product');
     Route::delete('/dashboard/wishlist/{wishlist}/remove-product', [WishlistController::class, 'removeProduct'])->name('wishlist.remove-product');
+
+    // Rutas para direcciones de entrega
+    Route::resource('/dashboard/address', AddressController::class)->names([
+        'index' => 'address.index',
+        'store' => 'address.store',
+        'show' => 'address.show',
+        'update' => 'address.update',
+        'destroy' => 'address.destroy',
+    ]);
+
+    // Ruta para establecer una dirección como predeterminada
+    Route::patch('/dashboard/address/{address}/set-default', [AddressController::class, 'setDefault'])->name('address.set-default');
 });
