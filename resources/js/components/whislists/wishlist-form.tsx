@@ -13,7 +13,7 @@ interface WishlistFormProps {
 }
 
 export function WishlistForm({ open, onOpenChange, wishlist }: WishlistFormProps) {
-    const { data, setData, post, put, processing, errors } = useForm<{ name: string; description: string }>({
+    const { data, setData, post, put, processing, errors } = useForm<{ name: string; description?: string | null }>({
         name: wishlist ? wishlist.name : '',
         description: wishlist ? wishlist.description : '',
     });
@@ -54,7 +54,7 @@ export function WishlistForm({ open, onOpenChange, wishlist }: WishlistFormProps
                             <Textarea
                                 id="description-1"
                                 name="description"
-                                value={data.description}
+                                value={data.description || ''}
                                 onChange={(e) => setData('description', e.target.value)}
                             />
                         </div>

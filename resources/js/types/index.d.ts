@@ -96,7 +96,7 @@ export interface CartItem {
 export interface Wishlist {
     id: string;
     name: string;
-    description: string;
+    description?: string | null;
     created_at: string;
     updated_at: string;
     deleted_at?: string | null;

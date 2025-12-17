@@ -4,16 +4,15 @@ import { DeleteWishlistModal } from '@/components/whislists/delete-wishlist';
 import { WishlistForm } from '@/components/whislists/wishlist-form';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
-import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { trimTextWithEllipsis } from '@/lib/utils';
 import { Wishlist } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
-const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de Deseos', href: route('wishlist.index') }]);
+// const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de Deseos', href: route('wishlist.index') }]);
 
 interface WishlistProps {
-    wishlists: Wishlist[];
+    wishlists: Wishlist[] | [];
 }
 
 export default function UserWishList({ wishlists }: WishlistProps) {
@@ -30,7 +29,7 @@ export default function UserWishList({ wishlists }: WishlistProps) {
     }
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AppLayout breadcrumbs={[]}>
             <Head title="Listado de deseos" />
             <DashboardLayout>
                 <div className="space-y-6">
@@ -58,7 +57,7 @@ export default function UserWishList({ wishlists }: WishlistProps) {
                                     <Link href={route('wishlist.show', item.id)} className="">
                                         <div className="min-h-[100px] cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg">
                                             <h3 className="text-lg font-medium">{item.name}</h3>
-                                            <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description, 60)}</p>
+                                            <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description ?? '', 60)}</p>
                                         </div>
                                     </Link>
 
