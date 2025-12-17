@@ -18,7 +18,7 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
-        title: 'Listado de deseos',
+        title: 'Listas de Deseos',
         href: '/dashboard/wishlist',
         icon: null,
     },

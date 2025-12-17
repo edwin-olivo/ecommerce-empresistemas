@@ -41,7 +41,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 <DropdownMenuItem asChild>
                     <Link className="block w-full" href={route('wishlist.index')} as="button" prefetch onClick={cleanup}>
                         <Heart className="mr-2" />
-                        Lista de deseos
+                        Listas de deseos
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

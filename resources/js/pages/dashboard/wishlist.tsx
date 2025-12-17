@@ -31,11 +31,11 @@ export default function UserWishList({ wishlists }: WishlistProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Listado de deseos" />
+            <Head title="Listas de Deseos" />
             <DashboardLayout>
                 <div className="space-y-6">
                     <HeadingSmall
-                        title="Listado de deseos"
+                        title="Listas de Deseos"
                         description="Aquí puedes ver y gestionar los productos que has añadido a tu lista de deseos."
                     />
 

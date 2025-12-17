@@ -30,11 +30,11 @@ export default function WishlistShow({ wishlist }: WishlistShowProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Listado de deseos - ${wishlist.name}`} />
+            <Head title={`Lista de Deseos - ${wishlist.name}`} />
             <DashboardLayout>
                 <div className="space-y-6">
                     <HeadingSmall
-                        title={`Listado de deseos - ${wishlist.name}`}
+                        title={`Lista de Deseos - ${wishlist.name}`}
                         description={wishlist.description || 'Aquí puedes ver y gestionar los productos que has añadido a tu lista de deseos.'}
                     />
 
