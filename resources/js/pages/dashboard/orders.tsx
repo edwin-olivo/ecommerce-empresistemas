@@ -12,7 +12,7 @@ export default function Orders() {
     const { auth } = page.props;
 
     return (
-        <AppLayout breadcrumbs={[]}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Ordenes" />
             <DashboardLayout>
                 <div className="space-y-6">

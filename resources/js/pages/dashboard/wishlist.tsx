@@ -4,12 +4,13 @@ import { DeleteWishlistModal } from '@/components/whislists/delete-wishlist';
 import { WishlistForm } from '@/components/whislists/wishlist-form';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
+import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { trimTextWithEllipsis } from '@/lib/utils';
 import { Wishlist } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
-// const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de Deseos', href: route('wishlist.index') }]);
+const breadcrumbs = getBreadcrumbs('wishlist', [{ title: 'Listado de Deseos', href: route('wishlist.index') }]);
 
 interface WishlistProps {
     wishlists: Wishlist[] | [];
@@ -29,7 +30,7 @@ export default function UserWishList({ wishlists }: WishlistProps) {
     }
 
     return (
-        <AppLayout breadcrumbs={[]}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Listado de deseos" />
             <DashboardLayout>
                 <div className="space-y-6">

@@ -2,12 +2,13 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
+import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { trimTextWithEllipsis } from '@/lib/utils';
 import { Address, SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
-// const breadcrumbs = getBreadcrumbs('addresses', [{ title: 'Direcciones', href: route('address.index') }]);
+const breadcrumbs = getBreadcrumbs('addresses', [{ title: 'Direcciones', href: route('address.index') }]);
 
 interface AddressProps {
     addresses: Address[] | [];
@@ -19,14 +20,14 @@ export default function Addresses({ addresses }: AddressProps) {
     const [openAddressForm, setOpenAddressForm] = useState<string | null>(null);
 
     return (
-        <AppLayout breadcrumbs={[]}>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Direcciones" />
             <DashboardLayout>
                 <div className="space-y-6">
                     <HeadingSmall title="Direcciones" description="Aquí puedes ver y gestionar las direcciones que has añadido a tu cuenta." />
 
                     <Button variant="outline" onClick={() => setOpenAddressForm('create')}>
-                        Crear Lista de Deseos
+                        Crear nueva dirección
                     </Button>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -68,7 +69,7 @@ export default function Addresses({ addresses }: AddressProps) {
                                 </div>
                             ))
                         ) : (
-                            <p>No hay listas de deseos disponibles.</p>
+                            <p>No hay direcciones disponibles.</p>
                         )}
                     </div>
                 </div>
