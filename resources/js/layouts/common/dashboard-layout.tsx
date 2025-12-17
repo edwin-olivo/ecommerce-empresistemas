@@ -14,7 +14,7 @@ const sidebarNavItems: NavItem[] = [
     },
     {
         title: 'Direcciones',
-        href: '/dashboard/addresses',
+        href: '/dashboard/address',
         icon: null,
     },
     {

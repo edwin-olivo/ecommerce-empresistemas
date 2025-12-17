@@ -33,7 +33,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link className="block w-full" href={route('dashboard.addresses')} as="button" prefetch onClick={cleanup}>
+                    <Link className="block w-full" href={route('address.index')} as="button" prefetch onClick={cleanup}>
                         <MapPin className="mr-2" />
                         Direcciones
                     </Link>
