@@ -46,10 +46,7 @@ class AddressController extends Controller
 
         $address = Address::create($validated);
 
-        return response()->json([
-            'message' => 'Dirección creada exitosamente',
-            'address' => $address,
-        ], 201);
+        return redirect()->back()->with('success', 'Dirección creada exitosamente');
     }
 
     /**
@@ -57,7 +54,9 @@ class AddressController extends Controller
      */
     public function show(Address $address)
     {
-        return response()->json($address);
+        return Inertia::render('dashboard/addresses/Show', [
+            'address' => $address,
+        ]);
     }
 
     /**
@@ -81,10 +80,7 @@ class AddressController extends Controller
 
         $address->update($validated);
 
-        return response()->json([
-            'message' => 'Dirección actualizada exitosamente',
-            'address' => $address,
-        ]);
+        return redirect()->back()->with('success', 'Dirección actualizada exitosamente');
     }
 
     /**
@@ -93,7 +89,7 @@ class AddressController extends Controller
     public function destroy(Address $address)
     {
         $address->delete();
-        return response()->json(['message' => 'Dirección eliminada exitosamente']);
+        return redirect()->back()->with('success', 'Dirección eliminada exitosamente');
     }
 
     /**
@@ -103,9 +99,6 @@ class AddressController extends Controller
     {
         $address->update(['is_default' => true]);
 
-        return response()->json([
-            'message' => 'Dirección establecida como predeterminada',
-            'address' => $address,
-        ]);
+        return redirect()->back()->with('success', 'Dirección establecida como predeterminada');
     }
 }

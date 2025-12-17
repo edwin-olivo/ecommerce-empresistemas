@@ -1,11 +1,12 @@
+import { AddressForm } from '@/components/addresses/address-form';
+import { DeleteAddress } from '@/components/addresses/delete-address';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
-import { trimTextWithEllipsis } from '@/lib/utils';
-import { Address, SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Address } from '@/types';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { Fragment, useState } from 'react';
 
 const breadcrumbs = getBreadcrumbs('addresses', [{ title: 'Direcciones', href: route('address.index') }]);
@@ -15,9 +16,17 @@ interface AddressProps {
 }
 
 export default function Addresses({ addresses }: AddressProps) {
-    const page = usePage<SharedData>();
-    const { auth } = page.props;
     const [openAddressForm, setOpenAddressForm] = useState<string | null>(null);
+
+    const { delete: deleteAddress, processing } = useForm({
+        id: '',
+    });
+
+    function handleDeleteAddress(id: string) {
+        deleteAddress(route('address.destroy', id), {
+            preserveScroll: true,
+        });
+    }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -32,11 +41,11 @@ export default function Addresses({ addresses }: AddressProps) {
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                         <Fragment>
-                            {/* <AddressForm
+                            <AddressForm
                                 open={openAddressForm === 'create'}
                                 onOpenChange={(open) => setOpenAddressForm(open ? 'create' : null)}
                                 address={null}
-                            /> */}
+                            />
                         </Fragment>
 
                         {addresses?.length > 0 ? (
@@ -44,27 +53,31 @@ export default function Addresses({ addresses }: AddressProps) {
                                 <div key={item.id}>
                                     <Link href={route('address.show', item.id)} className="">
                                         <div className="min-h-[100px] cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg">
-                                            <h3 className="text-lg font-medium">{item.name}</h3>
-                                            <p className="text-sm text-gray-600">{trimTextWithEllipsis(item.description, 60)}</p>
+                                            <h3 className="text-lg font-medium">{item.recipient}</h3>
+                                            <p className="mt-2 text-sm text-gray-600">{item.street_address}</p>
+                                            <p className="mt-1 text-sm text-gray-600">
+                                                {item.city}, {item.state} {item.postal_code}
+                                            </p>
+                                            <p className="mt-1 text-sm text-gray-600">{item.country}</p>
                                         </div>
                                     </Link>
 
-                                    {/* <WishlistForm
-                                        open={openWishlistId === item.id}
-                                        onOpenChange={(open) => setOpenWishlistId(open ? item.id : null)}
-                                        wishlist={item}
-                                    /> */}
+                                    <AddressForm
+                                        open={openAddressForm === item.id}
+                                        onOpenChange={(open) => setOpenAddressForm(open ? item.id : null)}
+                                        address={item}
+                                    />
 
                                     <div className="mt-2 grid grid-cols-2 gap-2">
-                                        {/* <Button variant="outline" onClick={() => setOpenAddressForm(item.id)} disabled={processing}>
+                                        <Button variant="outline" onClick={() => setOpenAddressForm(item.id)} disabled={processing}>
                                             Editar
-                                        </Button> */}
-                                        {/* <DeleteWishlistModal
-                                            handleConfirm={() => handleDeleteWishlist(item.id)}
+                                        </Button>
+                                        <DeleteAddress
+                                            handleConfirm={() => handleDeleteAddress(item.id)}
                                             className="w-full cursor-pointer"
                                             processing={processing}
-                                            wishlist={item}
-                                        /> */}
+                                            address={item}
+                                        />
                                     </div>
                                 </div>
                             ))
