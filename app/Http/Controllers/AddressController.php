@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateAddressRequest;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,7 +15,6 @@ class AddressController extends Controller
     public function index(Request $request)
     {
         $addresses = Address::where('user_id', auth()->id())
-            ->orderBy('is_default', 'desc')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -26,24 +26,10 @@ class AddressController extends Controller
     /**
      * Almacena una nueva dirección
      */
-    public function store(Request $request)
+    public function store(StoreUpdateAddressRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'recipient' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'street_address' => 'required|string|max:255',
-            'apartment' => 'nullable|string|max:255',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:20',
-            'country' => 'required|string|max:100',
-            'instructions' => 'nullable|string|max:500',
-            'is_default' => 'boolean',
-        ]);
-
+        $validated = $request->validated();
         $validated['user_id'] = auth()->id();
-
         $address = Address::create($validated);
 
         return redirect()->back()->with('success', 'Dirección creada exitosamente');
@@ -62,22 +48,9 @@ class AddressController extends Controller
     /**
      * Actualiza la dirección especificada
      */
-    public function update(Request $request, Address $address)
+    public function update(StoreUpdateAddressRequest $request, Address $address)
     {
-        $validated = $request->validate([
-            'name' => 'string|max:255',
-            'recipient' => 'string|max:255',
-            'phone' => 'string|max:20',
-            'street_address' => 'string|max:255',
-            'apartment' => 'nullable|string|max:255',
-            'city' => 'string|max:100',
-            'state' => 'string|max:100',
-            'postal_code' => 'string|max:20',
-            'country' => 'string|max:100',
-            'instructions' => 'nullable|string|max:500',
-            'is_default' => 'boolean',
-        ]);
-
+        $validated = $request->validated();
         $address->update($validated);
 
         return redirect()->back()->with('success', 'Dirección actualizada exitosamente');
