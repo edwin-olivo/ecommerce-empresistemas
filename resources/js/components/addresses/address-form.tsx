@@ -5,9 +5,16 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Address } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { Checkbox } from '../ui/checkbox';
 
-type AddressFormData = {
+interface AddressFormProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    address?: Address | null;
+}
+
+interface AddressFormData {
     name: string;
     recipient: string;
     phone: string;
@@ -18,38 +25,54 @@ type AddressFormData = {
     country: string;
     instructions: string;
     is_default: boolean;
-};
-
-interface AddressFormProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    address?: Address | null;
 }
 
 export function AddressForm({ open, onOpenChange, address }: AddressFormProps) {
-    const { data, setData, post, put, processing, errors } = useForm<AddressFormData>({
-        name: address ? address.name : '',
-        recipient: address ? address.recipient : '',
-        phone: address ? address.phone : '',
-        street_address: address ? address.street_address : '',
-        city: address ? address.city : '',
-        state: address ? address.state : '',
-        postal_code: address ? address.postal_code : '',
-        country: address ? address.country : '',
-        instructions: address ? address.instructions || '' : '',
-        is_default: address ? address.is_default || false : false,
+    const { data, setData, post, put, processing, errors, clearErrors, reset } = useForm<AddressFormData>({
+        name: '',
+        recipient: '',
+        phone: '',
+        street_address: '',
+        city: '',
+        state: '',
+        postal_code: '',
+        country: '',
+        instructions: '',
+        is_default: false,
     });
+
+    useEffect(() => {
+        if (open) {
+            setData({
+                name: address?.name ?? '',
+                recipient: address?.recipient ?? '',
+                phone: address?.phone ?? '',
+                street_address: address?.street_address ?? '',
+                city: address?.city ?? '',
+                state: address?.state ?? '',
+                postal_code: address?.postal_code ?? '',
+                country: address?.country ?? '',
+                instructions: address?.instructions ?? '',
+                is_default: address?.is_default ?? false,
+            });
+            clearErrors();
+        }
+    }, [open, address]); // Dependencias: se ejecuta al abrir o al cambiar de dirección
 
     function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
+
+        const options = {
+            onSuccess: () => {
+                onOpenChange(false);
+                reset();
+            },
+        };
+
         if (address) {
-            put(route('address.update', { address: address.id }), {
-                onSuccess: () => onOpenChange(false),
-            });
+            put(route('address.update', address.id), options);
         } else {
-            post(route('address.store'), {
-                onSuccess: () => onOpenChange(false),
-            });
+            post(route('address.store'), options);
         }
     }
 

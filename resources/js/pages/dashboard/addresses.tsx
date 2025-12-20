@@ -8,7 +8,7 @@ import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
 import { Address } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { CheckCircle, Circle } from 'lucide-react';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 const breadcrumbs = getBreadcrumbs('addresses', [{ title: 'Direcciones', href: route('address.index') }]);
 
@@ -17,16 +17,25 @@ interface AddressProps {
 }
 
 export default function Addresses({ addresses }: AddressProps) {
-    const [openAddressForm, setOpenAddressForm] = useState<string | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [editingAddress, setEditingAddress] = useState<Address | null>(null);
 
-    const { delete: deleteAddress, processing } = useForm({
-        id: '',
-    });
+    const { delete: destroy, processing } = useForm();
+
+    // Función auxiliar para abrir el modal en modo "Crear"
+    const openCreateModal = () => {
+        setEditingAddress(null);
+        setIsOpen(true);
+    };
+
+    // Función auxiliar para abrir el modal en modo "Editar"
+    const openEditModal = (address: Address) => {
+        setEditingAddress(address);
+        setIsOpen(true);
+    };
 
     function handleDeleteAddress(id: string) {
-        deleteAddress(route('address.destroy', id), {
-            preserveScroll: true,
-        });
+        destroy(route('address.destroy', id), { preserveScroll: true });
     }
 
     return (
@@ -34,21 +43,13 @@ export default function Addresses({ addresses }: AddressProps) {
             <Head title="Direcciones" />
             <DashboardLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Direcciones" description="Aquí puedes ver y gestionar las direcciones que has añadido a tu cuenta." />
+                    <HeadingSmall title="Direcciones" description="..." />
 
-                    <Button variant="outline" onClick={() => setOpenAddressForm('create')}>
+                    <Button variant="outline" onClick={openCreateModal}>
                         Crear nueva dirección
                     </Button>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                        <Fragment>
-                            <AddressForm
-                                open={openAddressForm === 'create'}
-                                onOpenChange={(open) => setOpenAddressForm(open ? 'create' : null)}
-                                address={null}
-                            />
-                        </Fragment>
-
                         {addresses?.length > 0 ? (
                             addresses.map((item) => (
                                 <div key={item.id}>
@@ -62,12 +63,6 @@ export default function Addresses({ addresses }: AddressProps) {
                                             <p className="mt-1 text-sm text-gray-600">{item.country}</p>
                                         </div>
                                     </Link>
-
-                                    <AddressForm
-                                        open={openAddressForm === item.id}
-                                        onOpenChange={(open) => setOpenAddressForm(open ? item.id : null)}
-                                        address={item}
-                                    />
 
                                     <div className="mt-2 grid grid-cols-2 gap-2">
                                         {item.is_default ? (
@@ -83,9 +78,15 @@ export default function Addresses({ addresses }: AddressProps) {
                                                 </Link>
                                             </Button>
                                         )}
-                                        <Button variant="outline" onClick={() => setOpenAddressForm(item.id)} disabled={processing}>
+
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => openEditModal(item)} // <--- Aquí abrimos el modal único
+                                            disabled={processing}
+                                        >
                                             Editar
                                         </Button>
+
                                         {!item.is_default && (
                                             <DeleteAddress
                                                 handleConfirm={() => handleDeleteAddress(item.id)}
@@ -101,6 +102,9 @@ export default function Addresses({ addresses }: AddressProps) {
                             <p>No hay direcciones disponibles.</p>
                         )}
                     </div>
+
+                    {/* Renderizamos UN SOLO formulario fuera del loop */}
+                    <AddressForm open={isOpen} onOpenChange={setIsOpen} address={editingAddress} />
                 </div>
             </DashboardLayout>
         </AppLayout>
