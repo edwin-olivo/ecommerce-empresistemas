@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Wishlist } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 interface WishlistFormProps {
     open: boolean;
@@ -12,22 +13,41 @@ interface WishlistFormProps {
     wishlist?: Wishlist | null;
 }
 
+interface WishlistFormData {
+    name: string;
+    description?: string | null;
+}
+
 export function WishlistForm({ open, onOpenChange, wishlist }: WishlistFormProps) {
-    const { data, setData, post, put, processing, errors } = useForm<{ name: string; description?: string | null }>({
-        name: wishlist ? wishlist.name : '',
-        description: wishlist ? wishlist.description : '',
+    const { data, setData, post, put, processing, errors, reset, clearErrors } = useForm<WishlistFormData>({
+        name: '',
+        description: '',
     });
+
+    useEffect(() => {
+        if (open) {
+            setData({
+                name: wishlist?.name ?? '',
+                description: wishlist?.description ?? '',
+            });
+            clearErrors();
+        }
+    }, [open, wishlist]); // Dependencias: se ejecuta al abrir o al cambiar de lista de deseos
 
     function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
+
+        const options = {
+            onSuccess: () => {
+                onOpenChange(false);
+                reset();
+            },
+        };
+
         if (wishlist) {
-            put(route('wishlist.update', { wishlist: wishlist.id }), {
-                onSuccess: () => onOpenChange(false),
-            });
+            put(route('wishlist.update', { wishlist: wishlist.id }), options);
         } else {
-            post(route('wishlist.store'), {
-                onSuccess: () => onOpenChange(false),
-            });
+            post(route('wishlist.store'), options);
         }
     }
 
