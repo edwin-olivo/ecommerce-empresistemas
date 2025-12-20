@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Whishlist;
+
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

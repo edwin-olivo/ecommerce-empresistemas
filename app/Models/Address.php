@@ -58,7 +58,7 @@ class Address extends Model
     {
         parent::boot();
 
-        static::saving(function ($model) {
+        static::saving(static function ($model) {
             if ($model->is_default) {
                 // Remove is_default from other addresses of the same user
                 self::where('user_id', $model->user_id)

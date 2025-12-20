@@ -20,7 +20,7 @@ class CheckoutController extends Controller
     {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-        $products = Auth::user()->cart->items()->with('product')->get()->map(function ($item) {
+        $products = Auth::user()->cart->items()->with('product')->get()->map(static function ($item) {
             return [
                 'part_number' => $item->product->part_number,
                 'price' => $item->product->price,

@@ -32,11 +32,11 @@ class CartController extends Controller
                 $cartItems = $cart->items()->with('product')->get();
 
                 // Filtramos los items con "product" cargado
-                $cartItems = $cartItems->filter(function ($item) {
+                $cartItems = $cartItems->filter(static function ($item) {
                     return $item->product !== null;
                 });
 
-                $subtotal = $cartItems->sum(function ($item) {
+                $subtotal = $cartItems->sum(static function ($item) {
                     return $item->product->price * $item->quantity;
                 });
             }
@@ -47,8 +47,9 @@ class CartController extends Controller
             $productIds = array_keys($sessionCart);
             $products = AosProducts::whereIn('id', $productIds)->get()->keyBy('id');
             foreach ($sessionCart as $productId => $item) {
-                if (isset($products[$productId])) {
-                    $product = $products[$productId];
+                if (!(isset($products[$productId]))) { continue; }
+
+$product = $products[$productId];
                     $quantity = $item['quantity'];
                     $cartItems[] = (object)[
                         'id' => $product->id,
@@ -60,7 +61,6 @@ class CartController extends Controller
                         'updated_at' => null,
                     ];
                     $subtotal += $product->price * $quantity;
-                }
             }
         }
 

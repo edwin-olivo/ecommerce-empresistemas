@@ -24,7 +24,7 @@ class MigrateFreshExcept extends Command
     {
         $this->info('Dropping all tables except: ' . implode(', ', $this->except));
 
-        $tables = collect(DB::select('SHOW TABLES'))->map(function ($row) {
+        $tables = collect(DB::select('SHOW TABLES'))->map(static function ($row) {
             return array_values((array)$row)[0];
         })->toArray();
 

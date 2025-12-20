@@ -32,7 +32,7 @@ class Cart extends Model
             }
         } else {
             $sessionCart = session()->get('cart', []);
-            $cartCount = array_sum(array_map(fn($item) => $item['quantity'], $sessionCart));
+            $cartCount = array_sum(array_map(static fn($item) => $item['quantity'], $sessionCart));
         }
 
         return $cartCount;

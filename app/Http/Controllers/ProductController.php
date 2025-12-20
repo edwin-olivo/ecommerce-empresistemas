@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\Support\Facades\DB;
+
 
 class ProductController extends Controller
 {
@@ -24,17 +24,17 @@ class ProductController extends Controller
             ->with('custom')
             ->allowedFilters([
                 AllowedFilter::exact('categories', 'category'),
-                AllowedFilter::callback('classes', function ($query, $value) {
+                AllowedFilter::callback('classes', static function ($query, $value) {
                     $classes = is_array($value) ? $value : (array)$value;
                     $classes = array_filter($classes);
 
                     if (!empty($classes)) {
-                        $query->whereHas('custom', function ($q) use ($classes) {
+                        $query->whereHas('custom', static function ($q) use ($classes) {
                             $q->whereIn('clase_c', $classes);
                         });
                     }
                 }),
-                AllowedFilter::callback('price', function ($query, $value) {
+                AllowedFilter::callback('price', static function ($query, $value) {
                     $prices = $value;
                     if (isset($prices[0]) && is_numeric($prices[0])) {
                         $query->where('price', '>=', $prices[0]);
