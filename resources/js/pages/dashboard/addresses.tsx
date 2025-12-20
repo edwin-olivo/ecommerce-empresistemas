@@ -20,7 +20,7 @@ export default function Addresses({ addresses }: AddressProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Address | null>(null);
 
-    const { delete: destroy, processing } = useForm();
+    const { delete: destroy, patch, processing } = useForm();
 
     // Función auxiliar para abrir el modal en modo "Crear"
     const openCreateModal = () => {
@@ -34,16 +34,22 @@ export default function Addresses({ addresses }: AddressProps) {
         setIsOpen(true);
     };
 
-    function handleDeleteAddress(id: string) {
+    // Función para manejar la eliminación de una dirección
+    const handleDeleteAddress = (id: string) => {
         destroy(route('address.destroy', id), { preserveScroll: true });
-    }
+    };
+
+    // Función para manejar el establecimiento de una dirección como predeterminada
+    const handleSetDefault = (id: string) => {
+        patch(route('address.set-default', id), { preserveScroll: true });
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Direcciones" />
             <DashboardLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Direcciones" description="..." />
+                    <HeadingSmall title="Direcciones" description="Gestiona tus direcciones de envío" />
 
                     <Button variant="outline" onClick={openCreateModal}>
                         Crear nueva dirección
@@ -71,11 +77,14 @@ export default function Addresses({ addresses }: AddressProps) {
                                                 Predeterminada
                                             </Button>
                                         ) : (
-                                            <Button variant="outline" asChild className="col-span-2" disabled={processing}>
-                                                <Link href={route('address.set-default', item.id)}>
-                                                    <Circle className="mr-2 inline-block h-4 w-4 text-gray-500" />
-                                                    Establecer como predeterminada
-                                                </Link>
+                                            <Button
+                                                variant="outline"
+                                                className="col-span-2"
+                                                disabled={processing}
+                                                onClick={() => handleSetDefault(item.id)}
+                                            >
+                                                <Circle className="mr-2 inline-block h-4 w-4 text-gray-500" />
+                                                Establecer como predeterminada
                                             </Button>
                                         )}
 

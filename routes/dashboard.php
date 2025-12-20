@@ -32,5 +32,5 @@ Route::middleware('auth')->group(function () {
     ]);
 
     // Ruta para establecer una dirección como predeterminada
-    Route::get('/dashboard/address/{address}/set-default', [AddressController::class, 'setDefault'])->name('address.set-default');
+    Route::patch('/dashboard/address/{address}/set-default', [AddressController::class, 'setDefault'])->name('address.set-default');
 });
