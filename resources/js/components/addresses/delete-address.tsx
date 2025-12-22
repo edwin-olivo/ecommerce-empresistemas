@@ -11,11 +11,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Address } from '@/types';
+import { DireccionCompleta } from '@/types';
 
 interface DeleteAddressProps {
     handleConfirm: () => void;
-    address: Address;
+    address: DireccionCompleta;
     className?: string;
     processing?: boolean;
 }

@@ -56,7 +56,7 @@ class ListHelper
      * @param string|null $baseUrl Optional base URL (if not using config)
      * @return array List data
      */
-    public static function getERPList(string $list, ?string $baseUrl = null): array
+    public static function getERPList(string $list, ?string $baseUrl = null, ?bool $removeEmpty = true): array
     {
         if (empty($list)) {
             return [];
@@ -77,6 +77,10 @@ class ListHelper
 
             // Make API request
             $data = self::makeApiRequest($url);
+
+            if ($removeEmpty) {
+                $data = array_filter($data, fn($item) => !empty($item));
+            }
 
             // Cache the successful response
             if (!empty($data)) {

@@ -52,23 +52,4 @@ class De02DireccsenvioCstm extends Model
     {
         return $this->belongsTo(De02Direccsenvio::class, 'id_c', 'id');
     }
-
-    /**
-     * Establecer esta dirección como la predeterminada para el usuario.
-     * Elimina direccion_predeterminada_c de otras direcciones del mismo usuario.
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::saving(static function ($model) {
-            if ($model->direccion_predeterminada_c) {
-                De02DireccsenvioCstm::where('id_c', '!=', $model->id_c)
-                    ->whereHas('direccionEnvio', static function ($query) use ($model) {
-                        $query->where('account_id_c', $model->direccionEnvio->account_id_c);
-                    })
-                    ->update(['direccion_predeterminada_c' => false]);
-            }
-        });
-    }
 }

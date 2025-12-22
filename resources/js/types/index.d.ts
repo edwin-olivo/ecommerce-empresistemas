@@ -132,3 +132,42 @@ export interface Address {
     updated_at: string;
     deleted_at?: string | null;
 }
+
+export interface DireccionEnvio {
+    id: string;
+    name: string;
+    date_entered: string;
+    date_modified: string;
+    modified_user_id: string;
+    created_by: string;
+    description: string;
+    deleted: string;
+    assigned_user_id: string;
+    account_id_c: string;
+    contact_id_c: string;
+    calle: string;
+    noextenv: string;
+    nointenvio: string;
+    colenvio: string;
+    ciudadenvio: string;
+    estadoenvio: string;
+    paisenvio: string;
+    cpenvio: string;
+    ubicaengoogle: string;
+    paqueteria: string;
+    custom?: DireccionEnvioCustom | null;
+}
+
+export interface DireccionEnvioCustom {
+    id_c: string;
+    cargo_c: string;
+    departamento_c: string;
+    email_c: string;
+    teloficina_c: string;
+    tipo_c: string;
+    pv01_proveedores_id_c: string;
+    referencia_c: string;
+    direccion_predeterminada_c: string;
+}
+
+type DireccionCompleta = DireccionEnvio & DireccionEnvioCustom;

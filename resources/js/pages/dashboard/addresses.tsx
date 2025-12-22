@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
-import { Address } from '@/types';
+import { DireccionCompleta } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { CheckCircle, Circle } from 'lucide-react';
 import { useState } from 'react';
@@ -13,12 +13,15 @@ import { useState } from 'react';
 const breadcrumbs = getBreadcrumbs('addresses', [{ title: 'Direcciones', href: route('address.index') }]);
 
 interface AddressProps {
-    addresses: Address[] | [];
+    addresses: DireccionCompleta[] | [];
+    paqueterias: Record<string, string>;
+    entidades_federativas: Record<string, string>;
+    paises: Record<string, string>;
 }
 
-export default function Addresses({ addresses }: AddressProps) {
+export default function Addresses({ addresses, paqueterias, entidades_federativas, paises }: AddressProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+    const [editingAddress, setEditingAddress] = useState<DireccionCompleta | null>(null);
 
     const { delete: destroy, patch, processing } = useForm();
 
@@ -29,8 +32,8 @@ export default function Addresses({ addresses }: AddressProps) {
     };
 
     // Función auxiliar para abrir el modal en modo "Editar"
-    const openEditModal = (address: Address) => {
-        setEditingAddress(address);
+    const openEditModal = (shippingAddress: DireccionCompleta) => {
+        setEditingAddress(shippingAddress);
         setIsOpen(true);
     };
 
@@ -61,17 +64,19 @@ export default function Addresses({ addresses }: AddressProps) {
                                 <div key={item.id}>
                                     <Link href={route('address.show', item.id)} className="">
                                         <div className="min-h-[100px] cursor-pointer rounded-lg border p-4 transition-shadow hover:shadow-lg">
-                                            <h3 className="text-lg font-medium">{item.recipient}</h3>
-                                            <p className="mt-2 text-sm text-gray-600">{item.street_address}</p>
-                                            <p className="mt-1 text-sm text-gray-600">
-                                                {item.city}, {item.state} {item.postal_code}
+                                            <h3 className="text-lg font-medium">{item.name}</h3>
+                                            <p className="mt-2 text-sm text-gray-600">
+                                                {item.calle} {item.noextenv} {item.nointenvio}
                                             </p>
-                                            <p className="mt-1 text-sm text-gray-600">{item.country}</p>
+                                            <p className="mt-1 text-sm text-gray-600">
+                                                {item.ciudadenvio}, {item.estadoenvio} {item.cpenvio}
+                                            </p>
+                                            <p className="mt-1 text-sm text-gray-600">{item.paisenvio}</p>
                                         </div>
                                     </Link>
 
                                     <div className="mt-2 grid grid-cols-2 gap-2">
-                                        {item.is_default ? (
+                                        {item.direccion_predeterminada_c ? (
                                             <Button variant="outline" disabled className="col-span-2 cursor-not-allowed">
                                                 <CheckCircle className="mr-2 inline-block h-4 w-4 text-green-500" />
                                                 Predeterminada
@@ -96,7 +101,7 @@ export default function Addresses({ addresses }: AddressProps) {
                                             Editar
                                         </Button>
 
-                                        {!item.is_default && (
+                                        {!item.direccion_predeterminada_c && (
                                             <DeleteAddress
                                                 handleConfirm={() => handleDeleteAddress(item.id)}
                                                 className="w-full cursor-pointer"
@@ -113,7 +118,12 @@ export default function Addresses({ addresses }: AddressProps) {
                     </div>
 
                     {/* Renderizamos UN SOLO formulario fuera del loop */}
-                    <AddressForm open={isOpen} onOpenChange={setIsOpen} address={editingAddress} />
+                    <AddressForm
+                        open={isOpen}
+                        onOpenChange={setIsOpen}
+                        address={editingAddress}
+                        listas={{ paqueterias, entidades_federativas, paises }}
+                    />
                 </div>
             </DashboardLayout>
         </AppLayout>

@@ -80,12 +80,35 @@ class De02Direccsenvio extends Model
         return $this->hasOne(De02DireccsenvioCstm::class, 'id_c', 'id');
     }
 
-    // public function account()
-    // {
-    // 	return $this->belongsTo(Account::class, 'account_id_c', 'id');
-    // }
-    // public function contact()
-    // {
-    // 	return $this->belongsTo(Contact::class, 'contact_id_c', 'id');
-    // }
+    /**
+     * Establecer esta dirección como la predeterminada para el usuario.
+     * Elimina direccion_predeterminada_c de otras direcciones del mismo usuario.
+     * También se encarga de crear/guardar el registro custom si es necesario.
+     */
+    public function markAsDefault()
+    {
+        // Buscar o crear el registro custom asociado
+        $custom = $this->custom ?? new De02DireccsenvioCstm();
+        $custom->id_c = $this->id;
+        $custom->save();
+
+        // Eliminar la dirección predeterminada de otras direcciones del mismo usuario
+        De02DireccsenvioCstm::whereHas('direccionEnvio', function ($query) {
+            $query->where('account_id_c', $this->account_id_c);
+        })->update(['direccion_predeterminada_c' => false]);
+
+        // Establecer esta dirección como predeterminada
+        $this->custom()->update(['direccion_predeterminada_c' => true]);
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        if ($this->custom) {
+            $array = array_merge($array, $this->custom->toArray());
+        }
+
+        return $array;
+    }
 }

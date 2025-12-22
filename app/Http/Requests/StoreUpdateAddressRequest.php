@@ -23,16 +23,17 @@ class StoreUpdateAddressRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'recipient' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'street_address' => 'required|string|max:255',
-            'apartment' => 'nullable|string|max:255',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:20',
-            'country' => 'required|string|max:100',
-            'instructions' => 'nullable|string|max:500',
-            'is_default' => 'boolean',
+            'calle' => 'required|string|max:255',
+            'noextenv' => 'required|string|max:50',
+            'nointenvio' => 'nullable|string|max:50',
+            'colenvio' => 'required|string|max:255',
+            'ciudadenvio' => 'required|string|max:100',
+            'estadoenvio' => 'required|string|max:100',
+            'paisenvio' => 'required|string|max:100',
+            'cpenvio' => 'required|string|max:20',
+            'description' => 'nullable|string|max:500',
+            'referencia_c' => 'nullable|string|max:500',
+            'direccion_predeterminada_c' => 'boolean',
         ];
     }
 }
