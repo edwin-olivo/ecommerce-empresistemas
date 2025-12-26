@@ -104,7 +104,7 @@ export function AddressForm({ open, onOpenChange, address, listas }: AddressForm
                                 : 'Rellena el siguiente formulario para crear una nueva dirección.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <ScrollArea className="h-[300px] pr-4" >
+                    <ScrollArea className="h-[300px] pr-4">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-3">
                                 <Label htmlFor="name-1">Nombre</Label>
