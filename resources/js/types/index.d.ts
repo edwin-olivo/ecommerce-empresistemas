@@ -170,7 +170,7 @@ export interface DireccionEnvioCustom {
     direccion_predeterminada_c: string;
 }
 
-type DireccionCompleta = DireccionEnvio & DireccionEnvioCustom;
+export type DireccionCompleta = DireccionEnvio & DireccionEnvioCustom;
 
 export interface ImageSlider {
     id: string;
@@ -179,4 +179,11 @@ export interface ImageSlider {
     description: string;
     cta: string;
     url_imagen: string;
+}
+
+export interface FAQ {
+    id: string;
+    name: string;
+    description: string;
+    order: number;
 }

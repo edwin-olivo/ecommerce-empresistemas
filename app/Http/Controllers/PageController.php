@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\ObFaq;
 use Inertia\Inertia;
 
 class PageController extends Controller
@@ -35,8 +35,20 @@ class PageController extends Controller
 
     public function faq()
     {
-        return Inertia::render('static/faq');
+        $faqs = ObFaq::where('deleted', false)
+            ->orderBy('orden', 'asc')
+            ->get()
+            ->map(function ($faq) {
+                return [
+                    'id' => $faq->id,
+                    'name' => $faq->name,
+                    'description' => $faq->description,
+                    'order' => $faq->orden,
+                ];
+            });
+        return Inertia::render('static/faq', ['faqs' => $faqs]);
     }
+
     public function cookies()
     {
         return Inertia::render('static/cookies');
