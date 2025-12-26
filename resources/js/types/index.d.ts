@@ -171,3 +171,12 @@ export interface DireccionEnvioCustom {
 }
 
 type DireccionCompleta = DireccionEnvio & DireccionEnvioCustom;
+
+export interface ImageSlider {
+    id: string;
+    name: string;
+    title: string;
+    description: string;
+    cta: string;
+    url_imagen: string;
+}

@@ -1,20 +1,21 @@
 import { AppFooter } from '@/components/app-footer';
 import { AppHeader } from '@/components/app-header';
 import { AppShell } from '@/components/app-shell';
+import HeroCarousel from '@/components/home/hero-carousel';
 import ProductCard from '@/components/products/product-card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Product, type SharedData } from '@/types';
+import { ImageSlider, Product, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowRight, Award, Package, Truck, Zap } from 'lucide-react';
 
 interface HomeProps {
     featured_products: Product[];
     categories: string[];
+    slides: ImageSlider[];
 }
 
-export default function Home({ featured_products = [], categories = [] }: HomeProps) {
+export default function Home({ featured_products = [], categories = [], slides = [] }: HomeProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
 
@@ -26,76 +27,10 @@ export default function Home({ featured_products = [], categories = [] }: HomePr
 
                 <main className="flex-1">
                     {/* Hero Section */}
-                    <section className="relative overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-800 to-black py-20 text-white md:py-32">
-                        <div className="absolute inset-0 overflow-hidden">
-                            <div className="absolute -top-1/2 -right-1/2 h-96 w-96 rounded-full bg-gradient-to-b from-blue-500/20 to-transparent blur-3xl" />
-                            <div className="absolute -bottom-1/2 -left-1/2 h-96 w-96 rounded-full bg-gradient-to-t from-purple-500/20 to-transparent blur-3xl" />
-                        </div>
-
-                        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
-                                <div className="space-y-6">
-                                    <Badge className="w-fit bg-blue-500/20 text-blue-300 hover:bg-blue-500/30">✨ Bienvenido a nuestra tienda</Badge>
-
-                                    <h1 className="text-4xl leading-tight font-bold md:text-5xl lg:text-6xl">
-                                        Descubre productos de{' '}
-                                        <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">calidad</span>
-                                    </h1>
-
-                                    <p className="text-lg text-neutral-300 md:text-xl">
-                                        Explora nuestra amplia colección de productos seleccionados. Envíos rápidos, precios competitivos y garantía
-                                        de satisfacción.
-                                    </p>
-
-                                    <div className="flex flex-wrap gap-3">
-                                        <Link href={route('products.index')}>
-                                            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:text-white">
-                                                Explorar Productos
-                                                <ArrowRight className="ml-2 h-4 w-4" />
-                                            </Button>
-                                        </Link>
-                                        {!auth.user && (
-                                            <Link href={route('register')}>
-                                                <Button
-                                                    size="lg"
-                                                    variant="outline"
-                                                    className="border-neutral-600 text-black hover:bg-neutral-800 hover:text-white dark:border-neutral-400 dark:text-white dark:hover:bg-neutral-700"
-                                                >
-                                                    Registrarse
-                                                </Button>
-                                            </Link>
-                                        )}
-                                    </div>
-
-                                    {/* Stats */}
-                                    <div className="grid grid-cols-3 gap-4 pt-6">
-                                        <div>
-                                            <p className="text-2xl font-bold text-blue-400">500+</p>
-                                            <p className="text-sm text-neutral-400">Productos</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-2xl font-bold text-purple-400">10K+</p>
-                                            <p className="text-sm text-neutral-400">Clientes</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-2xl font-bold text-pink-400">24h</p>
-                                            <p className="text-sm text-neutral-400">Envío</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Hero Image Placeholder */}
-                                <div className="relative hidden md:block">
-                                    <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-neutral-700 to-neutral-900 p-8">
-                                        <div className="flex h-full w-full items-center justify-center">
-                                            <Package className="h-32 w-32 text-neutral-600" />
-                                        </div>
-                                    </div>
-                                    <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 opacity-50 blur-2xl" />
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    <HeroCarousel
+                        slides={slides}
+                        className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black px-4 py-12 sm:px-6 lg:px-8"
+                    />
 
                     {/* Features Section */}
                     <section className="border-b border-neutral-200 bg-white py-16 md:py-24 dark:border-neutral-800 dark:bg-neutral-950">
