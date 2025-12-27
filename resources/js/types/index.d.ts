@@ -187,3 +187,20 @@ export interface FAQ {
     description: string;
     order: number;
 }
+
+export interface EcommerceAdministration {
+    id: string;
+    name?: string | null;
+    description?: string | null;
+    historia_empresa?: string | null;
+    mision_empresa?: string | null;
+    vision_empresa?: string | null;
+    icono_valor_empresa1?: string | null;
+    icono_valor_empresa2?: string | null;
+    icono_valor_empresa3?: string | null;
+    icono_valor_empresa4?: string | null;
+    valor_ecommerce1?: string | null;
+    valor_ecommerce2?: string | null;
+    valor_ecommerce3?: string | null;
+    valor_ecommerce4?: string | null;
+}

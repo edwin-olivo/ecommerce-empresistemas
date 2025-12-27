@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JbAdministracionEcommerce;
 use App\Models\ObFaq;
 use Inertia\Inertia;
 
@@ -24,7 +25,8 @@ class PageController extends Controller
 
     public function about()
     {
-        return Inertia::render('static/about');
+        $adminEcommerce = JbAdministracionEcommerce::first();
+        return Inertia::render('static/about', ['adminEcommerce' => $adminEcommerce]);
     }
 
     public function contact()
