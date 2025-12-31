@@ -80,6 +80,11 @@ class De02Direccsenvio extends Model
         return $this->hasOne(De02DireccsenvioCstm::class, 'id_c', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'account_id_c', 'id');
+    }
+
     /**
      * Establecer esta dirección como la predeterminada para el usuario.
      * Elimina direccion_predeterminada_c de otras direcciones del mismo usuario.
