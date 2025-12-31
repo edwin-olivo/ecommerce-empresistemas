@@ -42,25 +42,27 @@ class CartController extends Controller
             }
         } else {
             $sessionCart = session()->get('cart', []);
-            
+
             // Consultamos la base de datos para obtener los productos
             $productIds = array_keys($sessionCart);
             $products = AosProducts::whereIn('id', $productIds)->get()->keyBy('id');
             foreach ($sessionCart as $productId => $item) {
-                if (!(isset($products[$productId]))) { continue; }
+                if (!isset($products[$productId])) {
+                    continue;
+                }
 
-$product = $products[$productId];
-                    $quantity = $item['quantity'];
-                    $cartItems[] = (object)[
-                        'id' => $product->id,
-                        'cart_id' => null,
-                        'product_id' => $product->id,
-                        'product' => $product,
-                        'quantity' => $quantity,
-                        'created_at' => null,
-                        'updated_at' => null,
-                    ];
-                    $subtotal += $product->price * $quantity;
+                $product = $products[$productId];
+                $quantity = $item['quantity'];
+                $cartItems[] = (object) [
+                    'id' => $product->id,
+                    'cart_id' => null,
+                    'product_id' => $product->id,
+                    'product' => $product,
+                    'quantity' => $quantity,
+                    'created_at' => null,
+                    'updated_at' => null,
+                ];
+                $subtotal += $product->price * $quantity;
             }
         }
 
@@ -97,7 +99,7 @@ $product = $products[$productId];
             } else {
                 $cart->items()->create([
                     'product_id' => $product->id,
-                    'quantity' => 1
+                    'quantity' => 1,
                 ]);
             }
         } else {
@@ -107,8 +109,8 @@ $product = $products[$productId];
                 $cart[$product->id]['quantity']++;
             } else {
                 $cart[$product->id] = [
-                    "product_id" => $product->id,
-                    "quantity" => 1,
+                    'product_id' => $product->id,
+                    'quantity' => 1,
                 ];
             }
             session()->put('cart', $cart);
@@ -123,12 +125,10 @@ $product = $products[$productId];
     public function update(CartItemRequest $request, $itemId)
     {
         $quantity = $request->input('quantity');
-        $quantity = max(1, (int)$quantity); // Asegura que la cantidad sea al menos 1
+        $quantity = max(1, (int) $quantity); // Asegura que la cantidad sea al menos 1
 
         if (Auth::check()) {
-            $cartItem = CartItem::where('id', $itemId)
-                ->where('cart_id', Auth::user()->cart->id)
-                ->firstOrFail();
+            $cartItem = CartItem::where('id', $itemId)->where('cart_id', Auth::user()->cart->id)->firstOrFail();
 
             $cartItem->update(['quantity' => $quantity]);
         } else {
@@ -149,9 +149,7 @@ $product = $products[$productId];
     public function remove($itemId)
     {
         if (Auth::check()) {
-            $cartItem = CartItem::where('id', $itemId)
-                ->where('cart_id', Auth::user()->cart->id)
-                ->firstOrFail();
+            $cartItem = CartItem::where('id', $itemId)->where('cart_id', Auth::user()->cart->id)->firstOrFail();
 
             $cartItem->delete();
         } else {
