@@ -29,7 +29,7 @@ export default function Home({ featured_products = [], categories = [], slides =
                     {/* Hero Section */}
                     <HeroCarousel
                         slides={slides}
-                        className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black px-4 py-12 sm:px-6 lg:px-8"
+                        className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black p-0 sm:px-6 lg:px-8 lg:py-12"
                     />
 
                     {/* Features Section */}
