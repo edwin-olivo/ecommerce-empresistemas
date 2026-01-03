@@ -98,7 +98,7 @@ export default function Home({ featured_products = [], categories = [], slides =
                             </div>
 
                             {featured_products.length > 0 ? (
-                                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                                     {featured_products.map((product) => (
                                         <ProductCard key={product.id} product={product} className="bg-neutral-200 dark:bg-neutral-800" />
                                     ))}
