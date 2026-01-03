@@ -9,7 +9,6 @@ use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-
 class ProductController extends Controller
 {
     function index(Request $request)
@@ -25,7 +24,7 @@ class ProductController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('categories', 'category'),
                 AllowedFilter::callback('classes', static function ($query, $value) {
-                    $classes = is_array($value) ? $value : (array)$value;
+                    $classes = is_array($value) ? $value : (array) $value;
                     $classes = array_filter($classes);
 
                     if (!empty($classes)) {
@@ -53,7 +52,7 @@ class ProductController extends Controller
         if ($pageSize === 'all') {
             $products = $productsQuery->get();
         } else {
-            $products = $productsQuery->paginate((int)$pageSize)->withQueryString();
+            $products = $productsQuery->paginate((int) $pageSize)->withQueryString();
         }
 
         $filter = $request->all(['sort', 'pageSize']);
@@ -61,11 +60,14 @@ class ProductController extends Controller
 
         return Inertia::render('products/index', [
             'products' => $products,
-            'categories' => ListHelper::getERPList('categoria_0'),
-            'classes' => ListHelper::getERPList('clase_list'),
             'filters' => $filter,
             'minPrice' => AosProducts::min('price') ?? 0,
             'maxPrice' => AosProducts::max('price') ?? 1000,
+            'listas' => [
+                'categorias' => ListHelper::getERPList('categoria_0'),
+                'clases' => ListHelper::getERPList('clase_list'),
+                'tipos' => ListHelper::getERPList('product_type_dom'),
+            ],
         ]);
     }
 
@@ -89,9 +91,11 @@ class ProductController extends Controller
     {
         $searchTerm = $request->input('search', '');
 
-        $products = AosProducts::where('part_number', 'like', '%' . $searchTerm . '%')
-            ->orWhere('name', 'like', '%' . $searchTerm . '%')
-            ->get();
+        $products = AosProducts::where('part_number', 'like', '%' . $searchTerm . '%')->orWhere(
+            'name',
+            'like',
+            '%' . $searchTerm . '%',
+        )->get();
 
         return response()->json([
             'products' => $products,

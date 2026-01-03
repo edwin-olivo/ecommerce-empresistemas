@@ -13,19 +13,23 @@ import { ShoppingCart } from 'lucide-react';
 // Tipos actualizados
 interface ProductsProps {
     products: CustomPaginationProps;
-    categories: Record<string, string>;
-    classes: Record<string, string>;
-    colors: Record<string, string>;
     filters: Record<string, any>; // Recibimos los filtros del controlador
     minPrice: number;
     maxPrice: number;
-    [key: string]: any; // Index signature to satisfy PageProps constraint
+    listas: {
+        categorias: Record<string, string>;
+        clases: Record<string, string>;
+        colores?: Record<string, string> | undefined;
+        tipos?: Record<string, string> | undefined;
+    };
+    [key: string]: any;
 }
 
 const pageSizeOptions: CheckboxOption = { '12': '12', '24': '24', '48': '48', all: 'Todos' };
 
 export default function Products() {
-    const { products, categories, classes, filters: initialFilters } = usePage<ProductsProps>().props;
+    const { products, listas, filters: initialFilters } = usePage<ProductsProps>().props;
+    const { categorias: categories, clases: classes } = listas;
     let { minPrice, maxPrice } = usePage<ProductsProps>().props;
 
     minPrice = Number(minPrice) || 0;
