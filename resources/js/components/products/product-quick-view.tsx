@@ -34,11 +34,7 @@ export default function ProductQuickView({ product, open, onOpenChange, handleAd
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {/* Imagen del producto */}
                     <div className="flex items-center justify-center rounded-lg bg-white p-4">
-                        <Image
-                            src={product?.custom?.url_imagen}
-                            alt={product.part_number || product.name}
-                            className="h-full max-h-64 w-full object-contain"
-                        />
+                        <Image src={product.url_imagen} alt={product.part_number || product.name} className="h-full max-h-64 w-full object-contain" />
                     </div>
 
                     {/* Información del producto */}

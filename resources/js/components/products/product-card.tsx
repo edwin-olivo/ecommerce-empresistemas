@@ -11,7 +11,7 @@ import { useState } from 'react';
 interface Props {
     product: Product;
     className?: string;
-    wishlists?: Wishlist[];
+    wishlists?: Wishlist[] | [];
 }
 
 export default function ProductCard({ product, className, wishlists = [] }: Props) {
@@ -69,11 +69,7 @@ export default function ProductCard({ product, className, wishlists = [] }: Prop
                 >
                     <div className="flex h-fit w-full flex-col items-center justify-center gap-4">
                         <div className="flex h-[170px] w-full items-center justify-center text-[5em] font-black transition-all duration-300 group-hover:h-[120px]">
-                            <Image
-                                src={product?.custom?.url_imagen}
-                                alt={product.part_number || product.name}
-                                className="h-full w-full object-cover"
-                            />
+                            <Image src={product.url_imagen} alt={product.part_number || product.name} className="h-full w-full object-cover" />
                         </div>
                         <div className="flex h-fit w-full flex-col items-start justify-between overflow-hidden">
                             <p className="truncate text-[0.72em] font-medium text-neutral-600 uppercase dark:text-neutral-50">

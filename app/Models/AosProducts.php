@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AosProduct
- * 
+ *
  * @property string $id
  * @property string|null $name
  * @property Carbon|null $date_entered
@@ -37,47 +37,63 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AosProducts extends Model
 {
-	use HasUuids;
+    use HasUuids;
 
-	protected $table = 'aos_products';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'aos_products';
+    public $incrementing = false;
+    public $timestamps = false;
 
-	protected $casts = [
-		'id' => 'string',
-		'date_entered' => 'datetime',
-		'date_modified' => 'datetime',
-		'deleted' => 'bool',
-		'cost' => 'float',
-		'price' => 'float'
-	];
+    protected $casts = [
+        'id' => 'string',
+        'date_entered' => 'datetime',
+        'date_modified' => 'datetime',
+        'deleted' => 'bool',
+        'cost' => 'float',
+        'price' => 'float',
+    ];
 
-	protected $fillable = [
-		'name',
-		'date_entered',
-		'date_modified',
-		'modified_user_id',
-		'created_by',
-		'description',
-		'deleted',
-		'assigned_user_id',
-		'maincode',
-		'part_number',
-		'category',
-		'type',
-		'cost',
-		'currency_id',
-		'price',
-		'url',
-		'contact_id',
-		'product_image'
-	];
+    protected $fillable = [
+        'name',
+        'date_entered',
+        'date_modified',
+        'modified_user_id',
+        'created_by',
+        'description',
+        'deleted',
+        'assigned_user_id',
+        'maincode',
+        'part_number',
+        'category',
+        'type',
+        'cost',
+        'currency_id',
+        'price',
+        'url',
+        'contact_id',
+        'product_image',
+    ];
 
-	/**
-	 * Relacion uno a uno con la tabla personalizada AosProductsCstm
-	 */
-	public function custom()
-	{
-		return $this->hasOne(AosProductsCstm::class, 'id_c', 'id');
-	}
+    /**
+     * Relacion uno a uno con la tabla personalizada AosProductsCstm
+     */
+    public function custom()
+    {
+        return $this->hasOne(AosProductsCstm::class, 'id_c', 'id');
+    }
+
+    /**
+     * Convierte el modelo actual en un arreglo.
+     *
+     * @return array El modelo representado como un arreglo.
+     */
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        if ($this->custom) {
+            $array = array_merge($array, $this->custom->toArray());
+        }
+
+        return $array;
+    }
 }

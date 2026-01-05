@@ -27,9 +27,9 @@ export default function ProductPage({ product, categories, classes, types }: Pro
 
     const [quantity, setQuantity] = useState(1);
     const { part_number, description, price, category, type } = product;
-    const clase_c = product.custom?.clase_c ?? '';
+    const clase_c = product.clase_c ?? '';
 
-    const imageSrc = resolveImageSource(product.custom?.url_imagen);
+    const imageSrc = resolveImageSource(product.url_imagen);
 
     const images = [
         { src: imageSrc, alt: part_number || 'Product Image' },

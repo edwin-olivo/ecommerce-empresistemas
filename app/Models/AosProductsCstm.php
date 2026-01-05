@@ -162,11 +162,23 @@ class AosProductsCstm extends Model
 		'peso_c'
 	];
 
+	/**
+	 * Obtiene la relación con el modelo Product.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\Relation
+	 */
 	public function product()
 	{
 		return $this->belongsTo(AosProducts::class, 'id_c', 'id');
 	}
 
+	/**
+	 * Obtiene la URL de la imagen asociada al producto.
+	 *
+	 * Este atributo accede y retorna la URL de la imagen correspondiente al producto actual.
+	 *
+	 * @return string|null La URL de la imagen si existe, o null en caso contrario.
+	 */
 	public function getUrlImagenAttribute()
 	{
 		return $this->nombre_imagen_c ? config('app.base_url') . '/customcode/redim.php?&ancho=300&alto=300&img=imagenes/' . $this->nombre_imagen_c : null;

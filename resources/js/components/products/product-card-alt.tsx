@@ -34,9 +34,9 @@ export default function ProductCard({ product }: Props) {
             <Link href={route('products.show', { id: product.id })} className="">
                 <Card className="flex-shrink-0 overflow-hidden pt-0 transition-all hover:shadow-lg dark:hover:shadow-neutral-900/50">
                     <div className="aspect-square overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-                        {product?.custom?.url_imagen ? (
+                        {product.url_imagen ? (
                             <Image
-                                src={product?.custom?.url_imagen}
+                                src={product.url_imagen}
                                 alt={product.name}
                                 className="h-full w-full object-cover transition-transform hover:scale-110"
                             />

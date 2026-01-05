@@ -20,7 +20,6 @@ class ProductController extends Controller
         }
 
         $productsQuery = QueryBuilder::for(AosProducts::class)
-            ->with('custom')
             ->allowedFilters([
                 AllowedFilter::exact('categories', 'category'),
                 AllowedFilter::callback('classes', static function ($query, $value) {
@@ -74,7 +73,7 @@ class ProductController extends Controller
     function show($id)
     {
         try {
-            $product = AosProducts::with('custom')->findOrFail($id);
+            $product = AosProducts::findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             abort(404, 'Product not found');
         }
