@@ -17,16 +17,15 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        // Obtener categorías
-        $categories = ListHelper::getERPList('categoria_0') ?? [];
-
         // Obtener imagenes para el slider
         $slides = SiSliderImagenes::where('deleted', 0)->get();
 
         return Inertia::render('home', [
             'featured_products' => $featuredProducts,
-            'categories' => $categories,
             'slides' => $slides,
+            'listas' => [
+                'categorias' => ListHelper::getERPList('categoria_0'),
+            ],
         ]);
     }
 }

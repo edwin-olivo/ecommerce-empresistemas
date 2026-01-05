@@ -11,13 +11,16 @@ import { ArrowRight, Award, Package, Truck, Zap } from 'lucide-react';
 
 interface HomeProps {
     featured_products: Product[];
-    categories: string[];
     slides: ImageSlider[];
+    listas: {
+        categorias: Record<string, string>;
+    };
 }
 
-export default function Home({ featured_products = [], categories = [], slides = [] }: HomeProps) {
+export default function Home({ featured_products, listas, slides }: HomeProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
+    const { categorias } = listas;
 
     return (
         <>
@@ -99,9 +102,10 @@ export default function Home({ featured_products = [], categories = [], slides =
 
                             {featured_products.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                                    {featured_products.map((product) => (
-                                        <ProductCard key={product.id} product={product} className="bg-neutral-200 dark:bg-neutral-800" />
-                                    ))}
+                                    {featured_products.map((product) => {
+                                        product.category = categorias[product.category] || product.category;
+                                        return <ProductCard key={product.id} product={product} className="bg-neutral-200 dark:bg-neutral-800" />;
+                                    })}
                                 </div>
                             ) : (
                                 <div className="rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-100 py-12 text-center dark:border-neutral-700 dark:bg-neutral-800">
@@ -122,18 +126,18 @@ export default function Home({ featured_products = [], categories = [], slides =
                         </div>
                     </section>
 
-                    {/* Categories Section */}
-                    {categories.length > 0 && (
+                    {/* categorias Section */}
+                    {Object.keys(categorias).length > 0 && (
                         <section className="border-b border-neutral-200 py-16 md:py-24 dark:border-neutral-800 dark:bg-neutral-950">
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <h2 className="mb-8 text-3xl font-bold md:text-4xl">Categorías</h2>
                                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                    {categories.map((category) => (
-                                        <Link key={category} href={`${route('products.index')}?category=${category}`}>
+                                    {Object.entries(categorias).map(([key, label]) => (
+                                        <Link key={key} href={`/products?filter[categories][0]=${key}`}>
                                             <Card className="group cursor-pointer overflow-hidden transition-all hover:shadow-lg dark:hover:shadow-neutral-900/50">
                                                 <CardContent className="flex items-center justify-between p-6">
                                                     <span className="font-semibold capitalize group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                                                        {category}
+                                                        {label}
                                                     </span>
                                                     <ArrowRight className="h-5 w-5 opacity-0 transition-all group-hover:opacity-100" />
                                                 </CardContent>
