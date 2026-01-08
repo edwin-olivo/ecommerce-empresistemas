@@ -79,7 +79,7 @@ class ListHelper
             $data = self::makeApiRequest($url);
 
             if ($removeEmpty) {
-                $data = array_filter($data, fn($item) => !empty($item));
+                $data = array_filter($data, static fn($item) => !empty($item));
             }
 
             // Cache the successful response
