@@ -129,7 +129,7 @@ return [
     'ubication_web_service' => env('UBICATION_WEB_SERVICE', 'http://localhost/suitecrm/service/v4/rest.php'),
     'bank_account' => env('BANK_ACCOUNT', ''),
     'less_hours_server' => env('LESS_HOURS_SERVER', '-6'),
-    'tax_shipping' => env('TAX_SHIPPING', '0'),
+    'tax_shipping' => env('TAX_SHIPPING', 0),
     'min_shipping_cost' => env('MIN_SHIPPING_COST', 0),
     'shipping_cost' => env('SHIPPING_COST', 0),
     'store_1' => env('STORE_1', '1'),
