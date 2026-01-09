@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Helpers\WerbService;
 
-
 class AOS_InvoicesService
 {
     function getUserById($userId)

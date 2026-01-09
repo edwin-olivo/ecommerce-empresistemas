@@ -7,7 +7,6 @@ use App\Helpers\DataFieldsHelper;
 use App\Helpers\WerbService;
 use App\Models\AosProducts;
 
-
 class CheckoutService
 {
     protected $orderId;
@@ -218,7 +217,8 @@ class CheckoutService
 
         try {
             $venta = $this->aosInvoicesService->getOrderById($this->orderId);
-            $fields['namecompraventa'] = $venta->name_value_list->name->value ?? '';
+            $venta = DataFieldsHelper::parseDataFieldsArray($venta);
+            $fields['namecompraventa'] = $venta['name'] ?? '';
         } catch (\Exception $e) {
             // Continúa el proceso sin asignar el nombre si falla
             $fields['namecompraventa'] = '';
