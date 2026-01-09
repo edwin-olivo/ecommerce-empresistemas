@@ -16,11 +16,11 @@ class CheckoutHelper
             $time = self::timer($data['start_date_c'], $data['end_date_c']);
             $porcentageDiscount = self::promotionDiscount($data['price'], $data['precio_promo_c']);
             if ($time > 0) {
-                $price = $data['precio_promo_c'];
+                $price = $data['precio_promo_c'] ?? $data['price'];
             }
         }
 
-        $tax = (int) $data['tasa_iva_c'];
+        $tax = $data['tasa_iva_c'] ?? 0;
 
         return [
             'base_price' => $tax <= 0 ? $data['price'] : self::taxPrice($tax, $data['price']),
@@ -29,6 +29,30 @@ class CheckoutHelper
             'time' => $time,
             'porcentageDiscount' => $porcentageDiscount,
         ];
+    }
+
+    public static function calculateOrderTotals($itemData)
+    {
+        $subtotal = 0;
+        $taxAmount = 0;
+        $total = 0;
+
+        foreach ($itemData as $item) {
+            $subtotal += $item['subtotal'];
+            $taxAmount += $item['tax-amount'];
+            $total += $item['total'];
+        }
+
+        return [
+            'subtotal' => $subtotal,
+            'tax-amount' => $taxAmount,
+            'total' => $total,
+        ];
+    }
+
+    public static function calculateTotals($itemData)
+    {
+        return self::calculateOrderTotals($itemData);
     }
 
     public static function calculateTotalItem($price, $quantity, $tax)
