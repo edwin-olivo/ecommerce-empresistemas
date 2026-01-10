@@ -40,7 +40,7 @@ class PageController extends Controller
         $faqs = ObFaq::where('deleted', false)
             ->orderBy('orden', 'asc')
             ->get()
-            ->map(function ($faq) {
+            ->map(static function ($faq) {
                 return [
                     'id' => $faq->id,
                     'name' => $faq->name,
