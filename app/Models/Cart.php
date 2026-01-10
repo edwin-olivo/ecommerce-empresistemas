@@ -21,20 +21,4 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
-
-    public function getCartItemCount(): int
-    {
-        $cartCount = 0;
-        if (Auth::check()) {
-            $cart = Auth::user()->cart;
-            if ($cart) {
-                $cartCount = $cart->items()->sum('quantity');
-            }
-        } else {
-            $sessionCart = session()->get('cart', []);
-            $cartCount = array_sum(array_map(static fn($item) => $item['quantity'], $sessionCart));
-        }
-
-        return $cartCount;
-    }
 }

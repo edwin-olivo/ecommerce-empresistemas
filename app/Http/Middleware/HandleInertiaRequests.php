@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Cart;
 use App\Models\Wishlist;
+use App\Services\CartService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -41,8 +42,7 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
-        $cart = new Cart();
-        $cartCount = $cart->getCartItemCount($request);
+        $cartCount = (new CartService())->getCartItemCount();
 
         $wishlists = [];
         if ($request->user()) {
@@ -57,10 +57,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'ziggy' => static fn(): array => [
-                ...(new Ziggy)->toArray(),
+                ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'cart' => [
                 'count' => $cartCount,
             ],
