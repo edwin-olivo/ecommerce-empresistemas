@@ -58,3 +58,8 @@ export function trimTextWithEllipsis(fullText: string, maxLength = 37): string {
     if (fullText.length <= maxLength) return fullText;
     return fullText.slice(0, maxLength) + '...';
 }
+
+export function getLabelFromOptions(value: string | null | undefined, options: Record<string, string>): string {
+    if (!value) return '';
+    return options[value] || value;
+}

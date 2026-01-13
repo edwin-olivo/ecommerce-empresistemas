@@ -1,14 +1,13 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
+import { Venta } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { CircleCheckBig, ShoppingBag, ShoppingCart } from 'lucide-react';
 
 interface CheckoutSuccessProps {
     customerEmail: string;
-    order: {
-        id: number;
-    };
+    order: Venta;
 }
 
 export default function CheckoutSuccess({ customerEmail, order }: CheckoutSuccessProps) {
@@ -29,18 +28,22 @@ export default function CheckoutSuccess({ customerEmail, order }: CheckoutSucces
                             <span className="font-bold text-blue-600">{customerEmail}</span>, tu pago ha sido procesado correctamente.
                         </h2>
                         <p className="mb-2 text-gray-600">
-                            Número de Orden: <span className="font-bold">{order.id}</span>
+                            Número de Orden: <span className="font-bold">{order.name ?? order.id}</span>
                         </p>
                         <p className="mb-8 text-gray-600">Gracias por tu compra. Recibirás un correo de confirmación en breve.</p>
                         <div className="space-x-4">
-                            <Button value={'default'}>
-                                <ShoppingBag className="mr-2 h-4 w-4" />
-                                Ver Órdenes
-                            </Button>
-                            <Button variant={'outline'}>
-                                <ShoppingCart className="mr-2 h-4 w-4" />
-                                <Link href={route('home')}>Seguir Comprando</Link>
-                            </Button>
+                            <Link href={route('dashboard.orders')}>
+                                <Button value={'default'} className="cursor-pointer">
+                                    <ShoppingBag className="mr-2 h-4 w-4" />
+                                    Ver Órdenes
+                                </Button>
+                            </Link>
+                            <Link href={route('home')}>
+                                <Button variant={'outline'} className="cursor-pointer">
+                                    <ShoppingCart className="mr-2 h-4 w-4" />
+                                    Seguir Comprando
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
