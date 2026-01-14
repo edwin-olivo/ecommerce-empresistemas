@@ -30,6 +30,10 @@ class DataFieldsHelper
      */
     public static function parseDataFieldsArray($dataFields)
     {
+        if (empty($dataFields) || is_null($dataFields)) {
+            return [];
+        }
+
         $fields = [];
 
         if ($dataFields instanceof \stdClass) {
