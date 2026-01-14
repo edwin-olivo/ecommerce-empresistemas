@@ -79,7 +79,7 @@ export default function Orders({ orders, listas }: OrdersProps) {
                                         <div>
                                             <p className="text-xs text-gray-400">Envío</p>
                                             <Badge variant="secondary" className="bg-gray-100 text-gray-800">
-                                                {getLabelFromOptions(order.estatus_envio_c, estatus_envio_list)}
+                                                {getLabelFromOptions(order.estatus_envio_c, estatus_envio_list).capitalizeFirstLetter()}
                                             </Badge>
                                         </div>
                                     </div>
