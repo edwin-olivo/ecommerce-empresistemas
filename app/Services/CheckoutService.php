@@ -11,6 +11,7 @@ class CheckoutService
 {
     protected $orderId;
     protected $orderData = [
+        'name' => '',
         'note' => '',
         'subtotal' => 0,
         'taxAmount' => 0,
@@ -98,6 +99,10 @@ class CheckoutService
 
             $this->saveItemOrder($this->itemData);
 
+            $orderRaw = $this->aosInvoicesService->getOrderById($this->orderId);
+            $orderData = DataFieldsHelper::parseDataFieldsArray($orderRaw->name_value_list);
+            $this->orderData['name'] = $orderData['name'] ?? '';
+
             if ($this->paymentMethod !== 'Transfer') {
                 $this->savePayment();
             }
@@ -165,7 +170,7 @@ class CheckoutService
             'id' => '',
             'pago' => $this->orderData['total'],
             'ts00_tesoreria_id_c' => config('app.bank_account'),
-            'referencia' => 'Ecommerce: Venta #' . $this->orderId,
+            'referencia' => 'Ecommerce: Venta #' . $this->orderData['name'],
             'fecha_pago' => date('Y-m-d', strtotime(config('app.less_hours_server') . ' hours')),
             'forma_pago' => $this->paymentMethod == 'Transfer' ? '03' : '04',
             'monedapoliza' => 'MXN',
@@ -216,8 +221,8 @@ class CheckoutService
         ];
 
         try {
-            $venta = $this->aosInvoicesService->getOrderById($this->orderId);
-            $venta = DataFieldsHelper::parseDataFieldsArray($venta);
+            $ventaStd = $this->aosInvoicesService->getOrderById($this->orderId);
+            $venta = DataFieldsHelper::parseDataFieldsArray($ventaStd->name_value_list);
             $fields['namecompraventa'] = $venta['name'] ?? '';
         } catch (\Exception $e) {
             // Continúa el proceso sin asignar el nombre si falla
