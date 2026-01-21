@@ -13,6 +13,8 @@ const orderByOptions: CheckboxOption = {
     '-part_number': 'Nombre: Z a A',
     price: 'Precio: Bajo a Alto',
     '-price': 'Precio: Alto a Bajo',
+    date_entered: 'Fecha: Antiguos primero',
+    '-date_entered': 'Fecha: Recientes primero',
 };
 
 interface FilterMenuProps {
@@ -60,7 +62,7 @@ export function FilterAndSortMenu({
                         <Label htmlFor="sort-by" className="text-left font-semibold">
                             Ordenar por
                         </Label>
-                        <Select onValueChange={onSortChange} value={filters.orderBy || 'part_number'}>
+                        <Select onValueChange={onSortChange} value={filters.orderBy}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>

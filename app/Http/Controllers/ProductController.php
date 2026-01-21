@@ -11,11 +11,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends Controller
 {
+    private $defaultPageSize = '24';
+    private $allowedPageSizes = ['12', '24', '48', 'all'];
+    private $defaultSort = '-date_entered';
+
     function index(Request $request)
     {
-        $pageSize = $request->input('pageSize', '24');
-        if (!in_array($pageSize, ['12', '24', '48', 'all'])) {
-            $pageSize = '24';
+        $pageSize = $request->input('pageSize', $this->defaultPageSize);
+        if (!in_array($pageSize, $this->allowedPageSizes)) {
+            $pageSize = $this->defaultPageSize;
             $request->merge(['pageSize' => $pageSize]);
         }
 
@@ -44,9 +48,10 @@ class ProductController extends Controller
             ])
             ->allowedSorts([
                 'price',
-                'part_number', // Renombrado de 'name' para coincidir con la columna
+                'part_number',
+                'date_entered',
             ])
-            ->defaultSort('part_number'); // Orden por defecto
+            ->defaultSort($this->defaultSort); // Orden por defecto
 
         if ($pageSize === 'all') {
             $products = $productsQuery->get();
@@ -54,8 +59,10 @@ class ProductController extends Controller
             $products = $productsQuery->paginate((int) $pageSize)->withQueryString();
         }
 
-        $filter = $request->all(['sort', 'pageSize']);
-        $filter += $this->extractFiltersFromRequest($request);
+        $filter = array_merge([
+            'sort' => $request->input('sort', $this->defaultSort),
+            'pageSize' => $pageSize,
+        ], $this->extractFiltersFromRequest($request));
 
         return Inertia::render('products/index', [
             'products' => $products,

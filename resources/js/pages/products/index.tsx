@@ -10,7 +10,6 @@ import type { BreadcrumbItem, CheckboxOption, MultiSelectOption } from '@/types'
 import { Head, usePage } from '@inertiajs/react';
 import { ShoppingCart } from 'lucide-react';
 
-// Tipos actualizados
 interface ProductsProps {
     products: CustomPaginationProps;
     filters: Record<string, any>; // Recibimos los filtros del controlador
@@ -108,14 +107,12 @@ export default function Products() {
                             </div>
                             <div className="order-2 flex flex-grow justify-center align-middle md:flex-1 lg:order-none lg:justify-end">
                                 <FilterAndSortMenu
-                                    // Pasamos el estado actual de los filtros
                                     filters={{
                                         categories: currentCategories,
                                         classes: currentClasses,
                                         priceRange: currentPriceRange as [number, number],
-                                        orderBy: filters.sort || 'part_number',
+                                        orderBy: filters.sort,
                                     }}
-                                    // Pasamos los manejadores del hook
                                     onCategoryChange={(value) => setFilter('filter[categories]', value)}
                                     onClassChange={(value) => setFilter('filter[classes]', value)}
                                     onPriceChange={(value) => setFilter('filter[price]', value.join(','))}
