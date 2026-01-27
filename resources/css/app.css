@@ -177,3 +177,7 @@
 .remove-arrow {
     -moz-appearance: textfield;
 }
+
+.all-unset {
+    all: unset;
+}
