@@ -1,18 +1,17 @@
 import { ArrivalProduct } from '@/components/sections/arrivals';
 import { Category } from '@/components/sections/categories';
 import { FeaturedProduct } from '@/components/sections/featured';
-import type { Product } from '@/types';
 
 export const categories: Category[] = [
     {
         src: 'https://readdy.ai/api/search-image?query=elegant%20womens%20clothing%20collection%2C%20minimal%20background%2C%20professional%20fashion%20photography%2C%20soft%20lighting%2C%20high-end%20apparel%20displayed%20neatly&width=400&height=500&seq=cat1&orientation=portrait',
-        alt: "Colección de Mujeres",
+        alt: 'Colección de Mujeres',
         title: 'Mujeres',
         description: 'Ver Colección',
     },
     {
         src: 'https://readdy.ai/api/search-image?query=stylish%20mens%20clothing%20collection%2C%20minimal%20background%2C%20professional%20fashion%20photography%2C%20soft%20lighting%2C%20high-end%20apparel%20displayed%20neatly&width=400&height=500&seq=cat2&orientation=portrait',
-        alt: "Colección de Hombres",
+        alt: 'Colección de Hombres',
         title: 'Hombres',
         description: 'Ver Colección',
     },

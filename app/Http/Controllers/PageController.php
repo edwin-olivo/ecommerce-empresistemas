@@ -71,4 +71,9 @@ class PageController extends Controller
     {
         return Inertia::render('static/shipping');
     }
+
+    public function concepto()
+    {
+        return Inertia::render('static/concepto');
+    }
 }
