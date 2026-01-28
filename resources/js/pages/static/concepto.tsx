@@ -9,8 +9,8 @@ import InstagramFeed from '@/components/sections/instagram-feed';
 import Newsletter from '@/components/sections/newsletter';
 import SpecialOfferBanner from '@/components/sections/special-offer-banner';
 import Testimonials from '@/components/sections/testimonials';
-import { Head, Link } from '@inertiajs/react';
 import { arrivals, categories, featuredProducts } from '@/data/data';
+import { Head, Link } from '@inertiajs/react';
 
 export default function Concepto() {
     return (
@@ -35,13 +35,13 @@ export default function Concepto() {
                             href="#"
                             className="rounded-button bg-primary px-6 py-3 font-medium whitespace-nowrap text-white transition-colors hover:bg-primary/90"
                         >
-                            Shop Now
+                            Compra Ahora
                         </Link>
                         <Link
                             href="#"
                             className="rounded-button border border-gray-200 bg-white px-6 py-3 font-medium whitespace-nowrap text-gray-800 transition-colors hover:bg-gray-50"
                         >
-                            Explore Collection
+                            Explorar Productos
                         </Link>
                     </Hero>
 
@@ -52,7 +52,11 @@ export default function Concepto() {
                     <Featured featuredProducts={featuredProducts} />
 
                     {/* Special Offer Banner */}
-                    <SpecialOfferBanner />
+                    <SpecialOfferBanner
+                        title="Venta de Invierno"
+                        description="Hasta un 50% de descuento en artículos seleccionados. Oferta por tiempo limitado."
+                        finishDate={new Date('2026-01-31T00:00:00')}
+                    />
 
                     {/* New Arrivals */}
                     <Arrivals arrivals={arrivals} />
