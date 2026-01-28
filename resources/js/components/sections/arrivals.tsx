@@ -10,13 +10,13 @@ export type ArrivalProduct = {
 
 type ArrivalsProps = {
     arrivals?: ArrivalProduct[];
-}
+};
 
 function Arrivals({ arrivals = [] }: ArrivalsProps) {
     return (
         <section className="py-16">
             <div className="container mx-auto px-4">
-                <h2 className="mb-12 text-center text-3xl font-bold">New Arrivals</h2>
+                <h2 className="mb-12 text-center text-3xl font-bold">Novedades</h2>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {arrivals.map((product, index) => (
@@ -39,7 +39,7 @@ function Arrivals({ arrivals = [] }: ArrivalsProps) {
                         href="#"
                         className="rounded-button inline-block border border-gray-300 px-8 py-3 font-medium whitespace-nowrap text-gray-800 transition-colors hover:bg-gray-50"
                     >
-                        View All New Arrivals
+                        Ver todas las novedades
                     </a>
                 </div>
             </div>

@@ -22,7 +22,7 @@ function Featured({ featuredProducts = [] }: FeaturedProps) {
         <section className="py-16">
             <div className="container mx-auto px-4">
                 <Tabs defaultValue="all">
-                    <TabsList className="mb-12 flex flex-wrap items-center bg-white justify-between">
+                    <TabsList className="mb-12 flex flex-wrap items-center justify-between bg-white">
                         <h2 className="text-3xl font-bold text-neutral-950">Productos Destacados</h2>
                         <div className="flex space-x-1 rounded-full bg-gray-100 px-1 py-1">
                             <TabsTrigger

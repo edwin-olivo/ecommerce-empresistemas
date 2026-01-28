@@ -2,7 +2,7 @@ function InstagramFeed() {
     return (
         <section className="py-16">
             <div className="container mx-auto px-4">
-                <h2 className="mb-4 text-center text-3xl font-bold">Follow Us on Instagram</h2>
+                <h2 className="mb-4 text-center text-3xl font-bold">Síguenos en Instagram</h2>
                 <p className="mb-12 text-center text-gray-600">@shopease_official</p>
 
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">

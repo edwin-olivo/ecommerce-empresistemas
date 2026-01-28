@@ -9,8 +9,8 @@ function Footer() {
                             logo
                         </a>
                         <p className="mb-6 max-w-md text-gray-600">
-                            We offer premium quality clothing and accessories for men and women. Our mission is to provide sustainable fashion that
-                            lasts.
+                            Ofrecemos ropa y accesorios de primera calidad para hombres y mujeres. Nuestra misión es proporcionar moda sostenible que
+                            dure.
                         </p>
                         <div className="flex space-x-4">
                             <a
@@ -46,32 +46,32 @@ function Footer() {
                         <ul className="space-y-3">
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Women
+                                    Mujeres
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Men
+                                    Hombres
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Accessories
+                                    Accesorios
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Footwear
+                                    Calzado
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    New Arrivals
+                                    Novedades
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Sale
+                                    Ofertas
                                 </a>
                             </li>
                         </ul>
@@ -83,27 +83,27 @@ function Footer() {
                         <ul className="space-y-3">
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Customer Service
+                                    Servicio al Cliente
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    My Account
+                                    Mi Cuenta
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Find a Store
+                                    Encontrar una Tienda
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Shipping & Returns
+                                    Envíos y Devoluciones
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    FAQs
+                                    Preguntas Frecuentes
                                 </a>
                             </li>
                         </ul>
@@ -111,31 +111,31 @@ function Footer() {
 
                     {/* Column 4: About */}
                     <div>
-                        <h3 className="mb-4 font-semibold text-gray-900">About</h3>
+                        <h3 className="mb-4 font-semibold text-gray-900">Acerca de</h3>
                         <ul className="space-y-3">
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    About Us
+                                    Sobre Nosotros
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Sustainability
+                                    Sostenibilidad
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Careers
+                                    Vacantes
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Press
+                                    Prensa
                                 </a>
                             </li>
                             <li>
                                 <a href="#" className="text-gray-600 transition-colors hover:text-primary">
-                                    Contact Us
+                                    Contáctanos
                                 </a>
                             </li>
                         </ul>
@@ -144,16 +144,18 @@ function Footer() {
 
                 <div className="mt-12 border-t border-gray-100 pt-8">
                     <div className="flex flex-col items-center justify-between md:flex-row">
-                        <p className="mb-4 text-sm text-gray-500 md:mb-0">&copy; 2025 ShopEase. All rights reserved.</p>
+                        <p className="mb-4 text-sm text-gray-500 md:mb-0">
+                            &copy; {new Date().getFullYear()} ShopEase. Todos los derechos reservados.
+                        </p>
                         <div className="flex flex-wrap justify-center gap-4">
                             <a href="#" className="text-sm text-gray-500 hover:text-gray-700">
-                                Privacy Policy
+                                Política de Privacidad
                             </a>
                             <a href="#" className="text-sm text-gray-500 hover:text-gray-700">
-                                Terms of Service
+                                Términos de Servicio
                             </a>
                             <a href="#" className="text-sm text-gray-500 hover:text-gray-700">
-                                Cookies Settings
+                                Configuración de Cookies
                             </a>
                         </div>
                         <div className="mt-4 flex items-center space-x-3 md:mt-0">
