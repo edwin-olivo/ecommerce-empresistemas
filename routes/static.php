@@ -10,3 +10,4 @@ Route::get('/cookies', [PageController::class, 'cookies'])->name('page.cookies')
 Route::get('/privacy', [PageController::class, 'privacy'])->name('page.privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('page.terms');
 Route::get('/shipping', [PageController::class, 'shipping'])->name('page.shipping');
+Route::get('/concepto', [PageController::class, 'concepto'])->name('page.concepto');
