@@ -50,8 +50,10 @@ function ProductCardModern({
                 {isNew && <span className="absolute top-3 left-3 rounded bg-primary px-2 py-1 text-xs text-white">New</span>}
                 {isBestSeller && <span className="absolute top-3 left-3 rounded bg-amber-500 px-2 py-1 text-xs text-white">Best Seller</span>}
                 {isOnSale && <span className="absolute top-3 left-3 rounded bg-rose-500 px-2 py-1 text-xs text-white">Sale</span>}
-                <img src={imageUrl} alt={imageAlt} className="h-80 w-full object-cover object-top" />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="aspect-square w-full overflow-hidden">
+                    <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover object-center" />
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity group-hover:opacity-100">
                     <button
                         className="mx-1 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-900 shadow-md transition hover:bg-gray-100"
                         onClick={onView}
