@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -50,7 +49,6 @@ class WishlistController extends Controller
      */
     public function update(Request $request, Wishlist $wishlist)
     {
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -86,9 +84,11 @@ class WishlistController extends Controller
             return redirect()->back()->with('info', 'El producto ya está en la lista de deseos');
         }
 
-        $wishlist->products()->create([
-            'product_id' => $validated['product'],
-        ]);
+        $wishlist
+            ->products()
+            ->create([
+                'product_id' => $validated['product'],
+            ]);
 
         return redirect()->back()->with('success', 'Producto agregado a la lista de deseos');
     }
@@ -102,9 +102,7 @@ class WishlistController extends Controller
             'product' => 'required|exists:aos_products,id',
         ]);
 
-        $wishlist->products()
-            ->where('product_id', $validated['product'])
-            ->delete();
+        $wishlist->products()->where('product_id', $validated['product'])->delete();
 
         return redirect()->back()->with('success', 'Producto removido de la lista de deseos');
     }

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AosProductsCstm
- * 
+ *
  * @property string $id_c
  * @property string|null $tipodemoneda_c
  * @property float|null $pa1_c
@@ -70,117 +70,121 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AosProductsCstm extends Model
 {
-	use HasUuids;
+    use HasUuids;
 
-	protected $table = 'aos_products_cstm';
-	protected $primaryKey = 'id_c';
-	protected $appends = ['url_imagen'];
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'aos_products_cstm';
+    protected $primaryKey = 'id_c';
+    protected $appends = ['url_imagen'];
+    public $incrementing = false;
+    public $timestamps = false;
 
-	protected $casts = [
-		'id_c' => 'string',
-		'pa1_c' => 'float',
-		'pa2_c' => 'float',
-		'pa3_c' => 'float',
-		'pa4_c' => 'float',
-		'pa5_c' => 'float',
-		'volumen_c' => 'float',
-		'bloqueado_c' => 'bool',
-		'imagenasignada_c' => 'bool',
-		'pa6_c' => 'float',
-		'pa7_c' => 'float',
-		'descripcion_alterna_c' => 'bool',
-		'precio_mayoreo_c' => 'float',
-		'granel_c' => 'bool',
-		'descuento_mayoreo_c' => 'bool',
-		'cantidad_descuento_c' => 'float',
-		'porcentaje_descuento_c' => 'float',
-		'precio_promo_c' => 'float',
-		'start_date_c' => 'datetime',
-		'end_date_c' => 'datetime',
-		'ecommmerce_new_c' => 'bool',
-		'ecommerce_recommended_c' => 'bool',
-		'ecommerce_more_sales_c' => 'bool',
-		'costo_promedio_c' => 'float',
-		'con_lote_c' => 'bool',
-		'con_pedimento_c' => 'bool',
-		'peso_c' => 'float'
-	];
+    protected $casts = [
+        'id_c' => 'string',
+        'pa1_c' => 'float',
+        'pa2_c' => 'float',
+        'pa3_c' => 'float',
+        'pa4_c' => 'float',
+        'pa5_c' => 'float',
+        'volumen_c' => 'float',
+        'bloqueado_c' => 'bool',
+        'imagenasignada_c' => 'bool',
+        'pa6_c' => 'float',
+        'pa7_c' => 'float',
+        'descripcion_alterna_c' => 'bool',
+        'precio_mayoreo_c' => 'float',
+        'granel_c' => 'bool',
+        'descuento_mayoreo_c' => 'bool',
+        'cantidad_descuento_c' => 'float',
+        'porcentaje_descuento_c' => 'float',
+        'precio_promo_c' => 'float',
+        'start_date_c' => 'datetime',
+        'end_date_c' => 'datetime',
+        'ecommmerce_new_c' => 'bool',
+        'ecommerce_recommended_c' => 'bool',
+        'ecommerce_more_sales_c' => 'bool',
+        'costo_promedio_c' => 'float',
+        'con_lote_c' => 'bool',
+        'con_pedimento_c' => 'bool',
+        'peso_c' => 'float',
+    ];
 
-	protected $fillable = [
-		'tipodemoneda_c',
-		'pa1_c',
-		'pa2_c',
-		'pa3_c',
-		'pa4_c',
-		'pa5_c',
-		'clase_c',
-		'unidad_c',
-		'codbar_c',
-		'volumen_c',
-		'nombreingles_c',
-		'bloqueado_c',
-		'estatus_c',
-		'imagenasignada_c',
-		'nombre_imagen_c',
-		'pa6_c',
-		'pa7_c',
-		'enportal_c',
-		'clavesat_c',
-		'claveunidadsat_c',
-		'nombre_imagen2_c',
-		'nombre_imagen3_c',
-		'nombre_imagen4_c',
-		'nombre_imagen5_c',
-		'nombre_imagen6_c',
-		'nombre_imagen7_c',
-		'nombre_imagen8_c',
-		'nombre_imagen9_c',
-		'nombre_imagen10_c',
-		'tasa_iva_c',
-		'descripcion_alterna_c',
-		'precio_mayoreo_c',
-		'granel_c',
-		'prioridad_c',
-		'descuento_mayoreo_c',
-		'cantidad_descuento_c',
-		'porcentaje_descuento_c',
-		'pv01_proveedores_id_c',
-		'precio_promo_c',
-		'start_date_c',
-		'end_date_c',
-		'ecommmerce_new_c',
-		'ecommerce_recommended_c',
-		'ecommerce_more_sales_c',
-		'reglas_precios_c',
-		'marca_c',
-		'desplegable_etiqueta_c',
-		'costo_promedio_c',
-		'con_lote_c',
-		'con_pedimento_c',
-		'peso_c'
-	];
+    protected $fillable = [
+        'tipodemoneda_c',
+        'pa1_c',
+        'pa2_c',
+        'pa3_c',
+        'pa4_c',
+        'pa5_c',
+        'clase_c',
+        'unidad_c',
+        'codbar_c',
+        'volumen_c',
+        'nombreingles_c',
+        'bloqueado_c',
+        'estatus_c',
+        'imagenasignada_c',
+        'nombre_imagen_c',
+        'pa6_c',
+        'pa7_c',
+        'enportal_c',
+        'clavesat_c',
+        'claveunidadsat_c',
+        'nombre_imagen2_c',
+        'nombre_imagen3_c',
+        'nombre_imagen4_c',
+        'nombre_imagen5_c',
+        'nombre_imagen6_c',
+        'nombre_imagen7_c',
+        'nombre_imagen8_c',
+        'nombre_imagen9_c',
+        'nombre_imagen10_c',
+        'tasa_iva_c',
+        'descripcion_alterna_c',
+        'precio_mayoreo_c',
+        'granel_c',
+        'prioridad_c',
+        'descuento_mayoreo_c',
+        'cantidad_descuento_c',
+        'porcentaje_descuento_c',
+        'pv01_proveedores_id_c',
+        'precio_promo_c',
+        'start_date_c',
+        'end_date_c',
+        'ecommmerce_new_c',
+        'ecommerce_recommended_c',
+        'ecommerce_more_sales_c',
+        'reglas_precios_c',
+        'marca_c',
+        'desplegable_etiqueta_c',
+        'costo_promedio_c',
+        'con_lote_c',
+        'con_pedimento_c',
+        'peso_c',
+    ];
 
-	/**
-	 * Obtiene la relación con el modelo Product.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\Relation
-	 */
-	public function product()
-	{
-		return $this->belongsTo(AosProducts::class, 'id_c', 'id');
-	}
+    /**
+     * Obtiene la relación con el modelo Product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function product()
+    {
+        return $this->belongsTo(AosProducts::class, 'id_c', 'id');
+    }
 
-	/**
-	 * Obtiene la URL de la imagen asociada al producto.
-	 *
-	 * Este atributo accede y retorna la URL de la imagen correspondiente al producto actual.
-	 *
-	 * @return string|null La URL de la imagen si existe, o null en caso contrario.
-	 */
-	public function getUrlImagenAttribute()
-	{
-		return $this->nombre_imagen_c ? config('app.base_url') . '/customcode/redim.php?&ancho=300&alto=300&img=imagenes/' . $this->nombre_imagen_c : null;
-	}
+    /**
+     * Obtiene la URL de la imagen asociada al producto.
+     *
+     * Este atributo accede y retorna la URL de la imagen correspondiente al producto actual.
+     *
+     * @return string|null La URL de la imagen si existe, o null en caso contrario.
+     */
+    public function getUrlImagenAttribute()
+    {
+        return $this->nombre_imagen_c
+            ? config('app.base_url')
+            . '/customcode/redim.php?&ancho=300&alto=300&img=imagenes/'
+            . $this->nombre_imagen_c
+            : null;
+    }
 }

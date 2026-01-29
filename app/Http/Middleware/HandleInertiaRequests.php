@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Cart;
+
 use App\Models\Wishlist;
 use App\Services\CartService;
 use Illuminate\Foundation\Inspiring;
