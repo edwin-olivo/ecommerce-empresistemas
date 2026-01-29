@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Artisan;
 
 class MigrateFreshExcept extends Command
 {
@@ -25,7 +25,7 @@ class MigrateFreshExcept extends Command
         $this->info('Dropping all tables except: ' . implode(', ', $this->except));
 
         $tables = collect(DB::select('SHOW TABLES'))->map(static function ($row) {
-            return array_values((array)$row)[0];
+            return array_values((array) $row)[0];
         })->toArray();
 
         foreach ($tables as $table) {

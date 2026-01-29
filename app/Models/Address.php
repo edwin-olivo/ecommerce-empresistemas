@@ -61,9 +61,7 @@ class Address extends Model
         static::saving(static function ($model) {
             if ($model->is_default) {
                 // Remove is_default from other addresses of the same user
-                self::where('user_id', $model->user_id)
-                    ->where('id', '!=', $model->id)
-                    ->update(['is_default' => false]);
+                self::where('user_id', $model->user_id)->where('id', '!=', $model->id)->update(['is_default' => false]);
             }
         });
     }

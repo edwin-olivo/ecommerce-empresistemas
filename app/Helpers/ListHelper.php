@@ -15,7 +15,7 @@ class ListHelper
 
     /**
      * Generates a standardized cache key for a list
-     * 
+     *
      * @param string $list List name
      * @return string Cache key
      */
@@ -26,7 +26,7 @@ class ListHelper
 
     /**
      * Makes an HTTP request to the API
-     * 
+     *
      * @param string $url URL to request
      * @return array Response data
      * @throws \Exception
@@ -51,7 +51,7 @@ class ListHelper
 
     /**
      * Gets a list from ERP with cache management
-     * 
+     *
      * @param string $list List name to retrieve
      * @param string|null $baseUrl Optional base URL (if not using config)
      * @return array List data
@@ -90,7 +90,6 @@ class ListHelper
 
             Log::warning("Empty response from ERP API for list: {$list}");
             return [];
-
         } catch (\Exception $e) {
             Log::error("Error fetching ERP list '{$list}': {$e->getMessage()}");
 
@@ -107,7 +106,7 @@ class ListHelper
 
     /**
      * Clears cache for a specific list
-     * 
+     *
      * @param string $list List name
      * @return bool
      */
@@ -119,7 +118,7 @@ class ListHelper
 
     /**
      * Clears all ERP list caches
-     * 
+     *
      * @return bool
      */
     public static function clearAllListCaches(): bool
@@ -129,7 +128,7 @@ class ListHelper
         // For file cache, this is a basic implementation
         try {
             $pattern = 'erp_list_*';
-            
+
             // Note: This method works with Redis cache driver
             // For other drivers, you might need different approaches
             if (Cache::getStore() instanceof \Illuminate\Cache\RedisStore) {
@@ -139,11 +138,10 @@ class ListHelper
                 }
                 return true;
             }
-            
+
             // For other cache drivers, you'll need to track keys manually
             // or implement a different strategy
             return false;
-            
         } catch (\Exception $e) {
             Log::error("Error clearing ERP list caches: {$e->getMessage()}");
             return false;

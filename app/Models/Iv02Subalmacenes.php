@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Iv02Subalmacene
- * 
+ *
  * @property string $id
  * @property string|null $name
  * @property Carbon|null $date_entered
@@ -32,33 +32,33 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Iv02Subalmacenes extends Model
 {
-	protected $table = 'iv02_subalmacenes';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'iv02_subalmacenes';
+    public $incrementing = false;
+    public $timestamps = false;
 
-	protected $casts = [
-		'date_entered' => 'datetime',
-		'date_modified' => 'datetime',
-		'deleted' => 'bool',
-		'deficit' => 'float',
-		'cantidad' => 'float',
-		'existenciareal' => 'float'
-	];
+    protected $casts = [
+        'date_entered' => 'datetime',
+        'date_modified' => 'datetime',
+        'deleted' => 'bool',
+        'deficit' => 'float',
+        'cantidad' => 'float',
+        'existenciareal' => 'float',
+    ];
 
-	protected $fillable = [
-		'name',
-		'date_entered',
-		'date_modified',
-		'modified_user_id',
-		'created_by',
-		'description',
-		'deleted',
-		'assigned_user_id',
-		'subalmacen',
-		'almacenpadre',
-		'id_producto',
-		'deficit',
-		'cantidad',
-		'existenciareal'
-	];
+    protected $fillable = [
+        'name',
+        'date_entered',
+        'date_modified',
+        'modified_user_id',
+        'created_by',
+        'description',
+        'deleted',
+        'assigned_user_id',
+        'subalmacen',
+        'almacenpadre',
+        'id_producto',
+        'deficit',
+        'cantidad',
+        'existenciareal',
+    ];
 }
