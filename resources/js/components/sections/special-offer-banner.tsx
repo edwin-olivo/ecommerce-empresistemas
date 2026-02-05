@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 function createCountdownTimer(finishDate: Date, onTick: (timeLeft: { days: number; hours: number; minutes: number; seconds: number }) => void) {
@@ -45,6 +46,31 @@ function clockComponent(timeLeft: { days: number; hours: number; minutes: number
     );
 }
 
+function finishedDateInPast(finishDate: Date) {
+    const now = new Date();
+    return finishDate.getTime() < now.getTime();
+}
+
+function finishedBanner(className?: string) {
+    return (
+        <section className={cn('bg-gray-900 py-16 text-white', className)}>
+            <div className="container mx-auto px-4 text-center">
+                <div className="mb-8 flex justify-center">
+                    <div className="rounded-full bg-gradient-to-r from-rose-500 to-amber-500 p-6">
+                        <Clock className="h-12 w-12 text-white" />
+                    </div>
+                </div>
+                <h2 className="mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl">
+                    La oferta especial ha finalizado
+                </h2>
+                <p className="mb-8 text-xl leading-relaxed text-gray-300">
+                    ¡Gracias por su interés! Manténgase atento a futuras promociones emocionantes.
+                </p>
+            </div>
+        </section>
+    );
+}
+
 type SpecialOfferBannerProps = {
     title: string;
     description: string;
@@ -57,10 +83,15 @@ function SpecialOfferBanner({ title, description, finishDate, className }: Speci
 
     useEffect(() => {
         if (!finishDate) return;
+        if (finishedDateInPast(finishDate)) return;
 
         const stopTimer = createCountdownTimer(finishDate, setTimeLeft);
         return () => stopTimer();
     }, [finishDate]);
+
+    if (finishDate && finishedDateInPast(finishDate)) {
+        return finishedBanner(className);
+    }
 
     return (
         <section className={cn('bg-gray-900 py-16 text-white', className)}>
