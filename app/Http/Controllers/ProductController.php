@@ -115,7 +115,7 @@ class ProductController extends Controller
         $filters = [];
         if (isset($filtersInRequest['filter'])) {
             foreach ($filtersInRequest['filter'] as $key => $value) {
-                $filters["filter[$key]"] = $value;
+                $filters["filter[{$key}]"] = $value;
             }
         }
 
