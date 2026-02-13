@@ -54,13 +54,13 @@ class AOS_InvoicesService
         }
     }
 
-    function getOrdersByUser($userId, $limit = 50)
+    function getOrdersByUser($userId, $limit = 50, $offset = 0)
     {
         $entryArgs = [
             'module_name' => 'AOS_Invoices',
             'query' => "aos_invoices.billing_account_id = '$userId'",
             'order_by' => 'date_modified DESC',
-            'offset' => 0,
+            'offset' => $offset,
             'select_fields' => [],
             'max_results' => $limit,
             'deleted' => 0,
