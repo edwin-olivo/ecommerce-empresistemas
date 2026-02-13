@@ -3,7 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
-import { formatCurrency, getLabelFromOptions } from '@/lib/utils';
+import { columns } from '@/pages/dashboard/orders/columns';
+import { DataTable } from '@/pages/dashboard/orders/data-table';
 import { Venta } from '@/types';
 import { Head } from '@inertiajs/react';
 
@@ -55,40 +56,7 @@ export default function Orders({ orders, listas }: OrdersProps) {
                 <div className="space-y-6">
                     <HeadingSmall title="Ordenes" description="Aquí puedes ver y gestionar las ordenes que has realizado." />
 
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {orders.length > 0 ? (
-                            orders.map((order) => (
-                                <div key={order.id} className="rounded-lg border p-4 shadow-sm">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-lg font-semibold text-gray-900">Orden #{order.name}</h3>
-                                        <p className="text-lg font-bold text-blue-600">{formatCurrency(order.total_amount ?? 0)}</p>
-                                    </div>
-                                    <div className="mt-2 flex gap-4">
-                                        <div>
-                                            <p className="text-xs text-gray-400">Fecha de compra</p>
-                                            <p className="text-sm font-semibold text-gray-900">
-                                                {order.date_entered && new Date(order.date_entered).toLocaleDateString()}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs text-gray-400">Pago</p>
-                                            <CustomBadge value={order.status || ''}>
-                                                {getLabelFromOptions(order.status, invoice_status_dom)}
-                                            </CustomBadge>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs text-gray-400">Envío</p>
-                                            <Badge variant="secondary" className="bg-gray-100 text-gray-800">
-                                                {getLabelFromOptions(order.estatus_envio_c, estatus_envio_list).capitalizeFirstLetter()}
-                                            </Badge>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <OrdersEmptyState />
-                        )}
-                    </div>
+                    <div className="grid grid-cols-1">{orders.length > 0 ? <DataTable columns={columns} data={orders} /> : <OrdersEmptyState />}</div>
                 </div>
             </DashboardLayout>
         </AppLayout>

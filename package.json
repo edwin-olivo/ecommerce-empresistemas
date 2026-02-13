@@ -46,6 +46,7 @@
         "@radix-ui/react-toggle-group": "^1.1.11",
         "@radix-ui/react-tooltip": "^1.2.8",
         "@tailwindcss/vite": "^4.1.14",
+        "@tanstack/react-table": "^8.21.3",
         "@types/lodash-es": "^4.17.12",
         "@types/react": "^19.2.2",
         "@types/react-dom": "^19.2.1",
