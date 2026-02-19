@@ -59,8 +59,10 @@ export const columns: ColumnDef<Venta>[] = [
     {
         accessorKey: 'status',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Estado" />,
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const value = row.getValue('status') as string;
+            const listas = (table.options.meta as any)?.listas;
+            const label = listas?.invoice_status_dom[value] || value;
 
             const styles = {
                 Liquidada:
@@ -71,14 +73,16 @@ export const columns: ColumnDef<Venta>[] = [
                     'bg-amber-600/10 text-amber-600 focus-visible:ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-400 dark:focus-visible:ring-amber-400/40 [a&]:hover:bg-amber-600/5 dark:[a&]:hover:bg-amber-400/5',
             }[value];
 
-            return <Badge className={cn('border-none focus-visible:outline-none', styles)}>{value}</Badge>;
+            return <Badge className={cn('border-none focus-visible:outline-none', styles)}>{label}</Badge>;
         },
     },
     {
         accessorKey: 'estatus_envio_c',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Estado de Envío" />,
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const value = row.getValue('estatus_envio_c') as string;
+            const listas = (table.options.meta as any)?.listas;
+            const label = listas?.estatus_envio_list[value] || value;
 
             if (!value) {
                 return <Badge className="border-none bg-gray-100 text-gray-800 focus-visible:outline-none">Sin información</Badge>;
@@ -93,7 +97,7 @@ export const columns: ColumnDef<Venta>[] = [
                     'bg-red-600/10 text-red-600 focus-visible:ring-red-600/20 dark:bg-red-400/10 dark:text-red-400 dark:focus-visible:ring-red-400/40 [a&]:hover:bg-red-600/5 dark:[a&]:hover:bg-red-400/5',
             }[value];
 
-            return <Badge className={cn('border-none focus-visible:outline-none', styles)}>{value}</Badge>;
+            return <Badge className={cn('border-none focus-visible:outline-none', styles)}>{label}</Badge>;
         },
     },
 ];

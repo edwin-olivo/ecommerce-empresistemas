@@ -56,7 +56,9 @@ export default function Orders({ orders, listas }: OrdersProps) {
                 <div className="space-y-6">
                     <HeadingSmall title="Ordenes" description="Aquí puedes ver y gestionar las ordenes que has realizado." />
 
-                    <div className="grid grid-cols-1">{orders.length > 0 ? <DataTable columns={columns} data={orders} /> : <OrdersEmptyState />}</div>
+                    <div className="grid grid-cols-1">
+                        {orders.length > 0 ? <DataTable columns={columns} data={orders} listas={listas} /> : <OrdersEmptyState />}
+                    </div>
                 </div>
             </DashboardLayout>
         </AppLayout>
