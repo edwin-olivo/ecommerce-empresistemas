@@ -17,13 +17,13 @@ interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes
 
 export function DataTableColumnHeader({ column, title }: DataTableColumnHeaderProps<any, any>) {
     return (
-        <div className="flex cursor-pointer items-center gap-2" onClick={() => handleSorting(column)}>
+        <div className="flex cursor-pointer items-center gap-2 rounded" onClick={() => handleSorting(column)}>
             {column.getIsSorted() === 'asc' ? (
                 <ChevronUp className="h-4 w-4" />
             ) : column.getIsSorted() === 'desc' ? (
                 <ChevronDown className="h-4 w-4" />
             ) : (
-                <ArrowUpDown className="h-4 w-4 opacity-50" />
+                <ArrowUpDown className="h-4 w-4" />
             )}
             <span className="text-sm font-medium text-neutral-950">{title}</span>
         </div>
