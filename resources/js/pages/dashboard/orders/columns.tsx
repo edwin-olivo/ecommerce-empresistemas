@@ -23,7 +23,7 @@ export function DataTableColumnHeader({ column, title }: DataTableColumnHeaderPr
             ) : column.getIsSorted() === 'desc' ? (
                 <ChevronDown className="h-4 w-4" />
             ) : (
-                <ArrowUpDown className="h-4 w-4" />
+                <ArrowUpDown className="h-4 w-4 text-neutral-600" />
             )}
             <span className="text-sm font-medium text-neutral-950">{title}</span>
         </div>
@@ -49,11 +49,16 @@ export const columns: ColumnDef<Venta>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Fecha" />,
         cell: ({ row }) => {
             const date = new Date(row.getValue('date_entered') as string);
-            return (
-                <div>
-                    {date.toLocaleDateString()} {date.toLocaleTimeString()}
-                </div>
-            );
+            const formattedDate = date.toLocaleDateString('es-MX', {
+                year: 'numeric',
+                month: '2-digit',
+                day: 'numeric',
+            });
+            const time = date.toLocaleTimeString('es-MX', {
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+            return <div>{formattedDate} {time}</div>;
         },
     },
     {
