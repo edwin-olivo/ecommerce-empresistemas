@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import {
@@ -47,14 +48,45 @@ export function DataTable<TData, TValue>({ columns, data, listas }: DataTablePro
 
     return (
         <div>
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 gap-2">
                 <Input
                     placeholder="Filtrar ordenes..."
                     value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
                     onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
                     className="max-w-sm"
                 />
+                <Select
+                    onValueChange={(value) => table.getColumn('estatus_envio_c')?.setFilterValue(value)}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Estado de Envío" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {listas?.estatus_envio_list &&
+                            Object.entries(listas.estatus_envio_list).map(([key, label]) => (
+                                <SelectItem key={key} value={key}>
+                                    {label}
+                                </SelectItem>
+                            ))}
+                    </SelectContent>
+                </Select>
+                <Select
+                    onValueChange={(value) => table.getColumn('status')?.setFilterValue(value)}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Estado" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {listas?.invoice_status_dom &&
+                            Object.entries(listas.invoice_status_dom).map(([key, label]) => (
+                                <SelectItem key={key} value={key}>
+                                    {label}
+                                </SelectItem>
+                            ))}
+                    </SelectContent>
+                </Select>
             </div>
+
             <div className="overflow-hidden rounded-md border">
                 <Table className={cn({ '[&_td]:py-2 [&_th]:py-1': true })}>
                     <TableHeader>
