@@ -1,28 +1,32 @@
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
-import { formatCurrency } from '@/lib/utils';
 import { Wishlist } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { columns } from './wishlists/columns';
+import { DataTable } from './wishlists/data-table';
 
 interface WishlistShowProps {
     wishlist: Wishlist;
 }
 
+function WishlistEmptyState() {
+    return (
+        <div className="flex flex-col items-center justify-center py-20">
+            <h2 className="mb-4 text-2xl font-semibold text-gray-900">Tu lista de deseos está vacía</h2>
+            <p className="mb-6 text-gray-600">
+                Parece que aún no has añadido ningún producto a tu lista de deseos. Explora nuestros productos y añade tus favoritos.
+            </p>
+            <Link href={route('products.index')}>
+                <Button>Explorar Productos</Button>
+            </Link>
+        </div>
+    );
+}
+
 export default function WishlistShow({ wishlist }: WishlistShowProps) {
-    const { delete: destroy, processing } = useForm({});
-
-    function handleRemoveProduct(event: React.FormEvent, productId: string) {
-        event.preventDefault();
-        destroy(route('wishlist.remove-product', { product: productId, wishlist: wishlist.id }), {
-            preserveState: true,
-            preserveScroll: true,
-        });
-    }
-
     const breadcrumbs = getBreadcrumbs('wishlist', [
         { title: 'Listado de Deseos', href: route('wishlist.index') },
         { title: wishlist.name, href: route('wishlist.show', wishlist.id) },
@@ -39,54 +43,11 @@ export default function WishlistShow({ wishlist }: WishlistShowProps) {
                     />
 
                     <div>
-                        <Table>
-                            <TableCaption>Productos en la lista de deseos</TableCaption>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="font-bold text-gray-900">Producto</TableHead>
-                                    <TableHead className="font-bold text-gray-900">Precio</TableHead>
-                                    <TableHead className="font-bold text-gray-900">Disponibilidad</TableHead>
-                                    <TableHead className="font-bold text-gray-900">Acciones</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {(wishlist?.products?.length ?? 0) > 0 ? (
-                                    (wishlist?.products ?? []).map(({ product }: any) => (
-                                        <TableRow key={product.id}>
-                                            <TableCell>
-                                                <Link href={route('products.show', product.id)} className="text-blue-600 hover:underline">
-                                                    {product.part_number}
-                                                </Link>
-                                            </TableCell>
-                                            <TableCell className="text-right">{product.price && formatCurrency(product.price)}</TableCell>
-                                            <TableCell>{product.availability ? 'Disponible' : 'No disponible'}</TableCell>
-                                            <TableCell>
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    className="cursor-pointer"
-                                                    disabled={processing}
-                                                    onClick={(e) => handleRemoveProduct(e, product.id)}
-                                                >
-                                                    Eliminar
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={4} className="text-center">
-                                            No hay productos en esta lista de deseos.
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell colSpan={4}>Total de productos: {wishlist.products?.length ?? 0}</TableCell>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
+                        {wishlist?.products && wishlist?.products.length > 0 ? (
+                            <DataTable columns={columns} data={wishlist.products} />
+                        ) : (
+                            <WishlistEmptyState />
+                        )}
                     </div>
                 </div>
             </DashboardLayout>
