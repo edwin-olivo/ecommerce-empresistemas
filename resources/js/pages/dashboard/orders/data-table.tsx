@@ -48,16 +48,14 @@ export function DataTable<TData, TValue>({ columns, data, listas }: DataTablePro
 
     return (
         <div>
-            <div className="flex items-center py-4 gap-2">
+            <div className="flex items-center gap-2 py-4">
                 <Input
                     placeholder="Filtrar ordenes..."
                     value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
                     onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
                     className="max-w-sm"
                 />
-                <Select
-                    onValueChange={(value) => table.getColumn('estatus_envio_c')?.setFilterValue(value)}
-                >
+                <Select onValueChange={(value) => table.getColumn('estatus_envio_c')?.setFilterValue(value)}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Estado de Envío" />
                     </SelectTrigger>
@@ -70,9 +68,7 @@ export function DataTable<TData, TValue>({ columns, data, listas }: DataTablePro
                             ))}
                     </SelectContent>
                 </Select>
-                <Select
-                    onValueChange={(value) => table.getColumn('status')?.setFilterValue(value)}
-                >
+                <Select onValueChange={(value) => table.getColumn('status')?.setFilterValue(value)}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Estado" />
                     </SelectTrigger>

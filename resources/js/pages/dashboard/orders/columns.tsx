@@ -30,6 +30,13 @@ export function DataTableColumnHeader({ column, title }: DataTableColumnHeaderPr
     );
 }
 
+const Colors: Record<string, string> = {
+    CuentaXLiquidar: 'bg-red-100 text-red-800',
+    PagoParcial: 'bg-red-100 text-red-800',
+    Liquidada: 'bg-green-100 text-green-800',
+    Cancelada: 'bg-red-100 text-red-800',
+};
+
 export const columns: ColumnDef<Venta>[] = [
     {
         accessorKey: 'name',
@@ -58,7 +65,11 @@ export const columns: ColumnDef<Venta>[] = [
                 hour: '2-digit',
                 minute: '2-digit',
             });
-            return <div>{formattedDate} {time}</div>;
+            return (
+                <div>
+                    {formattedDate} {time}
+                </div>
+            );
         },
     },
     {
@@ -68,17 +79,9 @@ export const columns: ColumnDef<Venta>[] = [
             const value = row.getValue('status') as string;
             const listas = (table.options.meta as any)?.listas;
             const label = listas?.invoice_status_dom[value] || value;
-
-            const styles = {
-                Liquidada:
-                    'bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5',
-                Cancelada:
-                    'bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive',
-                CuentaXLiquidar:
-                    'bg-amber-600/10 text-amber-600 focus-visible:ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-400 dark:focus-visible:ring-amber-400/40 [a&]:hover:bg-amber-600/5 dark:[a&]:hover:bg-amber-400/5',
-            }[value];
-
-            return <Badge className={cn('border-none focus-visible:outline-none', styles)}>{label}</Badge>;
+            const commonStyles = 'border-none focus-visible:outline-none';
+            const styles = Colors[value] || commonStyles;
+            return <Badge className={cn(commonStyles, styles)}>{label}</Badge>;
         },
     },
     {

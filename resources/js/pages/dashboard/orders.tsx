@@ -1,5 +1,4 @@
 import HeadingSmall from '@/components/heading-small';
-import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import DashboardLayout from '@/layouts/common/dashboard-layout';
 import { getBreadcrumbs } from '@/lib/breadcrumb-helper';
@@ -18,13 +17,6 @@ interface OrdersProps {
     };
 }
 
-const Colors: Record<string, string> = {
-    CuentaXLiquidar: 'bg-red-100 text-red-800',
-    PagoParcial: 'bg-red-100 text-red-800',
-    Liquidada: 'bg-green-100 text-green-800',
-    Cancelada: 'bg-red-100 text-red-800',
-};
-
 function OrdersEmptyState() {
     return (
         <div className="flex flex-col items-center justify-center py-20">
@@ -36,19 +28,7 @@ function OrdersEmptyState() {
     );
 }
 
-function CustomBadge({ value, children }: { value: string; children: React.ReactNode }) {
-    const classes = Colors[value] || 'bg-gray-100 text-gray-800';
-
-    return (
-        <Badge variant="secondary" className={classes}>
-            {children}
-        </Badge>
-    );
-}
-
 export default function Orders({ orders, listas }: OrdersProps) {
-    const { estatus_envio_list, invoice_status_dom } = listas;
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Ordenes" />
